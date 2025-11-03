@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MGButtonScript : MonoBehaviour, IPointerClickHandler
 {
-    void Start()
-    {
-    }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (gameObject.name == "GameBtn")
