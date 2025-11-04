@@ -274,12 +274,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 1000
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -815,11 +815,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 189.5511
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 178.3573
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_LocalScale.x
@@ -879,7 +879,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_Name
-      value: CreditsBtn
+      value: ContinueBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641778747254558722, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+      propertyPath: m_Text
+      value: Continue
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -924,11 +928,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 189.5511
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 178.3573
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_LocalScale.x
@@ -989,6 +993,10 @@ PrefabInstance:
     - target: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_Name
       value: GameBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641778747254558722, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+      propertyPath: m_Text
+      value: New Game
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

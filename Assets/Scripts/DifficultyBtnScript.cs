@@ -24,7 +24,7 @@ public class DifficultyBtnScript : MonoBehaviour
         Transform parent = transform.parent;
         foreach (Transform child in parent)
         {
-            var textComp = child.GetComponentInChildren<TextMeshPro>(true);
+            var textComp = child.GetComponentInChildren<UnityEngine.UI.Text>(true);
             if (textComp == null)
             {
                 Debug.LogWarning($"Nincs TextMeshProUGUI a(z) {child.name} alatt!");

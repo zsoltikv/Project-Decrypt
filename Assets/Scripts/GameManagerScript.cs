@@ -5,9 +5,9 @@ public class GameSettingsManager : MonoBehaviour
     public static GameSettingsManager Instance;
 
     public enum Difficulty { Easy, Normal, Hard }
-    public Difficulty currentDifficulty = Difficulty.Normal;
+    public Difficulty currentDifficulty;
     [SerializeField]
-    public bool RandomPass = false;
+    public bool RandomPass;
 
     void Awake()
     {
