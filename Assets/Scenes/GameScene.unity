@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &50615688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +186,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50615687}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &373489736
 Transform:
@@ -424,6 +424,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDifficulty: 1
   RandomPass: 0
+  isSet: 0
+  apps:
+  - HexPuzzle
+  - SequenceHack
+  usedApps: []
+  maxApps: 0
 --- !u!1 &397823035
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,8 +967,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc69d91423e08a438acc8fd703eb03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsPlane: {fileID: 1159767416}
-  gamePlane: {fileID: 50615690}
+  settingsPlane: {fileID: 1159767413}
+  gamePlane: {fileID: 50615687}
 --- !u!1 &1159767413
 GameObject:
   m_ObjectHideFlags: 0

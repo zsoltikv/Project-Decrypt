@@ -9,13 +9,13 @@ public class SequenceHack : MonoBehaviour
 {
     [Header("Grid Settings")]
     public List<Button> gridButtons;
-    private Color defaultColor = new Color(0.05f, 0.15f, 0.2f, 1f); // Sötét cyber kék
+    private Color defaultColor = new Color(0.05f, 0.15f, 0.2f, 1f); // Sï¿½tï¿½t cyber kï¿½k
     private Color highlightColor = new Color(0f, 1f, 0.8f, 1f); // Neon cyan
     private Color wrongColor = new Color(1f, 0.1f, 0.1f, 1f); // Neon piros
 
     [Header("UI Elements")]
     public TextMeshProUGUI infoText;
-    public Image backgroundPanel; // Opcionális: teljes háttér panel
+    public Image backgroundPanel; // Opcionï¿½lis: teljes hï¿½ttï¿½r panel
 
     [Header("Visual Effects")]
     public float glowIntensity = 2f;
@@ -57,13 +57,13 @@ public class SequenceHack : MonoBehaviour
 
     void SetupVisuals()
     {
-        // Gombok alapértelmezett színe és effekt
+        // Gombok alapï¿½rtelmezett szï¿½ne ï¿½s effekt
         foreach (var btn in gridButtons)
         {
             Image img = btn.GetComponent<Image>();
             img.color = defaultColor;
 
-            // Shadow/Outline hozzáadása (ha van)
+            // Shadow/Outline hozzï¿½adï¿½sa (ha van)
             var outline = btn.GetComponent<Outline>();
             if (outline == null)
             {
@@ -73,7 +73,7 @@ public class SequenceHack : MonoBehaviour
             outline.effectDistance = new Vector2(5, 5);
         }
 
-        // Szöveg formázása
+        // Szï¿½veg formï¿½zï¿½sa
         if (infoText != null)
         {
             infoText.fontSize = 36;
@@ -100,7 +100,7 @@ public class SequenceHack : MonoBehaviour
         isPlayerTurn = true;
         infoText.text = "<color=#FFFF00>INPUT SEQUENCE NOW</color>";
 
-        // Gombok pulzáló effekt amikor input várható
+        // Gombok pulzï¿½lï¿½ effekt amikor input vï¿½rhatï¿½
         StartCoroutine(PulseButtonsBorder());
     }
 
@@ -112,7 +112,7 @@ public class SequenceHack : MonoBehaviour
             Image img = btn.GetComponent<Image>();
             Outline outline = btn.GetComponent<Outline>();
 
-            // Intenzív neon villanás
+            // Intenzï¿½v neon villanï¿½s
             yield return StartCoroutine(FlashButtonSequence(img, outline));
             yield return new WaitForSeconds(0.3f);
         }
@@ -176,7 +176,7 @@ public class SequenceHack : MonoBehaviour
 
         if (index == sequence[playerIndex])
         {
-            // Helyes válasz
+            // Helyes vï¿½lasz
             StartCoroutine(FlashButtonCorrect(btn));
             playerIndex++;
 
@@ -199,12 +199,19 @@ public class SequenceHack : MonoBehaviour
         }
         else
         {
-            // Hibás válasz
+            // Hibï¿½s vï¿½lasz
             StartCoroutine(FlashButtonWrong(btn));
             isPlayerTurn = false;
             infoText.text = "<color=#FF0000>ACCESS DENIED - SEQUENCE ERROR!</color>";
             StartCoroutine(RestartAfterDelay());
         }
+    }
+
+    IEnumerator WinAndReturn()
+    {
+        yield return new WaitForSeconds(2f);
+        GameSettingsManager.Instance.completedApps.Add("SequenceHack");
+        SceneManager.LoadScene("GameScene");
     }
 
     IEnumerator FlashButtonCorrect(Button btn)
@@ -245,7 +252,7 @@ public class SequenceHack : MonoBehaviour
 
     IEnumerator WinEffect()
     {
-        // Összes gomb villog zöldbe
+        // ï¿½sszes gomb villog zï¿½ldbe
         for (int i = 0; i < 3; i++)
         {
             foreach (var btn in gridButtons)
@@ -273,7 +280,7 @@ public class SequenceHack : MonoBehaviour
 
     IEnumerator RestartAfterDelay()
     {
-        // Összes gomb villog pirosba
+        // ï¿½sszes gomb villog pirosba
         for (int i = 0; i < 2; i++)
         {
             foreach (var btn in gridButtons)

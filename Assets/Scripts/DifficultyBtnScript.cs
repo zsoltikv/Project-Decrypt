@@ -27,7 +27,6 @@ public class DifficultyBtnScript : MonoBehaviour
             var textComp = child.GetComponentInChildren<UnityEngine.UI.Text>(true);
             if (textComp == null)
             {
-                Debug.LogWarning($"Nincs TextMeshProUGUI a(z) {child.name} alatt!");
                 continue;
             }
 

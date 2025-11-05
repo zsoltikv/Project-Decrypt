@@ -6,10 +6,31 @@ using UnityEngine.SceneManagement;
 public class MGButtonScript : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
-    public Canvas settingsPlane;
+    public GameObject settingsPlane;
     [SerializeField]
-    public Canvas gamePlane;
+    public GameObject gamePlane;
+    GameSettingsManager gsm;
 
+    public void Start()
+    {
+        gsm = GameSettingsManager.Instance;
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            if (!GameSettingsManager.Instance.isSet)
+            {
+                settingsPlane.SetActive(true);
+                gamePlane.SetActive(false);
+                return;
+            }
+            else
+            {
+                settingsPlane.SetActive(false);
+                gamePlane.SetActive(true);
+                return;
+            }
+        }
+
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (gameObject.name == "GameBtn")
@@ -18,8 +39,23 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
         }
         if (gameObject.name == "ProceedBtn")
         {
-            settingsPlane.enabled = false;
-            gamePlane.enabled = true;
+            settingsPlane.SetActive(false);
+            gamePlane.SetActive(true);
+            switch (gsm.currentDifficulty)
+            {
+                case GameSettingsManager.Difficulty.Easy:
+                    gsm.maxApps = 3;
+                    break;
+                case GameSettingsManager.Difficulty.Normal:
+                    gsm.maxApps = 5;
+                    break;
+                case GameSettingsManager.Difficulty.Hard:
+                    gsm.maxApps = 7;
+                    break;
+                default:
+                    break;
+            }
+            gsm.isSet = true;
         }
     }
 }
