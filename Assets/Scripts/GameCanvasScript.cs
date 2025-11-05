@@ -24,6 +24,7 @@ public class GameCanvasScript : MonoBehaviour
             newApp.transform.localScale = new Vector3(1, 1, 1);
             newApp.name = app;
             newApp.GetComponentInChildren<TextMeshProUGUI>().text = app;
+            newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + app);
             newApp.AddComponent<AppScript>();
         }
     }
