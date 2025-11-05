@@ -16,6 +16,7 @@ public class GameSettingsManager : MonoBehaviour
     [Header("Apps")]
     public List<String> apps = new();
     public List<String> usedApps = new();
+    public List<String> completedApps = new();
     public int maxApps;
 
     void Awake()

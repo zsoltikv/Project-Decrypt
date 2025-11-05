@@ -128,6 +128,7 @@ public class SequenceHack : MonoBehaviour
     IEnumerator WinAndReturn()
     {
         yield return new WaitForSeconds(2f);
+        GameSettingsManager.Instance.completedApps.Add("SequenceHack");
         SceneManager.LoadScene("GameScene");
     }
 

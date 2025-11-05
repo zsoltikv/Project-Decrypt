@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +24,10 @@ public class GameCanvasScript : MonoBehaviour
             newApp.transform.localScale = new Vector3(1, 1, 1);
             newApp.name = app;
             newApp.GetComponentInChildren<TextMeshProUGUI>().text = app;
+            if (gsm.completedApps.Contains(app))
+            {
+                newApp.GetComponentInChildren<TextMeshProUGUI>().text += " [✔]";
+            }
             newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + app);
             newApp.AddComponent<AppScript>();
         }

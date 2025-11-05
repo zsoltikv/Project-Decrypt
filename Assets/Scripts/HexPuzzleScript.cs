@@ -141,6 +141,7 @@ public class CodeLinkerGame : MonoBehaviour
     IEnumerator WinAndReturn()
     {
         yield return new WaitForSeconds(2f);
+        GameSettingsManager.Instance.completedApps.Add("HexPuzzle");
         SceneManager.LoadScene("GameScene");
     }
 
