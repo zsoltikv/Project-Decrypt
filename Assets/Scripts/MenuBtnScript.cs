@@ -56,6 +56,7 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
                     break;
             }
             gsm.isSet = true;
+            gsm.CreatePassword();
         }
     }
 }
