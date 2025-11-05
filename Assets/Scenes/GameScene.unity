@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef217b0aad5bc07438cafb2553c6fde2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appButton: {fileID: 0}
+  appButton: {fileID: 6777397412375097739, guid: af409ac6acccc65488290a584232ccf8, type: 3}
 --- !u!1 &159100344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
@@ -2123,7 +2123,7 @@ PrefabInstance:
       objectReference: {fileID: 50615692}
     - target: {fileID: 8626519325314115625, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnProcced
+      value: OnProceed
       objectReference: {fileID: 0}
     - target: {fileID: 8626519325314115625, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

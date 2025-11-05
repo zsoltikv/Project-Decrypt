@@ -8,11 +8,18 @@ using TMPro;
 public class SequenceHack : MonoBehaviour
 {
     [Header("Grid Settings")]
-    public List<Button> gridButtons; // A 3x3 mezõk listája (Inspectorban add hozzá)
-    private Color defaultColor;
+    public List<Button> gridButtons;
+    private Color defaultColor = new Color(0.05f, 0.15f, 0.2f, 1f); // Sötét cyber kék
+    private Color highlightColor = new Color(0f, 1f, 0.8f, 1f); // Neon cyan
+    private Color wrongColor = new Color(1f, 0.1f, 0.1f, 1f); // Neon piros
 
     [Header("UI Elements")]
     public TextMeshProUGUI infoText;
+    public Image backgroundPanel; // Opcionális: teljes háttér panel
+
+    [Header("Visual Effects")]
+    public float glowIntensity = 2f;
+    public AnimationCurve pulseCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
     private List<int> sequence = new List<int>();
     private int playerIndex = 0;
@@ -23,8 +30,9 @@ public class SequenceHack : MonoBehaviour
 
     void Start()
     {
-        defaultColor = gridButtons[0].GetComponent<Image>().color;
-        if(GameSettingsManager.Instance == null)
+        SetupVisuals();
+
+        if (GameSettingsManager.Instance == null)
         {
             maxRound = 3;
         }
@@ -41,13 +49,37 @@ public class SequenceHack : MonoBehaviour
                 case GameSettingsManager.Difficulty.Hard:
                     maxRound = 7;
                     break;
-                default:
-                    break;
             }
         }
 
         StartCoroutine(StartNewRound());
+    }
 
+    void SetupVisuals()
+    {
+        // Gombok alapértelmezett színe és effekt
+        foreach (var btn in gridButtons)
+        {
+            Image img = btn.GetComponent<Image>();
+            img.color = defaultColor;
+
+            // Shadow/Outline hozzáadása (ha van)
+            var outline = btn.GetComponent<Outline>();
+            if (outline == null)
+            {
+                outline = btn.gameObject.AddComponent<Outline>();
+            }
+            outline.effectColor = new Color(0f, 0.8f, 0.7f, 0.5f);
+            outline.effectDistance = new Vector2(5, 5);
+        }
+
+        // Szöveg formázása
+        if (infoText != null)
+        {
+            infoText.fontSize = 36;
+            infoText.color = new Color(0f, 1f, 0.8f, 1f);
+            infoText.fontStyle = FontStyles.Bold;
+        }
     }
 
     IEnumerator StartNewRound()
@@ -57,18 +89,19 @@ public class SequenceHack : MonoBehaviour
         playerIndex = 0;
         round++;
 
-        infoText.text = "Round " + round + " - Watch carefully!";
-        yield return new WaitForSeconds(1f);
+        infoText.text = $"<color=#00FFAA>ROUND {round}</color> - ANALYZING SEQUENCE...";
+        yield return new WaitForSeconds(1.5f);
 
-        // új elem hozzáadása a szekvenciához
         sequence.Add(Random.Range(0, gridButtons.Count));
 
-        // lejátszás (villogtatás)
         yield return StartCoroutine(PlaySequence());
 
         isAnimating = false;
         isPlayerTurn = true;
-        infoText.text = "Now repeat!";
+        infoText.text = "<color=#FFFF00>INPUT SEQUENCE NOW</color>";
+
+        // Gombok pulzáló effekt amikor input várható
+        StartCoroutine(PulseButtonsBorder());
     }
 
     IEnumerator PlaySequence()
@@ -77,11 +110,61 @@ public class SequenceHack : MonoBehaviour
         {
             Button btn = gridButtons[index];
             Image img = btn.GetComponent<Image>();
+            Outline outline = btn.GetComponent<Outline>();
 
-            img.color = new Color(Random.value, Random.value, Random.value, 1);
-            yield return new WaitForSeconds(0.5f);
-            img.color = defaultColor;
-            yield return new WaitForSeconds(0.25f);
+            // Intenzív neon villanás
+            yield return StartCoroutine(FlashButtonSequence(img, outline));
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    IEnumerator FlashButtonSequence(Image img, Outline outline)
+    {
+        float duration = 0.6f;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            float pulse = pulseCurve.Evaluate(t) * glowIntensity;
+
+            img.color = Color.Lerp(defaultColor, highlightColor, pulse);
+            if (outline != null)
+            {
+                outline.effectColor = new Color(0f, 1f, 0.8f, pulse);
+                outline.effectDistance = new Vector2(3, 3) * (1 + pulse);
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        img.color = defaultColor;
+        if (outline != null)
+        {
+            outline.effectColor = new Color(0f, 0.8f, 0.7f, 0.5f);
+            outline.effectDistance = new Vector2(5, 5);
+        }
+    }
+
+    IEnumerator PulseButtonsBorder()
+    {
+        float elapsed = 0;
+        while (isPlayerTurn && !isAnimating)
+        {
+            float pulse = Mathf.PingPong(elapsed, 1f);
+
+            foreach (var btn in gridButtons)
+            {
+                var outline = btn.GetComponent<Outline>();
+                if (outline != null)
+                {
+                    outline.effectColor = new Color(0f, 1f, 0.8f, 0.3f + pulse * 0.4f);
+                }
+            }
+
+            elapsed += Time.deltaTime * 2f;
+            yield return null;
         }
     }
 
@@ -90,53 +173,96 @@ public class SequenceHack : MonoBehaviour
         if (!isPlayerTurn || isAnimating) return;
 
         Button btn = gridButtons[index];
-        StartCoroutine(FlashButton(btn));
 
-        // helyes gomb?
         if (index == sequence[playerIndex])
         {
+            // Helyes válasz
+            StartCoroutine(FlashButtonCorrect(btn));
             playerIndex++;
 
             if (playerIndex >= sequence.Count)
             {
-                // ha elérte a maxRound-ot (azaz nyert)
                 if (round >= maxRound)
                 {
                     isPlayerTurn = false;
-                    isAnimating = true;           // letiltjuk a további inputot
-                    infoText.text = "Congratulations! You've hacked the system!";
-                    StartCoroutine(WinAndReturn()); // itt történik a várakozás + scene load
+                    isAnimating = true;
+                    infoText.text = "<color=#00FF00>ACCESS GRANTED - SYSTEM HACKED!</color>";
+                    StartCoroutine(WinEffect());
                 }
                 else
                 {
-                    // normál eset: jön a következõ kör
                     isPlayerTurn = false;
-                    infoText.text = "Good job!";
+                    infoText.text = "<color=#00FF00>SEQUENCE VERIFIED</color>";
                     StartCoroutine(WaitAndNextRound());
                 }
             }
         }
         else
         {
-            // hibázott
+            // Hibás válasz
+            StartCoroutine(FlashButtonWrong(btn));
             isPlayerTurn = false;
-            infoText.text = "Wrong sequence!";
+            infoText.text = "<color=#FF0000>ACCESS DENIED - SEQUENCE ERROR!</color>";
             StartCoroutine(RestartAfterDelay());
         }
     }
 
-    IEnumerator WinAndReturn()
-    {
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("GameScene");
-    }
-
-    IEnumerator FlashButton(Button btn)
+    IEnumerator FlashButtonCorrect(Button btn)
     {
         Image img = btn.GetComponent<Image>();
-        img.color = new Color(Random.value, Random.value, Random.value, 1);
-        yield return new WaitForSeconds(0.2f);
+        Outline outline = btn.GetComponent<Outline>();
+
+        float duration = 0.3f;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            img.color = Color.Lerp(defaultColor, highlightColor, 1 - t);
+            if (outline != null)
+            {
+                outline.effectDistance = Vector2.Lerp(new Vector2(5, 5), new Vector2(2, 2), t);
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
         img.color = defaultColor;
+    }
+
+    IEnumerator FlashButtonWrong(Button btn)
+    {
+        Image img = btn.GetComponent<Image>();
+
+        for (int i = 0; i < 3; i++)
+        {
+            img.color = wrongColor;
+            yield return new WaitForSeconds(0.1f);
+            img.color = defaultColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    IEnumerator WinEffect()
+    {
+        // Összes gomb villog zöldbe
+        for (int i = 0; i < 3; i++)
+        {
+            foreach (var btn in gridButtons)
+            {
+                btn.GetComponent<Image>().color = new Color(0f, 1f, 0.3f, 1f);
+            }
+            yield return new WaitForSeconds(0.2f);
+
+            foreach (var btn in gridButtons)
+            {
+                btn.GetComponent<Image>().color = defaultColor;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("GameScene");
     }
 
     IEnumerator WaitAndNextRound()
@@ -147,7 +273,23 @@ public class SequenceHack : MonoBehaviour
 
     IEnumerator RestartAfterDelay()
     {
-        yield return new WaitForSeconds(2f);
+        // Összes gomb villog pirosba
+        for (int i = 0; i < 2; i++)
+        {
+            foreach (var btn in gridButtons)
+            {
+                btn.GetComponent<Image>().color = wrongColor;
+            }
+            yield return new WaitForSeconds(0.15f);
+
+            foreach (var btn in gridButtons)
+            {
+                btn.GetComponent<Image>().color = defaultColor;
+            }
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        yield return new WaitForSeconds(1f);
         sequence.Clear();
         round = 0;
         StartCoroutine(StartNewRound());
