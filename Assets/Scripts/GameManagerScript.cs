@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSettingsManager : MonoBehaviour
 {
@@ -8,6 +12,11 @@ public class GameSettingsManager : MonoBehaviour
     public Difficulty currentDifficulty;
     [SerializeField]
     public bool RandomPass;
+    public bool isSet = false;
+    [Header("Apps")]
+    public List<String> apps = new();
+    public List<String> usedApps = new();
+    public int maxApps;
 
     void Awake()
     {
