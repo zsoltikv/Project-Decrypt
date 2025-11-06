@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 08b03d476fbe8fa47a2fcf22d3e81419
+guid: 5e6ef0e21e6585e40899ed849ed267d9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2326204889799942797
-    second: SequenceHack_0
+      213: -3019424127853119141
+    second: line_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SequenceHack_0
+      name: line_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 199
+        y: 546
+        width: 800
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d826d43c507584020800000000000000
-      internalID: 2326204889799942797
+      spriteID: b593219d0c9d816d0800000000000000
+      internalID: -3019424127853119141
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      SequenceHack_0: 2326204889799942797
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
