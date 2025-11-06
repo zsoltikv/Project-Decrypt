@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appButton: {fileID: 6777397412375097739, guid: af409ac6acccc65488290a584232ccf8, type: 3}
+  appGrid: {fileID: 1765719593}
 --- !u!1 &159100344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
@@ -429,9 +430,12 @@ MonoBehaviour:
   - HexPuzzle
   - SequenceHack
   - SignalStabilize
+  - BiteSorter
   usedApps: []
   completedApps: []
   maxApps: 0
+  passLength: 0
+  password: 
 --- !u!1 &397823035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,6 +1520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appButton: {fileID: 6777397412375097739, guid: af409ac6acccc65488290a584232ccf8, type: 3}
+  appGrid: {fileID: 0}
 --- !u!1001 &1804795598
 PrefabInstance:
   m_ObjectHideFlags: 0

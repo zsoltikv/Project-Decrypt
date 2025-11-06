@@ -7,6 +7,7 @@ public class GameCanvasScript : MonoBehaviour
 {
     [SerializeField]
     public GameObject appButton;
+    public GameObject appGrid;
     private GameSettingsManager gsm;
 
     public void Awake()
@@ -20,7 +21,7 @@ public class GameCanvasScript : MonoBehaviour
         foreach (var app in gsm.apps)
         {
             var newApp = Instantiate(appButton);
-            newApp.transform.SetParent(gameObject.transform.GetChild(0).transform, false);
+            newApp.transform.SetParent(appGrid.transform, false);
             newApp.transform.localScale = new Vector3(1, 1, 1);
             newApp.name = app;
             newApp.GetComponentInChildren<TextMeshProUGUI>().text = app;
