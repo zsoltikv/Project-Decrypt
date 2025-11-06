@@ -91,7 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc69d91423e08a438acc8fd703eb03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextToDisplay: default
+  settingsPlane: {fileID: 0}
+  gamePlane: {fileID: 0}
 --- !u!114 &8626519325314115625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 1, b: 0, a: 0.5}
-  m_EffectDistance: {x: 2, y: 2}
+  m_EffectDistance: {x: 5, y: 5}
   m_UseGraphicAlpha: 1
 --- !u!1 &9119488438445901701
 GameObject:

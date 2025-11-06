@@ -43,7 +43,7 @@ public class GameSettingsManager : MonoBehaviour
     {
         if (!RandomPass)
         {
-            password = "CYBERSEC2025";
+            password = "246135";
             return;
         }
         else
@@ -63,7 +63,7 @@ public class GameSettingsManager : MonoBehaviour
             }
             for (int i = 0; i < passLength; i++)
             {
-                password += (char)rand.Next(65, 132);
+                password += rand.Next(0, 10);
             }
         }
 
