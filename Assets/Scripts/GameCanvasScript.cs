@@ -1,3 +1,4 @@
+﻿using TMPro;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,30 +7,31 @@ public class GameCanvasScript : MonoBehaviour
 {
     [SerializeField]
     public GameObject appButton;
-    private int appCount;
+    public GameObject appGrid;
+    private GameSettingsManager gsm;
 
-    public void OnProceed()
+    public void Awake()
     {
-        switch (GameSettingsManager.Instance.currentDifficulty)
-        {
-            case GameSettingsManager.Difficulty.Easy:
-                appCount = 3;
-                break;
-            case GameSettingsManager.Difficulty.Normal:
-                appCount = 5;
-                break;
-            case GameSettingsManager.Difficulty.Hard:
-                appCount = 7;
-                break;
-            default:
-                break;
-        }
+        gsm = GameSettingsManager.Instance;
+    }
 
-        for (int i = 0; i < appCount; i++)
+
+    public void OnEnable()
+    {
+        foreach (var app in gsm.apps)
         {
             var newApp = Instantiate(appButton);
-            newApp.transform.parent = gameObject.transform.GetChild(0).transform;
+            newApp.transform.SetParent(appGrid.transform, false);
             newApp.transform.localScale = new Vector3(1, 1, 1);
+            newApp.name = app;
+            newApp.GetComponentInChildren<TextMeshProUGUI>().text = app;
+            if (gsm.completedApps.Contains(app))
+            {
+                newApp.GetComponentInChildren<TextMeshProUGUI>().text += " [✔]";
+            }
+            newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + app);
+            newApp.AddComponent<AppScript>();
         }
     }
+
 }
