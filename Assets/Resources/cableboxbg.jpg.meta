@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 37f1ce4ccbc187a4884ab4c6abfda493
+guid: d4d4a02177d71ff4cbc576adcc877f9e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3693462552576000377
-    second: coronavirus-red-rim-light-death_12_0
+      213: -5665433193902717265
+    second: cableboxbg_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: coronavirus-red-rim-light-death_12_0
+      name: cableboxbg_0
       rect:
         serializedVersion: 2
-        x: 111
-        y: 112
-        width: 241
-        height: 244
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78eff72906f2ebcc0800000000000000
-      internalID: -3693462552576000377
+      spriteID: fa6c8b2e6865061b0800000000000000
+      internalID: -5665433193902717265
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      coronavirus-red-rim-light-death_12_0: -3693462552576000377
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

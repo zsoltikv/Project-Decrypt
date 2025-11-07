@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      coronavirus-red-rim-light-death_19_0: -133618316529147684
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

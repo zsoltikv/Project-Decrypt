@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      coronavirus-red-rim-light-pulse_3_0: -29703660343104753
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

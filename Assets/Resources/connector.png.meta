@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 37f1ce4ccbc187a4884ab4c6abfda493
+guid: 0f96369816622834fbd17265f5a6d046
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3693462552576000377
-    second: coronavirus-red-rim-light-death_12_0
+      213: -407177721555412382
+    second: connector_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: coronavirus-red-rim-light-death_12_0
+      name: connector
       rect:
         serializedVersion: 2
-        x: 111
-        y: 112
-        width: 241
-        height: 244
+        x: 390
+        y: 104
+        width: 691
+        height: 807
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 393, y: 0, z: 0, w: 119}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78eff72906f2ebcc0800000000000000
-      internalID: -3693462552576000377
+      spriteID: 26a9c32050a695af0800000000000000
+      internalID: -407177721555412382
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e8f573d3ea9a1344e95c1da208e1452c
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      coronavirus-red-rim-light-death_12_0: -3693462552576000377
+      connector: -407177721555412382
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

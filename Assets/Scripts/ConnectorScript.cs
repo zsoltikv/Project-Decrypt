@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Connector : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Connector : MonoBehaviour, IPointerDownHandler, IDropHandler
 {
-    public int connectorID;        // 1, 2, 3
-    public bool isLeftSide;        // bal oldali → true | jobb oldali → false
+    public int connectorID;
+    public bool isLeftSide;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -12,9 +12,11 @@ public class Connector : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             CableManager.Instance.BeginDrag(this);
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnDrop(PointerEventData eventData)
     {
-        CableManager.Instance.EndDrag(this);
+        if (!isLeftSide)
+        {
+            CableManager.Instance.EndDrag(this);
+        }
     }
 }
-
