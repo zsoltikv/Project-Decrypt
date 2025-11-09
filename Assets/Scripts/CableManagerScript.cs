@@ -186,6 +186,8 @@ public class CableManager : MonoBehaviour
 
     private IEnumerator WinSequence()
     {
+        yield return new WaitForSeconds(1f);
+
         StartCoroutine(ShowWinPanel());
 
         foreach (var cable in permanentCables)
@@ -195,33 +197,10 @@ public class CableManager : MonoBehaviour
         }
 
         permanentCables.Clear();
-        WinPanel.SetActive(true);
 
         yield return new WaitForSecondsRealtime(2f);
 
         SceneManager.LoadScene("GameScene");
-    }
-
-    private IEnumerator FadeOutAndDestroy(RectTransform cable)
-    {
-        CanvasGroup cg = cable.gameObject.AddComponent<CanvasGroup>();
-
-        float duration = 0.4f;
-        float time = 0;
-        Vector3 initialScale = cable.localScale;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-
-            float t = time / duration;
-            cg.alpha = Mathf.Lerp(1f, 0f, t);
-            cable.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
-
-            yield return null;
-        }
-
-        Destroy(cable.gameObject);
     }
 
     private IEnumerator ShowWinPanel()
@@ -251,6 +230,31 @@ public class CableManager : MonoBehaviour
 
             yield return null;
         }
+
+        WinPanel.transform.localScale = Vector3.one;
+        cg.alpha = 1f;
+    }
+
+    private IEnumerator FadeOutAndDestroy(RectTransform cable)
+    {
+        CanvasGroup cg = cable.gameObject.AddComponent<CanvasGroup>();
+
+        float duration = 0.4f;
+        float time = 0;
+        Vector3 initialScale = cable.localScale;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+
+            float t = time / duration;
+            cg.alpha = Mathf.Lerp(1f, 0f, t);
+            cable.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
+
+            yield return null;
+        }
+
+        Destroy(cable.gameObject);
     }
 
     private IEnumerator Flash(RectTransform cable)
