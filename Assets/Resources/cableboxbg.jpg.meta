@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cableboxbg_0: -5665433193902717265
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

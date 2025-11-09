@@ -1,12 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement; // szükséges a Scene váltáshoz
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class CableManager : MonoBehaviour
 {
     public static CableManager Instance;
-    public GameObject cableLineTemplate; // Ez egy inaktív UI Image lesz a Canvas-on
+
+    public GameObject cableLineTemplate;
     public RectTransform canvasRect;
 
     private Connector startConnector;
@@ -16,22 +18,22 @@ public class CableManager : MonoBehaviour
     public TMPro.TMP_Text cableText;
     private int connectedCableCount = 0;
 
-    public GameObject WinPanel;     // A UI panel, ami megjelenik (Power Restored)
-    public int requiredConnections = 3;  // hány kábelt kell csatlakoztatni
+    public GameObject WinPanel;
+    public int requiredConnections = 3;
 
     void Awake()
     {
         Instance = this;
-        // Template-et elrejtjük
+
         if (cableLineTemplate != null)
             cableLineTemplate.SetActive(false);
     }
 
     void Update()
     {
-        if (startConnector == null || currentCableLine == null) return;
+        if (startConnector == null || currentCableLine == null)
+            return;
 
-        // Ellenőrizzük, hogy felengedték-e az egérgombot
         if (Input.GetMouseButtonUp(0))
         {
             CheckForConnectionOrReset();
@@ -41,7 +43,6 @@ public class CableManager : MonoBehaviour
         Vector2 startPos;
         Vector2 mouseLocal;
 
-        // Connector pozíció konvertálása canvas koordinátára
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
             RectTransformUtility.WorldToScreenPoint(null, startConnector.GetComponent<RectTransform>().position),
@@ -49,7 +50,6 @@ public class CableManager : MonoBehaviour
             out startPos
         );
 
-        // Egér pozíció konvertálása canvas koordinátára
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
             Input.mousePosition,
@@ -59,8 +59,10 @@ public class CableManager : MonoBehaviour
 
         Vector2 dir = mouseLocal - startPos;
         float dist = dir.magnitude;
+
         currentCableLine.anchoredPosition = startPos;
         currentCableLine.sizeDelta = new Vector2(dist, 8f);
+
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         currentCableLine.rotation = Quaternion.Euler(0, 0, angle);
     }
@@ -69,12 +71,11 @@ public class CableManager : MonoBehaviour
     {
         if (EventSystem.current == null)
         {
-            Debug.LogError("Nincs EventSystem!");
+            Debug.LogError("No EventSystem found!");
             EndDrag(null);
             return;
         }
 
-        // Raycast az egér pozícióján
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
         {
             position = Input.mousePosition
@@ -84,9 +85,11 @@ public class CableManager : MonoBehaviour
         EventSystem.current.RaycastAll(pointerData, results);
 
         Connector targetConnector = null;
+
         foreach (var result in results)
         {
             Connector connector = result.gameObject.GetComponent<Connector>();
+
             if (connector != null && !connector.isLeftSide)
             {
                 targetConnector = connector;
@@ -101,7 +104,6 @@ public class CableManager : MonoBehaviour
     {
         startConnector = connector;
 
-        // Új kábel létrehozása a template alapján
         GameObject newCable = Instantiate(cableLineTemplate, canvasRect);
         currentCableLine = newCable.GetComponent<RectTransform>();
         currentCableLine.gameObject.SetActive(true);
@@ -109,22 +111,19 @@ public class CableManager : MonoBehaviour
 
     public void EndDrag(Connector connector)
     {
-        // Ha nincs startConnector, vagy null a connector, reset
         if (startConnector == null || connector == null)
         {
             ResetCable();
             return;
         }
 
-        // Ellenőrizzük, hogy megfelelő kapcsolat-e
         if (connector != startConnector &&
             startConnector.isLeftSide != connector.isLeftSide &&
             startConnector.connectorID == connector.connectorID)
         {
             SnapCableToConnector(connector);
-            // Kábelt permanenssé tesszük
-            permanentCables.Add(currentCableLine);
 
+            permanentCables.Add(currentCableLine);
             connectedCableCount++;
             UpdateCableText();
 
@@ -141,14 +140,14 @@ public class CableManager : MonoBehaviour
         if (cableText != null)
             cableText.text = "Cables Connected: " + connectedCableCount;
 
-        // Ha elérte a maximumot → győzelem
         if (connectedCableCount >= requiredConnections)
             StartCoroutine(WinSequence());
     }
 
     private void SnapCableToConnector(Connector endConnector)
     {
-        if (currentCableLine == null) return;
+        if (currentCableLine == null)
+            return;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
@@ -166,9 +165,12 @@ public class CableManager : MonoBehaviour
 
         Vector2 dir = endPos - startPos;
         float dist = dir.magnitude;
+
         currentCableLine.sizeDelta = new Vector2(dist, 8f);
         currentCableLine.anchoredPosition = startPos;
         currentCableLine.right = dir;
+
+        StartCoroutine(Flash(currentCableLine));
     }
 
     private void ResetCable()
@@ -178,18 +180,94 @@ public class CableManager : MonoBehaviour
             Destroy(currentCableLine.gameObject);
             currentCableLine = null;
         }
+
         startConnector = null;
     }
 
-    private System.Collections.IEnumerator WinSequence()
+    private IEnumerator WinSequence()
     {
-        if (WinPanel != null)
-            WinPanel.SetActive(true);
+        StartCoroutine(ShowWinPanel());
 
-        yield return new WaitForSeconds(2f);
+        foreach (var cable in permanentCables)
+        {
+            if (cable != null)
+                StartCoroutine(FadeOutAndDestroy(cable));
+        }
 
-        // Scene visszatöltése
+        permanentCables.Clear();
+        WinPanel.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(2f);
+
         SceneManager.LoadScene("GameScene");
     }
 
+    private IEnumerator FadeOutAndDestroy(RectTransform cable)
+    {
+        CanvasGroup cg = cable.gameObject.AddComponent<CanvasGroup>();
+
+        float duration = 0.4f;
+        float time = 0;
+        Vector3 initialScale = cable.localScale;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+
+            float t = time / duration;
+            cg.alpha = Mathf.Lerp(1f, 0f, t);
+            cable.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
+
+            yield return null;
+        }
+
+        Destroy(cable.gameObject);
+    }
+
+    private IEnumerator ShowWinPanel()
+    {
+        WinPanel.SetActive(true);
+
+        CanvasGroup cg = WinPanel.GetComponent<CanvasGroup>();
+        if (cg == null) cg = WinPanel.AddComponent<CanvasGroup>();
+
+        cg.alpha = 0f;
+        WinPanel.transform.localScale = Vector3.one * 0.4f;
+
+        float duration = 0.4f;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            cg.alpha = Mathf.Lerp(0f, 1f, t);
+            WinPanel.transform.localScale = Vector3.Lerp(
+                Vector3.one * 0.4f,
+                Vector3.one,
+                Mathf.Sin(t * Mathf.PI * 0.5f)
+            );
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator Flash(RectTransform cable)
+    {
+        UnityEngine.UI.Image img = cable.GetComponent<UnityEngine.UI.Image>();
+        Color original = img.color;
+
+        img.color = Color.white;
+
+        float time = 0f;
+        float duration = 0.2f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            img.color = Color.Lerp(Color.white, original, time / duration);
+            yield return null;
+        }
+    }
 }
