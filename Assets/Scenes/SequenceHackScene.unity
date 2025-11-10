@@ -429,7 +429,6 @@ MonoBehaviour:
   - {fileID: 563153992}
   - {fileID: 244886071}
   infoText: {fileID: 1384594655}
-  backgroundPanel: {fileID: 0}
   glowIntensity: 2
   pulseCurve:
     serializedVersion: 2
@@ -2000,7 +1999,6 @@ MonoBehaviour:
   - {fileID: 563153992}
   - {fileID: 244886071}
   infoText: {fileID: 0}
-  backgroundPanel: {fileID: 0}
   glowIntensity: 2
   pulseCurve:
     serializedVersion: 2

@@ -15,7 +15,6 @@ public class SequenceHack : MonoBehaviour
 
     [Header("UI Elements")]
     public TextMeshProUGUI infoText;
-    public Image backgroundPanel; // Opcion�lis: teljes h�tt�r panel
 
     [Header("Visual Effects")]
     public float glowIntensity = 2f;
