@@ -79,7 +79,13 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
         Vector2 screenPos = Input.touchCount > 0 ? (Vector2)Input.GetTouch(0).position : (Vector2)Input.mousePosition;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(playArea, screenPos, null, out Vector2 local);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            playArea,
+            screenPos,
+            Camera.main, // vagy a konkrét UI kamera
+            out Vector2 local
+        );
+
 
         float halfW = playSize.x / 2f;
         float halfH = playSize.y / 2f;
