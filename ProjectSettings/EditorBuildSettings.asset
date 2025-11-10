@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MalwareDefenderScene.unity
     guid: a16cbe1838839c442aa53754b0bf523e
+  - enabled: 1
+    path: Assets/Scenes/DualFrequencyScene.unity
+    guid: a170d43fe80f733448a45b02d31936bf
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
