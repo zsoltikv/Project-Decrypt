@@ -9,9 +9,9 @@ public class SequenceHack : MonoBehaviour
 {
     [Header("Grid Settings")]
     public List<Button> gridButtons;
-    private Color defaultColor = new Color(0.05f, 0.15f, 0.2f, 1f); // S�t�t cyber k�k
-    private Color highlightColor = new Color(0f, 1f, 0.8f, 1f); // Neon cyan
-    private Color wrongColor = new Color(1f, 0.1f, 0.1f, 1f); // Neon piros
+    private Color defaultColor = new Color(0.05f, 0.15f, 0.2f, 1f);
+    private Color highlightColor = new Color(0f, 1f, 0.8f, 1f);
+    private Color wrongColor = new Color(1f, 0.1f, 0.1f, 1f);
 
     [Header("UI Elements")]
     public TextMeshProUGUI infoText;
@@ -32,22 +32,14 @@ public class SequenceHack : MonoBehaviour
         SetupVisuals();
 
         if (GameSettingsManager.Instance == null)
-        {
             maxRound = 3;
-        }
         else
         {
             switch (GameSettingsManager.Instance.currentDifficulty)
             {
-                case GameSettingsManager.Difficulty.Easy:
-                    maxRound = 3;
-                    break;
-                case GameSettingsManager.Difficulty.Normal:
-                    maxRound = 5;
-                    break;
-                case GameSettingsManager.Difficulty.Hard:
-                    maxRound = 7;
-                    break;
+                case GameSettingsManager.Difficulty.Easy: maxRound = 3; break;
+                case GameSettingsManager.Difficulty.Normal: maxRound = 5; break;
+                case GameSettingsManager.Difficulty.Hard: maxRound = 7; break;
             }
         }
 
@@ -56,23 +48,19 @@ public class SequenceHack : MonoBehaviour
 
     void SetupVisuals()
     {
-        // Gombok alap�rtelmezett sz�ne �s effekt
         foreach (var btn in gridButtons)
         {
             Image img = btn.GetComponent<Image>();
             img.color = defaultColor;
 
-            // Shadow/Outline hozz�ad�sa (ha van)
             var outline = btn.GetComponent<Outline>();
             if (outline == null)
-            {
                 outline = btn.gameObject.AddComponent<Outline>();
-            }
+
             outline.effectColor = new Color(0f, 0.8f, 0.7f, 0.5f);
             outline.effectDistance = new Vector2(5, 5);
         }
 
-        // Sz�veg form�z�sa
         if (infoText != null)
         {
             infoText.fontSize = 36;
@@ -98,8 +86,6 @@ public class SequenceHack : MonoBehaviour
         isAnimating = false;
         isPlayerTurn = true;
         infoText.text = "<color=#FFFF00>INPUT SEQUENCE NOW</color>";
-
-        // Gombok pulz�l� effekt amikor input v�rhat�
         StartCoroutine(PulseButtonsBorder());
     }
 
@@ -111,7 +97,6 @@ public class SequenceHack : MonoBehaviour
             Image img = btn.GetComponent<Image>();
             Outline outline = btn.GetComponent<Outline>();
 
-            // Intenz�v neon villan�s
             yield return StartCoroutine(FlashButtonSequence(img, outline));
             yield return new WaitForSeconds(0.3f);
         }
@@ -157,9 +142,7 @@ public class SequenceHack : MonoBehaviour
             {
                 var outline = btn.GetComponent<Outline>();
                 if (outline != null)
-                {
                     outline.effectColor = new Color(0f, 1f, 0.8f, 0.3f + pulse * 0.4f);
-                }
             }
 
             elapsed += Time.deltaTime * 2f;
@@ -175,7 +158,6 @@ public class SequenceHack : MonoBehaviour
 
         if (index == sequence[playerIndex])
         {
-            // Helyes v�lasz
             StartCoroutine(FlashButtonCorrect(btn));
             playerIndex++;
 
@@ -198,7 +180,6 @@ public class SequenceHack : MonoBehaviour
         }
         else
         {
-            // Hib�s v�lasz
             StartCoroutine(FlashButtonWrong(btn));
             isPlayerTurn = false;
             infoText.text = "<color=#FF0000>ACCESS DENIED - SEQUENCE ERROR!</color>";
@@ -226,9 +207,8 @@ public class SequenceHack : MonoBehaviour
             float t = elapsed / duration;
             img.color = Color.Lerp(defaultColor, highlightColor, 1 - t);
             if (outline != null)
-            {
                 outline.effectDistance = Vector2.Lerp(new Vector2(5, 5), new Vector2(2, 2), t);
-            }
+
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -251,19 +231,16 @@ public class SequenceHack : MonoBehaviour
 
     IEnumerator WinEffect()
     {
-        // �sszes gomb villog z�ldbe
         for (int i = 0; i < 3; i++)
         {
             foreach (var btn in gridButtons)
-            {
                 btn.GetComponent<Image>().color = new Color(0f, 1f, 0.3f, 1f);
-            }
+
             yield return new WaitForSeconds(0.2f);
 
             foreach (var btn in gridButtons)
-            {
                 btn.GetComponent<Image>().color = defaultColor;
-            }
+
             yield return new WaitForSeconds(0.2f);
         }
 
@@ -279,19 +256,16 @@ public class SequenceHack : MonoBehaviour
 
     IEnumerator RestartAfterDelay()
     {
-        // �sszes gomb villog pirosba
         for (int i = 0; i < 2; i++)
         {
             foreach (var btn in gridButtons)
-            {
                 btn.GetComponent<Image>().color = wrongColor;
-            }
+
             yield return new WaitForSeconds(0.15f);
 
             foreach (var btn in gridButtons)
-            {
                 btn.GetComponent<Image>().color = defaultColor;
-            }
+
             yield return new WaitForSeconds(0.15f);
         }
 
