@@ -11,6 +11,9 @@ public class RhythmGame : MonoBehaviour
     public TMP_Text nextIndicator;
     public Button[] buttons;
 
+    [Header("Timer UI")]
+    public TMP_Text timerText;
+
     [Header("Effects (optional)")]
     public ButtonAnimation[] buttonAnimations;
     public ProgressBarEffects progressEffects;
@@ -51,9 +54,14 @@ public class RhythmGame : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
+
+        if (timerText != null)
+            timerText.text = timer.ToString("Time remaining: 0.000");
+
         if (timer <= 0f)
             Miss();
     }
+
 
     void NextStep()
     {
