@@ -847,7 +847,7 @@ MonoBehaviour:
   graphHeight: 5
   targetAmplitude: 0.7
   targetFrequency: 2
-  allowedError: 0.2
+  allowedError: 0.075
 --- !u!1 &1084042536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1451057351
@@ -1946,7 +1946,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 493506543}
   m_Direction: 0
   m_MinValue: 0.5
-  m_MaxValue: 2
+  m_MaxValue: 3
   m_WholeNumbers: 0
   m_Value: 0.5
   m_OnValueChanged:

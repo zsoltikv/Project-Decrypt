@@ -21,7 +21,7 @@ public class BiteSorterScript : MonoBehaviour
     {
         gridWith = Display.main.systemWidth / 6;
         gridHeight = Display.main.systemHeight / 4;
-        GridObject = gameObject.transform.GetChild(0).gameObject;
+        GridObject = gameObject.transform.GetChild(1).gameObject;
         GridObject.GetComponent<GridLayoutGroup>().cellSize = new Vector2(gridWith, gridHeight);
 
         for (int i = 0; i < 6; i++)

@@ -37,17 +37,14 @@ public class Virus : MonoBehaviour
     void FixedUpdate()
     {
         if (isDead) return;
-        // move towards target
         Vector2 pos = rb.position;
         Vector2 dir = (targetPos - pos).normalized;
         Vector2 newPos = pos + dir * speed * Time.fixedDeltaTime;
         rb.MovePosition(newPos);
 
-        // check small distance to target
         float dist = Vector2.Distance(newPos, targetPos);
         if (dist < 0.35f)
         {
-            // reached server
             isDead = true;
             manager.OnVirusReachedServer(gameObject, damageToServer);
         }

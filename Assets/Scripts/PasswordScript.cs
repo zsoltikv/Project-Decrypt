@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PasswordScript : MonoBehaviour
@@ -11,6 +12,8 @@ public class PasswordScript : MonoBehaviour
     public GameObject pwdDisplay;
     public GameObject numPadButton;
     public GameObject infoText;
+    public TMP_FontAsset monoFont;
+    public TMP_FontAsset redFont;
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "\u2714" };
     private string input = String.Empty;
 
@@ -32,7 +35,7 @@ public class PasswordScript : MonoBehaviour
 
     private void OnNumPadButtonClick(GameObject button)
     {
-        infoText.GetComponent<TextMeshProUGUI>().font = Resources.Load<TMP_FontAsset>("Monocraft SDF");
+        infoText.GetComponent<TextMeshProUGUI>().font = monoFont;
         infoText.GetComponent<TextMeshProUGUI>().text = "Enter Password!";
         StartCoroutine(HighLightButton(button));
         if (button.GetComponentInChildren<TextMeshProUGUI>().text == "✔")
@@ -43,7 +46,7 @@ public class PasswordScript : MonoBehaviour
             }
             else
             {
-                infoText.GetComponent<TextMeshProUGUI>().font = Resources.Load<TMP_FontAsset>("MonoRed");
+                infoText.GetComponent<TextMeshProUGUI>().font = redFont;
 
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Denied!";
             }
@@ -64,5 +67,10 @@ public class PasswordScript : MonoBehaviour
         button.GetComponent<Image>().color = new Color(00, 255,0);
         yield return new WaitForSeconds(0.1f);
         button.GetComponent<Image>().color = new Color(0, 0, 0);
+    }
+
+    public void OnBack()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }
