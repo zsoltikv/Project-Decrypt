@@ -90,6 +90,7 @@ public class BiteSorterScript : MonoBehaviour
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
             winCanvas.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
+            GameSettingsManager.Instance.completedApps.Add("BiteSorter");
             SceneManager.LoadScene("GameScene");
         }
     }

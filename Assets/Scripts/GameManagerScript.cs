@@ -17,10 +17,9 @@ public class GameSettingsManager : MonoBehaviour
 
     [Header("Apps")]
     public List<String> apps = new();
-    public List<String> usedApps = new();
     public List<String> completedApps = new();
     public int maxApps;
-    public int passLength;
+    public int passLength = 18;
     public string password;
 
     void Awake()
@@ -45,24 +44,12 @@ public class GameSettingsManager : MonoBehaviour
     {
         if (!RandomPass)
         {
-            password = "246135";
+            password = "246135246135246135";
             return;
         }
         else
         {
             System.Random rand = new System.Random();
-            switch (GameSettingsManager.Instance.currentDifficulty)
-            {
-                case Difficulty.Easy:
-                    passLength = 10;
-                    break;
-                case Difficulty.Normal:
-                    passLength = 14;
-                    break;
-                case Difficulty.Hard:
-                    passLength = 20;
-                    break;
-            }
 
             for (int i = 0; i < passLength; i++)
             {

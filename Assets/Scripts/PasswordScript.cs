@@ -12,6 +12,7 @@ public class PasswordScript : MonoBehaviour
     public GameObject pwdDisplay;
     public GameObject numPadButton;
     public GameObject infoText;
+    public GameObject passwordText;
     public TMP_FontAsset monoFont;
     public TMP_FontAsset redFont;
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "\u2714" };
@@ -31,6 +32,21 @@ public class PasswordScript : MonoBehaviour
             newButton.GetComponentInChildren<TextMeshProUGUI>().enableAutoSizing = true;
             newButton.GetComponentInChildren<Button>().onClick.AddListener(() => OnNumPadButtonClick(newButton));
         }
+
+
+        string password = GameSettingsManager.Instance.password;
+        int completed = GameSettingsManager.Instance.completedApps.Count;
+        int total = GameSettingsManager.Instance.maxApps - 1;
+
+        int charsPerPiece = password.Length / total;
+
+        int revealedChars = completed * charsPerPiece;
+        revealedChars = Mathf.Clamp(revealedChars, 0, password.Length);
+
+        string visiblePart = password.Substring(0, revealedChars);
+        string hiddenPart = new string('*', password.Length - revealedChars);
+
+        passwordText.GetComponent<TextMeshProUGUI>().text = visiblePart + hiddenPart;
     }
 
     private void OnNumPadButtonClick(GameObject button)

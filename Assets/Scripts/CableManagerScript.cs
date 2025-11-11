@@ -200,6 +200,7 @@ public class CableManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(2f);
 
+        GameSettingsManager.Instance.completedApps.Add("CableConnector");
         SceneManager.LoadScene("GameScene");
     }
 

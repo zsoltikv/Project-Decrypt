@@ -39,24 +39,25 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
         }
         if (gameObject.name == "ProceedBtn")
         {
-            settingsPlane.SetActive(false);
-            gamePlane.SetActive(true);
+
             switch (gsm.currentDifficulty)
             {
                 case GameSettingsManager.Difficulty.Easy:
-                    gsm.maxApps = 3;
+                    gsm.maxApps = 4;
                     break;
                 case GameSettingsManager.Difficulty.Normal:
-                    gsm.maxApps = 5;
+                    gsm.maxApps = 7;
                     break;
                 case GameSettingsManager.Difficulty.Hard:
-                    gsm.maxApps = 7;
+                    gsm.maxApps = 10;
                     break;
                 default:
                     break;
             }
             gsm.isSet = true;
             gsm.CreatePassword();
+            settingsPlane.SetActive(false);
+            gamePlane.SetActive(true);
         }
     }
 }
