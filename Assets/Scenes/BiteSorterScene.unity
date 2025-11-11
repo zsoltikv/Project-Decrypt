@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 418763782}
   - component: {fileID: 418763781}
   - component: {fileID: 418763785}
+  - component: {fileID: 418763787}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -317,6 +318,14 @@ MonoBehaviour:
   card: {fileID: 6319276538106833876, guid: 87c3b51f3c976314a90e07e0d82597d2, type: 3}
   winCanvas: {fileID: 732947979}
   matchesFound: 0
+--- !u!222 &418763787
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418763780}
+  m_CullTransparentMesh: 1
 --- !u!1 &483034018
 GameObject:
   m_ObjectHideFlags: 0

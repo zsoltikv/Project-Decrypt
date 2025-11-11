@@ -28,12 +28,14 @@ public class CellButton : MonoBehaviour
     public void Highlight()
     {
         image.color = new Color(0.2f, 1f, 0.4f);
+        valueText.color = Color.black;
         gameObject.GetComponent<Button>().enabled = false;
     }
 
     public void ResetColor()
     {
         image.color = defaultColor;
+        valueText.color = Color.white;
         gameObject.GetComponent<Button>().enabled = true;
     }
 

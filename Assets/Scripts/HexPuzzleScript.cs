@@ -78,7 +78,7 @@ public class CodeLinkerGame : MonoBehaviour
 
         if (availableChars.Count == 0)
         {
-            Debug.LogError("⚠️ No available characters in grid — cannot generate hash!");
+            Debug.LogError("No available characters in grid — cannot generate hash!");
             return;
         }
 
@@ -98,7 +98,7 @@ public class CodeLinkerGame : MonoBehaviour
 
         currentInput = "";
         targetHash = target.ToString();
-        targetText.text = $"TARGET ({currentRound}/{maxRound}): {targetHash}";
+        targetText.text = $"Target ({currentRound}/{maxRound}): {targetHash}";
     }
 
     public void OnCellSelected(CellButton cell)
@@ -110,17 +110,17 @@ public class CodeLinkerGame : MonoBehaviour
 
         if (!targetHash.StartsWith(currentInput))
         {
-            resultText.text = "<color=#ff4444>ACCESS DENIED</color>";
+            resultText.text = "<color=#ff4444>Access Denied.</color>";
             Invoke(nameof(ResetRound), 1f);
         }
         else if (currentInput == targetHash && currentRound >= maxRound)
         {
-            resultText.text = "<color=#00ff88>ALL ROUNDS COMPLETED!</color>";
+            resultText.text = "<color=#00ff88>All Rounds Completed.</color>";
             StartCoroutine(WinAndReturn());
         }
         else if (currentInput == targetHash)
         {
-            resultText.text = "<color=#00ff88>ACCESS GRANTED</color>";
+            resultText.text = "<color=#00ff88>Access Granted. </color>";
             currentRound++;
             Invoke(nameof(NextRound), 1f);
         }
