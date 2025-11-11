@@ -20,7 +20,6 @@ public class CodeLinkerGame : MonoBehaviour
     private List<CellButton> cells = new List<CellButton>();
     private string targetHash = "";
     private string currentInput = "";
-
     private string hexChars = "0123456789ABCDEF";
     private int currentRound = 1;
     private int maxRound = 0;
@@ -73,12 +72,9 @@ public class CodeLinkerGame : MonoBehaviour
 
     public void GenerateNewHash()
     {
-        // Collect all available characters from the grid
         List<string> availableChars = new List<string>();
         foreach (Transform cell in gridParent)
-        {
             availableChars.Add(cell.GetComponentInChildren<TextMeshProUGUI>().text);
-        }
 
         if (availableChars.Count == 0)
         {
@@ -86,27 +82,20 @@ public class CodeLinkerGame : MonoBehaviour
             return;
         }
 
-        // Decide how long the hash should be
         int hashLength = Mathf.Clamp(3 + currentRound, 3, 8);
         if (hashLength > availableChars.Count)
-        {
-            // Avoid impossible hash (longer than available cells)
             hashLength = availableChars.Count;
-        }
 
-        // Build target hash *only from available pool*
         System.Text.StringBuilder target = new System.Text.StringBuilder();
         List<string> pool = new List<string>(availableChars);
 
         for (int i = 0; i < hashLength; i++)
         {
-            // pick random index and remove it from pool (so duplicates can't exceed actual availability)
             int index = Random.Range(0, pool.Count);
             target.Append(pool[index]);
             pool.RemoveAt(index);
         }
 
-        // Set up the new round
         currentInput = "";
         targetHash = target.ToString();
         targetText.text = $"TARGET ({currentRound}/{maxRound}): {targetHash}";
@@ -119,7 +108,6 @@ public class CodeLinkerGame : MonoBehaviour
         currentInput += cell.value;
         cell.Highlight();
 
-        // check progress
         if (!targetHash.StartsWith(currentInput))
         {
             resultText.text = "<color=#ff4444>ACCESS DENIED</color>";

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 88e56672379a8ee41bd5beb4525884ac
+guid: 3982c70c58717fa489124f00a1bfc655
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8875003314761784423
-    second: dualfrequency_0
+      213: 8705550342452791278
+    second: rythymdecodebg_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,19 +97,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -126,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dualfrequency_0
+      name: rythymdecodebg_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 740
-        height: 428
+        width: 1280
+        height: 720
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 993a53bc187a5d480800000000000000
-      internalID: -8875003314761784423
+      spriteID: ee7cd2899e350d870800000000000000
+      internalID: 8705550342452791278
       vertices: []
       indices: 
       edges: []
@@ -160,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      dualfrequency_0: -8875003314761784423
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

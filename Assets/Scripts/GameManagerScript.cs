@@ -10,9 +10,11 @@ public class GameSettingsManager : MonoBehaviour
 
     public enum Difficulty { Easy, Normal, Hard }
     public Difficulty currentDifficulty;
+
     [SerializeField]
     public bool RandomPass;
     public bool isSet = false;
+
     [Header("Apps")]
     public List<String> apps = new();
     public List<String> usedApps = new();
@@ -26,11 +28,11 @@ public class GameSettingsManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // nem tûnik el scene váltáskor
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); // csak egy példány legyen
+            Destroy(gameObject);
         }
     }
 
@@ -61,11 +63,11 @@ public class GameSettingsManager : MonoBehaviour
                     passLength = 20;
                     break;
             }
+
             for (int i = 0; i < passLength; i++)
             {
                 password += rand.Next(0, 10);
             }
         }
-
     }
 }
