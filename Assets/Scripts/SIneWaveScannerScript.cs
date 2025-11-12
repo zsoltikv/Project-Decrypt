@@ -12,6 +12,7 @@ public class SineWaveScanner : MonoBehaviour
     public Slider frequencySlider;
     public GameObject WinPanel;
 
+
     [Header("Wave Settings")]
     public int resolution = 200;
     public float graphWidth = 800f;
