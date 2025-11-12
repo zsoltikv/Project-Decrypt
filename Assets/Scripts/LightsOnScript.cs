@@ -31,7 +31,28 @@ public class LightsOnPuzzle : MonoBehaviour
 
         if (winPanel != null)
             winPanel.SetActive(false);
+
+        GenerateRandomSolution();
+
     }
+
+    void GenerateRandomSolution()
+    {
+        for (int i = 0; i < switches.Length; i++)
+        {
+            state[i] = false;
+            switches[i].SetState(false);
+        }
+
+        int randomPresses = Random.Range(3, switches.Length + 2);
+
+        for (int i = 0; i < randomPresses; i++)
+        {
+            int randomIndex = Random.Range(0, switches.Length);
+            Press(randomIndex); 
+        }
+    }
+
 
     void Press(int index)
     {
