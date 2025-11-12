@@ -399,6 +399,8 @@ GameObject:
   - component: {fileID: 509913981}
   - component: {fileID: 509913980}
   - component: {fileID: 509913979}
+  - component: {fileID: 509913985}
+  - component: {fileID: 509913984}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -429,7 +431,7 @@ MonoBehaviour:
   - {fileID: 563153992}
   - {fileID: 244886071}
   infoText: {fileID: 1384594655}
-  glowIntensity: 2
+  glowIntensity: 5
   pulseCurve:
     serializedVersion: 2
     m_Curve:
@@ -539,6 +541,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &509913984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509913978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f57e4600286d84384b276cbc8e6ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 1
+--- !u!225 &509913985
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509913978}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!224 &518974791 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
@@ -1239,8 +1266,8 @@ Camera:
   m_GameObject: {fileID: 895372101}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
