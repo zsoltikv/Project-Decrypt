@@ -172,6 +172,7 @@ public class RhythmGame : MonoBehaviour
             winPanel.SetActive(true);
 
         yield return new WaitForSeconds(2f);
+        GameSettingsManager.Instance.completedApps.Add("RythymDecode");
         SceneManager.LoadScene("GameScene");
     }
 }

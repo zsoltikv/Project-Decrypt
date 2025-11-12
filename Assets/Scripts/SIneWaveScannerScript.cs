@@ -85,6 +85,7 @@ public class SineWaveScanner : MonoBehaviour
             yield return StartCoroutine(ShowWinPanel());
 
         yield return new WaitForSecondsRealtime(2f);
+        GameSettingsManager.Instance.completedApps.Add("SineWaveScanner");
         SceneManager.LoadScene("GameScene");
     }
 

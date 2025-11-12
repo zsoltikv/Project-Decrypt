@@ -15,21 +15,20 @@ public class GameCanvasScript : MonoBehaviour
         gsm = GameSettingsManager.Instance;
     }
 
-
     public void OnEnable()
     {
-        foreach (var app in gsm.apps)
+        for (int i = 0; i < gsm.maxApps; i++)
         {
             var newApp = Instantiate(appButton);
             newApp.transform.SetParent(appGrid.transform, false);
             newApp.transform.localScale = new Vector3(1, 1, 1);
-            newApp.name = app;
-            newApp.GetComponentInChildren<TextMeshProUGUI>().text = app;
-            if (gsm.completedApps.Contains(app))
+            newApp.name = gsm.apps[i];
+            newApp.GetComponentInChildren<TextMeshProUGUI>().text = gsm.apps[i];
+            if (gsm.completedApps.Contains(gsm.apps[i]))
             {
                 newApp.GetComponentInChildren<TextMeshProUGUI>().text += " [✔]";
             }
-            newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + app);
+            newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + gsm.apps[i]);
             newApp.AddComponent<AppScript>();
         }
     }

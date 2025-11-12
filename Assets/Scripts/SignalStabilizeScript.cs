@@ -197,7 +197,7 @@ public class SignalStabilizeMiniGame : MonoBehaviour
     {
         finished = true;
         winPanel.SetActive(true);
-        GameSettingsManager.Instance.completedApps.Add("SignalStabilizer");
+        GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
         StartCoroutine(ReturnToGameScene());
     }
 

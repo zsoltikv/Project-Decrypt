@@ -124,6 +124,7 @@ public class LightsOnPuzzle : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        GameSettingsManager.Instance.completedApps.Add("LightsOn");
         SceneManager.LoadScene(gameSceneName);
     }
 }

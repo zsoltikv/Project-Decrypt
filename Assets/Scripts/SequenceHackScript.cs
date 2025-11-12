@@ -187,12 +187,6 @@ public class SequenceHack : MonoBehaviour
         }
     }
 
-    IEnumerator WinAndReturn()
-    {
-        yield return new WaitForSeconds(2f);
-        GameSettingsManager.Instance.completedApps.Add("SequenceHack");
-        SceneManager.LoadScene("GameScene");
-    }
 
     IEnumerator FlashButtonCorrect(Button btn)
     {
@@ -245,6 +239,7 @@ public class SequenceHack : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+        GameSettingsManager.Instance.completedApps.Add("SequenceHack");
         SceneManager.LoadScene("GameScene");
     }
 
