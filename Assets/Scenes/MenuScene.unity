@@ -799,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8641778747254558722, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_Text
-      value: Continue
+      value: Idk yet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1054,7 +1054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8641778747254558722, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_Text
-      value: New Game
+      value: Start Game
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
