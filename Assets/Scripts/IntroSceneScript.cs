@@ -5,18 +5,31 @@ using System.Collections;
 
 public class IntroSceneScript : MonoBehaviour
 {
-    public VideoPlayer videoPlayer; 
+    public VideoPlayer videoPlayer;
 
     void Start()
     {
+        videoPlayer.playOnAwake = false;
+
+        videoPlayer.waitForFirstFrame = true;
+
         videoPlayer.Prepare();
         videoPlayer.prepareCompleted += OnVideoPrepared;
     }
 
     void OnVideoPrepared(VideoPlayer vp)
     {
-        vp.Play();
+        StartCoroutine(PlayWhenReady());
+    }
 
+    IEnumerator PlayWhenReady()
+    {
+        while (!videoPlayer.isPrepared)
+        {
+            yield return null;
+        }
+
+        videoPlayer.Play();
         StartCoroutine(CheckVideoEnd());
     }
 
@@ -28,7 +41,6 @@ public class IntroSceneScript : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.5f);
-
         SceneManager.LoadScene("MenuScene");
     }
 }
