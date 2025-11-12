@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class Virus : MonoBehaviour
+public class Virus : MonoBehaviour, IPointerDownHandler   // <-- HOZZÁADVA
 {
     public float baseSpeed = 200f;
     public int scoreValue = 25;
@@ -11,11 +12,9 @@ public class Virus : MonoBehaviour
     public GameObject explosionPrefab;
 
     private float speed;
-    private float hp;
     private Vector2 targetPos;
     private MalwareDefenseManager manager;
     private Rigidbody2D rb;
-
     private bool isDead = false;
 
     public void Initialize(Vector3 serverWorldPos, float speedMultiplier, MalwareDefenseManager mgr)
@@ -37,20 +36,21 @@ public class Virus : MonoBehaviour
     void FixedUpdate()
     {
         if (isDead) return;
+
         Vector2 pos = rb.position;
         Vector2 dir = (targetPos - pos).normalized;
         Vector2 newPos = pos + dir * speed * Time.fixedDeltaTime;
         rb.MovePosition(newPos);
 
-        float dist = Vector2.Distance(newPos, targetPos);
-        if (dist < 0.35f)
+        if (Vector2.Distance(newPos, targetPos) < 0.35f)
         {
             isDead = true;
             manager.OnVirusReachedServer(gameObject, damageToServer);
         }
     }
 
-    void OnMouseDown()
+    // --- EZ REAGÁL TOUCH + KATTINTÁSRA EGYARÁNT ---
+    public void OnPointerDown(PointerEventData eventData)
     {
         if (!isDead) Die();
     }
@@ -58,9 +58,10 @@ public class Virus : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDead) return;
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Server"))
         {
-            manager.OnVirusReachedServer(gameObject, 10f);
+            manager.OnVirusReachedServer(gameObject, damageToServer);
         }
     }
 

@@ -13,20 +13,20 @@ public class SignalStabilizeMiniGame : MonoBehaviour
     public GameObject winPanel;
 
     [Header("Gameplay Settings")]
-    public float fillSpeed = 0.15f;        
-    public float leakSpeed = 0.25f;      
-    public float targetMoveSpeed = 120f;  
-    public float radiusMin = 40f;         
-    public float radiusMax = 80f;         
+    public float fillSpeed = 0.15f;
+    public float leakSpeed = 0.25f;
+    public float targetMoveSpeed = 120f;
+    public float radiusMin = 40f;
+    public float radiusMax = 80f;
 
     [Header("Random Movement Timing")]
-    public float directionChangeMin = 0.3f;  
-    public float directionChangeMax = 1.2f; 
+    public float directionChangeMin = 0.3f;
+    public float directionChangeMax = 1.2f;
 
     [Header("Erratic Movement")]
-    public float jitterAmount = 150f;      
-    public float spiralSpeed = 3f;       
-    public float zigzagFrequency = 8f;     
+    public float jitterAmount = 150f;
+    public float spiralSpeed = 3f;
+    public float zigzagFrequency = 8f;
 
     private float directionTimer = 0f;
     private Vector2 playSize;
@@ -42,12 +42,14 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
     void Start()
     {
+        // PlayArea mérete
         Rect r = playArea.rect;
         playSize = new Vector2(r.width, r.height);
 
-        winPanel.SetActive(false);
+        if (winPanel != null)
+            winPanel.SetActive(false);
+
         progress = 0;
-        targetPos = targetZone.anchoredPosition;
         NewRandomTarget();
     }
 
@@ -55,7 +57,7 @@ public class SignalStabilizeMiniGame : MonoBehaviour
     {
         if (finished) return;
 
-        MoveControlDot();
+        HandleInput();
         MoveTarget();
 
         bool inside = Vector2.Distance(controlDot.anchoredPosition, targetPos) <= targetRadius * 1.25f;
@@ -72,20 +74,25 @@ public class SignalStabilizeMiniGame : MonoBehaviour
             Win();
     }
 
-    void MoveControlDot()
+    void HandleInput()
     {
         if (Input.touchCount == 0 && !Input.GetMouseButton(0))
             return;
 
-        Vector2 screenPos = Input.touchCount > 0 ? (Vector2)Input.GetTouch(0).position : (Vector2)Input.mousePosition;
+        Vector2 screenPos = Input.touchCount > 0
+            ? Input.GetTouch(0).position
+            : (Vector2)Input.mousePosition;
+
+        // Canvas renderMode kezelése
+        Canvas canvas = playArea.GetComponentInParent<Canvas>();
+        Camera cam = (canvas.renderMode == RenderMode.ScreenSpaceCamera) ? canvas.worldCamera : null;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             playArea,
             screenPos,
-            Camera.main, // vagy a konkrét UI kamera
+            cam,
             out Vector2 local
         );
-
 
         float halfW = playSize.x / 2f;
         float halfH = playSize.y / 2f;
@@ -103,7 +110,7 @@ public class SignalStabilizeMiniGame : MonoBehaviour
         if (directionTimer <= 0)
         {
             float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-            float randomSpeed = Random.Range(targetMoveSpeed * 0.6f, targetMoveSpeed * 1.8f);
+            float randomSpeed = Random.Range(targetMoveSpeed * 0.6f, targetMoveSpeed * 1.2f);
             baseVelocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * randomSpeed;
 
             directionTimer = Random.Range(directionChangeMin, directionChangeMax);
@@ -115,13 +122,13 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
         switch (movementPattern)
         {
-            case 0: 
+            case 0: // Zigzag
                 zigzagTime += Time.deltaTime * zigzagFrequency;
                 Vector2 perpendicular = new Vector2(-baseVelocity.y, baseVelocity.x).normalized;
                 targetVelocity += perpendicular * Mathf.Sin(zigzagTime) * jitterAmount * 3f;
                 break;
 
-            case 1:
+            case 1: // Spiral
                 spiralAngle += Time.deltaTime * spiralSpeed;
                 targetVelocity = new Vector2(
                     Mathf.Cos(spiralAngle) * targetMoveSpeed,
@@ -129,19 +136,20 @@ public class SignalStabilizeMiniGame : MonoBehaviour
                 );
                 break;
 
-            case 2:
+            case 2: // Random jitter
                 targetVelocity += new Vector2(
                     Random.Range(-jitterAmount, jitterAmount),
                     Random.Range(-jitterAmount, jitterAmount)
                 ) * 5f;
                 break;
 
-            case 3:
+            case 3: // Pulse
                 float pulseSpeed = (Mathf.Sin(Time.time * 10f) + 1f) * 0.5f;
                 targetVelocity *= (0.5f + pulseSpeed * 1.5f);
                 break;
         }
 
+        // Extra jitter
         targetVelocity += new Vector2(
             Random.Range(-jitterAmount, jitterAmount),
             Random.Range(-jitterAmount, jitterAmount)
@@ -149,42 +157,28 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
         targetPos += targetVelocity * Time.deltaTime;
 
+        // Bounds
         float halfW = playSize.x / 2f;
         float halfH = playSize.y / 2f;
-
-        if (targetPos.x - targetRadius < -halfW || targetPos.x + targetRadius > halfW)
-        {
-            targetVelocity.x *= -1;
-            baseVelocity.x *= -1;
-            baseVelocity = baseVelocity.normalized * Random.Range(targetMoveSpeed * 0.8f, targetMoveSpeed * 1.5f);
-            directionTimer = Random.Range(0.1f, 0.5f); 
-        }
-        if (targetPos.y - targetRadius < -halfH || targetPos.y + targetRadius > halfH)
-        {
-            targetVelocity.y *= -1;
-            baseVelocity.y *= -1;
-            baseVelocity = baseVelocity.normalized * Random.Range(targetMoveSpeed * 0.8f, targetMoveSpeed * 1.5f);
-            directionTimer = Random.Range(0.1f, 0.5f);
-        }
 
         targetPos.x = Mathf.Clamp(targetPos.x, -halfW + targetRadius, halfW - targetRadius);
         targetPos.y = Mathf.Clamp(targetPos.y, -halfH + targetRadius, halfH - targetRadius);
 
         targetZone.anchoredPosition = targetPos;
         targetZone.sizeDelta = new Vector2(targetRadius * 2.5f, targetRadius * 2.5f);
-
     }
 
     void NewRandomTarget()
     {
         targetRadius = Random.Range(radiusMin, radiusMax);
+
         float halfW = playSize.x / 2f - targetRadius;
         float halfH = playSize.y / 2f - targetRadius;
 
         targetPos = new Vector2(Random.Range(-halfW, halfW), Random.Range(-halfH, halfH));
 
         float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-        float randomSpeed = Random.Range(targetMoveSpeed * 0.8f, targetMoveSpeed * 1.5f);
+        float randomSpeed = Random.Range(targetMoveSpeed * 0.6f, targetMoveSpeed * 1.2f);
         baseVelocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * randomSpeed;
         targetVelocity = baseVelocity;
 
@@ -196,14 +190,18 @@ public class SignalStabilizeMiniGame : MonoBehaviour
     void Win()
     {
         finished = true;
-        winPanel.SetActive(true);
-        GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
+        if (winPanel != null)
+            winPanel.SetActive(true);
+
+        if (GameSettingsManager.Instance != null)
+            GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
+
         StartCoroutine(ReturnToGameScene());
     }
 
     IEnumerator ReturnToGameScene()
     {
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("GameScene"); 
+        SceneManager.LoadScene("GameScene");
     }
 }

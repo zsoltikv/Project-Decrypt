@@ -168,11 +168,18 @@ public class RhythmGame : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
+        if (timerText != null)
+            timerText.gameObject.SetActive(false);
+
         if (winPanel != null)
             winPanel.SetActive(true);
 
         yield return new WaitForSeconds(2f);
-        GameSettingsManager.Instance.completedApps.Add("RythymDecode");
+
+        if (GameSettingsManager.Instance != null)
+            GameSettingsManager.Instance.completedApps.Add("RythymDecode");
+
         SceneManager.LoadScene("GameScene");
     }
+
 }

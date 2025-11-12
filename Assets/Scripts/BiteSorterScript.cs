@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +8,7 @@ using UnityEngine.UI;
 public class BiteSorterScript : MonoBehaviour
 {
     public GameObject card;
-    public Canvas winCanvas;
+    public GameObject winPanel;
 
     private int gridWith;
     private int gridHeight;
@@ -17,6 +16,7 @@ public class BiteSorterScript : MonoBehaviour
     private string[] bytes = new string[6];
     private List<GameObject> selectedCards = new List<GameObject>();
     public int matchesFound = 0;
+
     void Start()
     {
         gridWith = Display.main.systemWidth / 6;
@@ -27,7 +27,8 @@ public class BiteSorterScript : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             bytes[i] = System.Convert.ToString(Random.Range(0, 255), 2).PadLeft(8, '0');
-        };
+        }
+        ;
 
         List<string> bytePairs = new List<string>();
         foreach (string b in bytes)
@@ -45,6 +46,9 @@ public class BiteSorterScript : MonoBehaviour
             newCard.transform.GetChild(0).gameObject.SetActive(false);
             newCard.GetComponent<Button>().onClick.AddListener(() => OnCardClicked(newCard));
         }
+
+        if (winPanel != null)
+            winPanel.SetActive(false); 
     }
 
     private void OnCardClicked(GameObject newCard)
@@ -55,7 +59,8 @@ public class BiteSorterScript : MonoBehaviour
         selectedCards.Add(newCard);
         if (selectedCards.Count == 2)
         {
-            if (selectedCards[0].GetComponentInChildren<TextMeshProUGUI>().text == selectedCards[1].GetComponentInChildren<TextMeshProUGUI>().text)
+            if (selectedCards[0].GetComponentInChildren<TextMeshProUGUI>().text ==
+                selectedCards[1].GetComponentInChildren<TextMeshProUGUI>().text)
             {
                 matchesFound++;
                 selectedCards[0].GetComponent<Button>().interactable = false;
@@ -88,11 +93,52 @@ public class BiteSorterScript : MonoBehaviour
         if (matchesFound >= 6)
         {
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
-            winCanvas.gameObject.SetActive(true);
+
+            yield return StartCoroutine(ShowWinPanel());
+
             yield return new WaitForSeconds(2f);
-            GameSettingsManager.Instance.completedApps.Add("BiteSorter");
+
+            if (GameSettingsManager.Instance != null)
+                GameSettingsManager.Instance.completedApps.Add("ByteSorter");
+
             SceneManager.LoadScene("GameScene");
         }
+    }
+
+    IEnumerator ShowWinPanel()
+    {
+        if (winPanel == null)
+            yield break;
+
+        winPanel.SetActive(true);
+
+        CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = winPanel.AddComponent<CanvasGroup>();
+
+        cg.alpha = 0f;
+        winPanel.transform.localScale = Vector3.one * 0.4f;
+
+        float duration = 0.4f;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            cg.alpha = Mathf.Lerp(0f, 1f, t);
+            winPanel.transform.localScale = Vector3.Lerp(
+                Vector3.one * 0.4f,
+                Vector3.one,
+                Mathf.Sin(t * Mathf.PI * 0.5f)
+            );
+
+            yield return null;
+        }
+
+        winPanel.transform.localScale = Vector3.one;
+        cg.alpha = 1f;
     }
 
     void Shuffle(List<string> list)
@@ -104,4 +150,3 @@ public class BiteSorterScript : MonoBehaviour
         }
     }
 }
-
