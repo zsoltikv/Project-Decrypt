@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class SignalStabilizeMiniGame : MonoBehaviour
 {
@@ -76,31 +77,41 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
     void HandleInput()
     {
-        if (Input.touchCount == 0 && !Input.GetMouseButton(0))
+        Vector2 screenPos;
+        bool hasInput = false;
+
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+        {
+            screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
+            hasInput = true;
+        }
+        else if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+        {
+            screenPos = Mouse.current.position.ReadValue();
+            hasInput = true;
+        }
+        else
+        {
             return;
+        }
 
-        Vector2 screenPos = Input.touchCount > 0
-            ? Input.GetTouch(0).position
-            : (Vector2)Input.mousePosition;
-
-        // Canvas renderMode kezelése
         Canvas canvas = playArea.GetComponentInParent<Canvas>();
         Camera cam = (canvas.renderMode == RenderMode.ScreenSpaceCamera) ? canvas.worldCamera : null;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             playArea,
             screenPos,
             cam,
-            out Vector2 local
-        );
+            out Vector2 local))
+        {
+            float halfW = playSize.x / 2f;
+            float halfH = playSize.y / 2f;
 
-        float halfW = playSize.x / 2f;
-        float halfH = playSize.y / 2f;
+            local.x = Mathf.Clamp(local.x, -halfW, halfW);
+            local.y = Mathf.Clamp(local.y, -halfH, halfH);
 
-        local.x = Mathf.Clamp(local.x, -halfW, halfW);
-        local.y = Mathf.Clamp(local.y, -halfH, halfH);
-
-        controlDot.anchoredPosition = local;
+            controlDot.anchoredPosition = local;
+        }
     }
 
     void MoveTarget()
