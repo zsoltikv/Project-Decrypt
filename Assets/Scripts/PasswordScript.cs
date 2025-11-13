@@ -8,13 +8,19 @@ using UnityEngine.UI;
 
 public class PasswordScript : MonoBehaviour
 {
+    [Header("UI Elements")]
     public GameObject numPad;
     public GameObject pwdDisplay;
     public GameObject numPadButton;
     public GameObject infoText;
     public GameObject passwordText;
+    public GameObject winPanel;
+
+
+    [Header("Fonts")]
     public TMP_FontAsset monoFont;
     public TMP_FontAsset redFont;
+
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "\u2714" };
     private string input = String.Empty;
 
@@ -59,6 +65,10 @@ public class PasswordScript : MonoBehaviour
             if (input == GameSettingsManager.Instance.password.ToString() || input == "9876")
             {
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Granted!";
+                TimerScript.Instance.StopTimer();
+                gameObject.GetComponent<Canvas>().enabled = false;
+                winPanel.SetActive(true);
+                winPanel.GetComponentAtIndex(1).GetComponent<TextMeshProUGUI>().text = "Access Granted!\nTime Taken: " + TimeSpan.FromSeconds(TimerScript.Instance.time).ToString(@"mm\:ss\.ff");
             }
             else
             {
@@ -89,4 +99,10 @@ public class PasswordScript : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
     }
+
+    public void OnMenuClicked()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+
 }

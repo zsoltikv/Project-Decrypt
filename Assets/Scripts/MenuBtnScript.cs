@@ -56,8 +56,14 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
             }
             gsm.isSet = true;
             gsm.CreatePassword();
+            TimerScript.Instance.StartTimer();
             settingsPlane.SetActive(false);
             gamePlane.SetActive(true);
         }
+    }
+
+    public void OnLeaderboard()
+    {
+        SceneManager.LoadScene("LeaderboardScene");
     }
 }

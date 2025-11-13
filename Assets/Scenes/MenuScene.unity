@@ -499,6 +499,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
   m_PrefabInstance: {fileID: 1795605345}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &492963862 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2028840748371868651, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+  m_PrefabInstance: {fileID: 1795605345}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc69d91423e08a438acc8fd703eb03b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &503925070 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
@@ -822,11 +833,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_Name
-      value: ContinueBtn
+      value: LBoardBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626519325314115625, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 492963862}
+    - target: {fileID: 8626519325314115625, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnLeaderboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626519325314115625, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MGButtonScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626519325314115625, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8641778747254558722, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_Text
-      value: Idk yet
+      value: Leaderboard
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

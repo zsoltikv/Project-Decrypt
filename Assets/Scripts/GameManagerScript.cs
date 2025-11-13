@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameSettingsManager : MonoBehaviour
 {
     public static GameSettingsManager Instance;
-
     public enum Difficulty { Easy, Normal, Hard }
     public Difficulty currentDifficulty;
 
@@ -19,7 +18,7 @@ public class GameSettingsManager : MonoBehaviour
     public List<String> apps = new();
     public List<String> completedApps = new();
     public int maxApps;
-    public int passLength = 18;
+    public int passLength = 12;
     public string password;
 
     void Awake()
