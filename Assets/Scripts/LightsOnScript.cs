@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LightsOnPuzzle : MonoBehaviour
 {
@@ -13,15 +14,19 @@ public class LightsOnPuzzle : MonoBehaviour
     public GameObject winPanel;
     public string gameSceneName = "GameScene";
 
+    private List<int>[] influenceMap;
+
     void Start()
     {
         state = new bool[switches.Length];
+        influenceMap = new List<int>[switches.Length];
 
         for (int i = 0; i < switches.Length; i++)
         {
             state[i] = false;
-            int index = i;
+            influenceMap[i] = new List<int>();
 
+            int index = i;
             Button btn = switches[i].GetComponentInChildren<Button>();
             switches[i].index = i;
             btn.onClick.AddListener(() => Press(index));
@@ -32,34 +37,69 @@ public class LightsOnPuzzle : MonoBehaviour
         if (winPanel != null)
             winPanel.SetActive(false);
 
+        GenerateInfluenceMap();
         GenerateRandomSolution();
+    }
 
+    void GenerateInfluenceMap()
+    {
+        for (int i = 0; i < switches.Length; i++)
+        {
+            influenceMap[i].Clear();
+
+            influenceMap[i].Add(i);
+
+            if (i - 1 >= 0) influenceMap[i].Add(i - 1);
+            if (i + 1 < switches.Length) influenceMap[i].Add(i + 1);
+
+            if (Random.value < 0.75f && i - 2 >= 0)
+                influenceMap[i].Add(i - 2);
+            if (Random.value < 0.5f && i + 2 < switches.Length)
+                influenceMap[i].Add(i + 2);
+        }
     }
 
     void GenerateRandomSolution()
     {
-        for (int i = 0; i < switches.Length; i++)
-        {
-            state[i] = false;
-            switches[i].SetState(false);
-        }
+        bool allOn = true;
 
-        int randomPresses = Random.Range(3, switches.Length + 2);
-
-        for (int i = 0; i < randomPresses; i++)
+        do
         {
-            int randomIndex = Random.Range(0, switches.Length);
-            Press(randomIndex); 
-        }
+            for (int i = 0; i < switches.Length; i++)
+            {
+                state[i] = false;
+                switches[i].SetState(false);
+            }
+
+            int randomPresses = Random.Range(3, switches.Length + 2);
+
+            for (int i = 0; i < randomPresses; i++)
+            {
+                int randomIndex = Random.Range(0, switches.Length);
+                Press(randomIndex);
+            }
+
+            allOn = true;
+            foreach (bool b in state)
+            {
+                if (!b)
+                {
+                    allOn = false;
+                    break;
+                }
+            }
+        } while (allOn);
     }
-
 
     void Press(int index)
     {
-        Toggle(index);
+        if (index < 0 || index >= switches.Length)
+            return;
 
-        if (index - 1 >= 0) Toggle(index - 1);
-        if (index + 1 < switches.Length) Toggle(index + 1);
+        foreach (int affected in influenceMap[index])
+        {
+            Toggle(affected);
+        }
 
         UpdateStatusText();
         CheckWin();
@@ -93,6 +133,12 @@ public class LightsOnPuzzle : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
+        if (winPanel == null)
+        {
+            Debug.LogWarning("⚠️ Win panel not assigned!");
+            yield break;
+        }
+
         winPanel.SetActive(true);
 
         CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
@@ -124,7 +170,12 @@ public class LightsOnPuzzle : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        GameSettingsManager.Instance.completedApps.Add("LightsOn");
+        if (GameSettingsManager.Instance != null)
+        {
+            if (GameSettingsManager.Instance.completedApps != null)
+                GameSettingsManager.Instance.completedApps.Add("LightsOn");
+        }
+
         SceneManager.LoadScene(gameSceneName);
     }
 }
