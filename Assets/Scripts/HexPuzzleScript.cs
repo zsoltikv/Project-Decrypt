@@ -13,6 +13,7 @@ public class CodeLinkerGame : MonoBehaviour
     public Transform gridParent;
     public TextMeshProUGUI targetText;
     public TextMeshProUGUI resultText;
+    public GameObject winPanel;
 
     [Header("Grid Settings")]
     public int gridSize = 6;
@@ -26,6 +27,10 @@ public class CodeLinkerGame : MonoBehaviour
 
     void Start()
     {
+
+        if (winPanel != null)
+            winPanel.SetActive(false);
+
         if (GameSettingsManager.Instance == null)
         {
             maxRound = 5;
@@ -115,7 +120,6 @@ public class CodeLinkerGame : MonoBehaviour
         }
         else if (currentInput == targetHash && currentRound >= maxRound)
         {
-            resultText.text = "<color=#00ff88>All Rounds Completed.</color>";
             StartCoroutine(WinAndReturn());
         }
         else if (currentInput == targetHash)
@@ -128,9 +132,53 @@ public class CodeLinkerGame : MonoBehaviour
 
     IEnumerator WinAndReturn()
     {
+
+        yield return new WaitForSeconds(1f);
+
+        if (winPanel != null)
+        {
+            yield return StartCoroutine(ShowWinPanel());
+        }
+
         yield return new WaitForSeconds(2f);
-        GameSettingsManager.Instance.completedApps.Add("HexPuzzle");
+
+        if (GameSettingsManager.Instance != null)
+            GameSettingsManager.Instance.completedApps.Add("HexPuzzle");
+
         SceneManager.LoadScene("GameScene");
+    }
+
+    IEnumerator ShowWinPanel()
+    {
+        winPanel.SetActive(true);
+
+        CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = winPanel.AddComponent<CanvasGroup>();
+
+        cg.alpha = 0f;
+        winPanel.transform.localScale = Vector3.one * 0.4f;
+
+        float duration = 0.4f;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            cg.alpha = Mathf.Lerp(0f, 1f, t);
+            winPanel.transform.localScale = Vector3.Lerp(
+                Vector3.one * 0.4f,
+                Vector3.one,
+                Mathf.Sin(t * Mathf.PI * 0.5f)
+            );
+
+            yield return null;
+        }
+
+        winPanel.transform.localScale = Vector3.one;
+        cg.alpha = 1f;
     }
 
     void ResetRound()
