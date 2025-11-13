@@ -41,9 +41,10 @@ public class GameSettingsManager : MonoBehaviour
 
     public void CreatePassword()
     {
+        password = "";
         if (!RandomPass)
         {
-            password = "246135246135246135";
+            password = "246135246135";
             return;
         }
         else
@@ -52,7 +53,7 @@ public class GameSettingsManager : MonoBehaviour
 
             for (int i = 0; i < passLength; i++)
             {
-                password += rand.Next(0, 10);
+                password += rand.Next(0, 10).ToString();
             }
         }
     }
