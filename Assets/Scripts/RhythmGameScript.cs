@@ -174,6 +174,13 @@ public class RhythmGame : MonoBehaviour
         if (winPanel != null)
             winPanel.SetActive(true);
 
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
+
         yield return new WaitForSeconds(2f);
 
         if (GameSettingsManager.Instance != null)

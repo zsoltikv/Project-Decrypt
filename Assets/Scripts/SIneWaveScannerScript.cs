@@ -93,6 +93,14 @@ public class SineWaveScanner : MonoBehaviour
     private IEnumerator ShowWinPanel()
     {
         WinPanel.SetActive(true);
+
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
+
         CanvasGroup cg = WinPanel.GetComponent<CanvasGroup>();
         if (cg == null) cg = WinPanel.AddComponent<CanvasGroup>();
 

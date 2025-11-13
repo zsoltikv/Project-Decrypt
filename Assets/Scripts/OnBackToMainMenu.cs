@@ -1,17 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class CanvasScript : MonoBehaviour
+public class OnBackToMainMenu : MonoBehaviour
 {
     [Header("Fade Settings")]
-    public float fadeDuration = 0.4f;       
-    public float scaleStart = 0.4f;         
-    public float holdTime = 2f;            
+    public float fadeDuration = 0.4f;
+    public float scaleStart = 0.4f;
+    public float holdTime = 2f;
 
     public void OnBack()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("MenuScene");
     }
 
     public void FadeInPanel(GameObject panel)

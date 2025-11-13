@@ -230,6 +230,12 @@ public class CableManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         WinPanel.SetActive(true);
 
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
         foreach (var cable in permanentCables)
             if (cable != null) StartCoroutine(FadeOutAndDestroy(cable));
 
@@ -238,6 +244,7 @@ public class CableManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
 
         SceneManager.LoadScene("GameScene");
+
     }
 
     private IEnumerator FadeOutAndDestroy(RectTransform cable)

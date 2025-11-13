@@ -59,8 +59,12 @@ public class LightsOnPuzzle : MonoBehaviour
         }
     }
 
+    private bool isGenerating = false;
+
     void GenerateRandomSolution()
     {
+        isGenerating = true; 
+
         bool allOn = true;
 
         do
@@ -76,7 +80,7 @@ public class LightsOnPuzzle : MonoBehaviour
             for (int i = 0; i < randomPresses; i++)
             {
                 int randomIndex = Random.Range(0, switches.Length);
-                Press(randomIndex);
+                RandomizeSwitch(randomIndex);
             }
 
             allOn = true;
@@ -89,6 +93,17 @@ public class LightsOnPuzzle : MonoBehaviour
                 }
             }
         } while (allOn);
+
+        isGenerating = false;
+    }
+
+    void RandomizeSwitch(int index)
+    {
+        foreach (int affected in influenceMap[index])
+        {
+            state[affected] = !state[affected];
+            switches[affected].SetState(state[affected]);
+        }
     }
 
     void Press(int index)
@@ -102,7 +117,8 @@ public class LightsOnPuzzle : MonoBehaviour
         }
 
         UpdateStatusText();
-        CheckWin();
+        if (!isGenerating)
+            CheckWin();
     }
 
     void Toggle(int index)
@@ -135,11 +151,18 @@ public class LightsOnPuzzle : MonoBehaviour
 
         if (winPanel == null)
         {
-            Debug.LogWarning("⚠️ Win panel not assigned!");
+            Debug.LogWarning("Win panel not assigned!");
             yield break;
         }
 
         winPanel.SetActive(true);
+
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
 
         CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
         if (cg == null) cg = winPanel.AddComponent<CanvasGroup>();

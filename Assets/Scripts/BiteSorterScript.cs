@@ -112,6 +112,12 @@ public class BiteSorterScript : MonoBehaviour
 
         winPanel.SetActive(true);
 
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
         CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
         if (cg == null)
             cg = winPanel.AddComponent<CanvasGroup>();
@@ -139,6 +145,7 @@ public class BiteSorterScript : MonoBehaviour
 
         winPanel.transform.localScale = Vector3.one;
         cg.alpha = 1f;
+
     }
 
     void Shuffle(List<string> list)

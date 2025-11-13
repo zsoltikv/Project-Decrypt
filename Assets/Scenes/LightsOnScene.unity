@@ -393,6 +393,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Back
       objectReference: {fileID: 0}
+    - target: {fileID: 1480135977021364703, guid: d4f520e5f1c94d746b40549fa544e401, type: 3}
+      propertyPath: m_TagString
+      value: BackButton
+      objectReference: {fileID: 0}
     - target: {fileID: 3330056915557544835, guid: d4f520e5f1c94d746b40549fa544e401, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1079,6 +1083,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41c71cfc7d709445a50ccb5eb9cbc0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeDuration: 0.4
+  scaleStart: 0.4
+  holdTime: 2
 --- !u!1 &1452957060
 GameObject:
   m_ObjectHideFlags: 0

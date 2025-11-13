@@ -220,6 +220,13 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
         winPanel.SetActive(true);
 
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
+
         CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
         if (cg == null)
             cg = winPanel.AddComponent<CanvasGroup>();

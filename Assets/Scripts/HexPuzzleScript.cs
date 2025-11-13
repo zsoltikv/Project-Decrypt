@@ -179,6 +179,14 @@ public class CodeLinkerGame : MonoBehaviour
 
         winPanel.transform.localScale = Vector3.one;
         cg.alpha = 1f;
+
+        GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
+        foreach (GameObject btn in backButtons)
+        {
+            btn.SetActive(false);
+        }
+
+
     }
 
     void ResetRound()
