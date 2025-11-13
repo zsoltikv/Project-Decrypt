@@ -70,7 +70,7 @@ public class PasswordScript : MonoBehaviour
                 TimerScript.Instance.StopTimer();
                 gameObject.GetComponent<Canvas>().enabled = false;
                 winPanel.SetActive(true);
-                winPanel.GetComponentAtIndex(1).GetComponent<TextMeshProUGUI>().text = "Access Granted!\nTime Taken: " + TimeSpan.FromSeconds(TimerScript.Instance.time).ToString(@"mm\:ss\.ff");
+                winPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Access Granted!\nTime Taken: " + TimeSpan.FromSeconds(TimerScript.Instance.time).ToString(@"mm\:ss\.ff");
             }
             else
             {
