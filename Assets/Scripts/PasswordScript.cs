@@ -18,6 +18,8 @@ public class PasswordScript : MonoBehaviour
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "\u2714" };
     private string input = String.Empty;
 
+    public CanvasGroup mainCanvasGroup;
+
     public void Start()
     {
         numPad.GetComponent<GridLayoutGroup>().cellSize = new Vector2(numPad.GetComponent<RectTransform>().rect.width / 3 - 10, numPad.GetComponent<RectTransform>().rect.height / 4 - 10);
@@ -85,8 +87,32 @@ public class PasswordScript : MonoBehaviour
         button.GetComponent<Image>().color = new Color(0, 0, 0);
     }
 
+    IEnumerator FadeOutAndLoadScene(float duration, string sceneName)
+    {
+        if (mainCanvasGroup == null)
+        {
+            SceneManager.LoadScene(sceneName);
+            yield break;
+        }
+
+        float startAlpha = mainCanvasGroup.alpha;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            mainCanvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, t);
+            yield return null;
+        }
+
+        mainCanvasGroup.alpha = 0f;
+        SceneManager.LoadScene(sceneName);
+    }
+
+
     public void OnBack()
     {
-        SceneManager.LoadScene("GameScene");
+        StartCoroutine(FadeOutAndLoadScene(0.5f, "GameScene"));
     }
 }
