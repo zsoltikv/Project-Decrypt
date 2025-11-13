@@ -1191,6 +1191,7 @@ MonoBehaviour:
   cableText: {fileID: 2014003961}
   WinPanel: {fileID: 941033784}
   requiredConnections: 3
+  maxConnectorDistance: 50
 --- !u!1 &1532010782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1502,7 +1503,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 510774003}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 15
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

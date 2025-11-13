@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class CableManager : MonoBehaviour
 {
     public static CableManager Instance;
 
+    [Header("References")]
     public GameObject cableLineTemplate;
     public RectTransform canvasRect;
 
@@ -15,49 +17,84 @@ public class CableManager : MonoBehaviour
     private RectTransform currentCableLine;
     private List<RectTransform> permanentCables = new List<RectTransform>();
 
+    [Header("UI")]
     public TMPro.TMP_Text cableText;
     private int connectedCableCount = 0;
 
     public GameObject WinPanel;
     public int requiredConnections = 3;
 
+    [Header("Raycast Settings")]
+    public float maxConnectorDistance = 50f;
+
     void Awake()
     {
         Instance = this;
-
-        if (cableLineTemplate != null)
-            cableLineTemplate.SetActive(false);
+        if (cableLineTemplate != null) cableLineTemplate.SetActive(false);
     }
 
     void Update()
     {
-        if (startConnector == null || currentCableLine == null)
-            return;
+        if (startConnector == null || currentCableLine == null) return;
 
-        if (Input.GetMouseButtonUp(0))
+        bool pressed = false;
+        bool released = false;
+        Vector2 screenPos = Vector2.zero;
+
+        if (Touchscreen.current != null)
         {
-            CheckForConnectionOrReset();
+            if (Touchscreen.current.primaryTouch.press.isPressed)
+            {
+                screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
+                pressed = true;
+            }
+            if (Touchscreen.current.primaryTouch.press.wasReleasedThisFrame)
+            {
+                screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
+                released = true;
+            }
+        }
+        else if (Mouse.current != null)
+        {
+            if (Mouse.current.leftButton.isPressed)
+            {
+                screenPos = Mouse.current.position.ReadValue();
+                pressed = true;
+            }
+            if (Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                screenPos = Mouse.current.position.ReadValue();
+                released = true;
+            }
+        }
+
+        if (!pressed && !released) return;
+
+        if (released)
+        {
+            CheckForConnectionOrReset(screenPos);
             return;
         }
 
-        Vector2 startPos;
-        Vector2 mouseLocal;
+        UpdateCurrentCable(screenPos);
+    }
 
+    private void UpdateCurrentCable(Vector2 screenPos)
+    {
+        Canvas canvas = canvasRect.GetComponentInParent<Canvas>();
+        Camera cam = (canvas.renderMode == RenderMode.ScreenSpaceCamera) ? canvas.worldCamera : null;
+
+        RectTransform startRect = startConnector.GetComponent<RectTransform>();
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
-            RectTransformUtility.WorldToScreenPoint(null, startConnector.GetComponent<RectTransform>().position),
-            null,
-            out startPos
+            RectTransformUtility.WorldToScreenPoint(cam, startRect.position),
+            cam,
+            out Vector2 startPos
         );
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            Input.mousePosition,
-            null,
-            out mouseLocal
-        );
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, cam, out Vector2 localPos);
 
-        Vector2 dir = mouseLocal - startPos;
+        Vector2 dir = localPos - startPos;
         float dist = dir.magnitude;
 
         currentCableLine.anchoredPosition = startPos;
@@ -67,43 +104,52 @@ public class CableManager : MonoBehaviour
         currentCableLine.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    private void CheckForConnectionOrReset()
+    private void CheckForConnectionOrReset(Vector2 screenPos)
     {
         if (EventSystem.current == null)
         {
-            Debug.LogError("No EventSystem found!");
             EndDrag(null);
             return;
         }
 
-        PointerEventData pointerData = new PointerEventData(EventSystem.current)
-        {
-            position = Input.mousePosition
-        };
+        Canvas canvas = canvasRect.GetComponentInParent<Canvas>();
+        Camera cam = (canvas.renderMode == RenderMode.ScreenSpaceCamera) ? canvas.worldCamera : null;
 
-        var results = new List<RaycastResult>();
+        PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPos };
+        List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
 
         Connector targetConnector = null;
+        float closestDistance = float.MaxValue;
 
         foreach (var result in results)
         {
-            Connector connector = result.gameObject.GetComponent<Connector>();
-
-            if (connector != null && !connector.isLeftSide)
+            Connector c = result.gameObject.GetComponent<Connector>();
+            if (c != null && c.isLeftSide != startConnector.isLeftSide)
             {
-                targetConnector = connector;
-                break;
+                Vector2 connectorScreenPos = RectTransformUtility.WorldToScreenPoint(cam, c.GetComponent<RectTransform>().position);
+                float distance = Vector2.Distance(screenPos, connectorScreenPos);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    targetConnector = c;
+                }
             }
         }
 
-        EndDrag(targetConnector);
+        if (targetConnector != null && closestDistance <= maxConnectorDistance)
+        {
+            EndDrag(targetConnector);
+        }
+        else
+        {
+            EndDrag(null);
+        }
     }
 
     public void BeginDrag(Connector connector)
     {
         startConnector = connector;
-
         GameObject newCable = Instantiate(cableLineTemplate, canvasRect);
         currentCableLine = newCable.GetComponent<RectTransform>();
         currentCableLine.gameObject.SetActive(true);
@@ -117,58 +163,54 @@ public class CableManager : MonoBehaviour
             return;
         }
 
-        if (connector != startConnector &&
+        bool validConnection =
+            connector != startConnector &&
             startConnector.isLeftSide != connector.isLeftSide &&
-            startConnector.connectorID == connector.connectorID)
+            startConnector.connectorID == connector.connectorID;
+
+        if (validConnection)
         {
             SnapCableToConnector(connector);
-
             permanentCables.Add(currentCableLine);
             connectedCableCount++;
             UpdateCableText();
-
-            currentCableLine = null;
-            startConnector = null;
-            return;
         }
+        else ResetCable();
 
-        ResetCable();
+        currentCableLine = null;
+        startConnector = null;
     }
 
     private void UpdateCableText()
     {
-        if (cableText != null)
-            cableText.text = "Cables Connected: " + connectedCableCount;
-
-        if (connectedCableCount >= requiredConnections)
-            StartCoroutine(WinSequence());
+        if (cableText != null) cableText.text = "Cables Connected: " + connectedCableCount;
+        if (connectedCableCount >= requiredConnections) StartCoroutine(WinSequence());
     }
 
     private void SnapCableToConnector(Connector endConnector)
     {
-        if (currentCableLine == null)
-            return;
+        if (currentCableLine == null) return;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            RectTransformUtility.WorldToScreenPoint(null, startConnector.transform.position),
-            null,
-            out Vector2 startPos
-        );
+        Canvas canvas = canvasRect.GetComponentInParent<Canvas>();
+        Camera cam = (canvas.renderMode == RenderMode.ScreenSpaceCamera) ? canvas.worldCamera : null;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            RectTransformUtility.WorldToScreenPoint(null, endConnector.transform.position),
-            null,
-            out Vector2 endPos
-        );
+        RectTransform startRect = startConnector.GetComponent<RectTransform>();
+        RectTransform endRect = endConnector.GetComponent<RectTransform>();
+
+        Vector2 startScreenPos = RectTransformUtility.WorldToScreenPoint(cam, startRect.position);
+        Vector2 endScreenPos = RectTransformUtility.WorldToScreenPoint(cam, endRect.position);
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, startScreenPos, cam, out Vector2 startPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, endScreenPos, cam, out Vector2 endPos);
 
         Vector2 dir = endPos - startPos;
         float dist = dir.magnitude;
 
-        currentCableLine.sizeDelta = new Vector2(dist, 8f);
         currentCableLine.anchoredPosition = startPos;
-        currentCableLine.right = dir;
+        currentCableLine.sizeDelta = new Vector2(dist, 8f);
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        currentCableLine.rotation = Quaternion.Euler(0, 0, angle);
 
         StartCoroutine(Flash(currentCableLine));
     }
@@ -180,78 +222,36 @@ public class CableManager : MonoBehaviour
             Destroy(currentCableLine.gameObject);
             currentCableLine = null;
         }
-
         startConnector = null;
     }
 
     private IEnumerator WinSequence()
     {
         yield return new WaitForSeconds(1f);
-
-        StartCoroutine(ShowWinPanel());
+        WinPanel.SetActive(true);
 
         foreach (var cable in permanentCables)
-        {
-            if (cable != null)
-                StartCoroutine(FadeOutAndDestroy(cable));
-        }
+            if (cable != null) StartCoroutine(FadeOutAndDestroy(cable));
 
         permanentCables.Clear();
 
         yield return new WaitForSecondsRealtime(2f);
 
-        GameSettingsManager.Instance.completedApps.Add("CableConnector");
         SceneManager.LoadScene("GameScene");
-    }
-
-    private IEnumerator ShowWinPanel()
-    {
-        WinPanel.SetActive(true);
-
-        CanvasGroup cg = WinPanel.GetComponent<CanvasGroup>();
-        if (cg == null) cg = WinPanel.AddComponent<CanvasGroup>();
-
-        cg.alpha = 0f;
-        WinPanel.transform.localScale = Vector3.one * 0.4f;
-
-        float duration = 0.4f;
-        float time = 0f;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-
-            cg.alpha = Mathf.Lerp(0f, 1f, t);
-            WinPanel.transform.localScale = Vector3.Lerp(
-                Vector3.one * 0.4f,
-                Vector3.one,
-                Mathf.Sin(t * Mathf.PI * 0.5f)
-            );
-
-            yield return null;
-        }
-
-        WinPanel.transform.localScale = Vector3.one;
-        cg.alpha = 1f;
     }
 
     private IEnumerator FadeOutAndDestroy(RectTransform cable)
     {
         CanvasGroup cg = cable.gameObject.AddComponent<CanvasGroup>();
-
-        float duration = 0.4f;
-        float time = 0;
+        float duration = 0.4f, time = 0f;
         Vector3 initialScale = cable.localScale;
 
         while (time < duration)
         {
             time += Time.deltaTime;
-
             float t = time / duration;
             cg.alpha = Mathf.Lerp(1f, 0f, t);
             cable.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
-
             yield return null;
         }
 
@@ -261,18 +261,19 @@ public class CableManager : MonoBehaviour
     private IEnumerator Flash(RectTransform cable)
     {
         UnityEngine.UI.Image img = cable.GetComponent<UnityEngine.UI.Image>();
-        Color original = img.color;
+        if (img == null) yield break;
 
+        Color original = img.color;
         img.color = Color.white;
 
-        float time = 0f;
-        float duration = 0.2f;
-
+        float duration = 0.2f, time = 0f;
         while (time < duration)
         {
             time += Time.deltaTime;
             img.color = Color.Lerp(Color.white, original, time / duration);
             yield return null;
         }
+
+        img.color = original;
     }
 }
