@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,20 +18,47 @@ public class GameCanvasScript : MonoBehaviour
 
     public void OnEnable()
     {
-        for (int i = 0; i < gsm.maxApps; i++)
+        GenAppIcon("SecretFile");
+
+        List<string> appList = GenAppList();
+
+        foreach (string app in appList)
         {
-            var newApp = Instantiate(appButton);
-            newApp.transform.SetParent(appGrid.transform, false);
-            newApp.transform.localScale = new Vector3(1, 1, 1);
-            newApp.name = gsm.apps[i];
-            newApp.GetComponentInChildren<TextMeshProUGUI>().text = gsm.apps[i];
-            if (gsm.completedApps.Contains(gsm.apps[i]))
-            {
-                newApp.GetComponentInChildren<TextMeshProUGUI>().text += " [✔]";
-            }
-            newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + gsm.apps[i]);
-            newApp.AddComponent<AppScript>();
+            GenAppIcon(app);
         }
+    }
+
+    public void GenAppIcon(string appName)
+    {
+        var newApp = Instantiate(appButton);
+        newApp.transform.SetParent(appGrid.transform, false);
+        newApp.transform.localScale = new Vector3(1, 1, 1);
+        newApp.name = appName;
+        newApp.GetComponentInChildren<TextMeshProUGUI>().text = appName;
+        if (gsm.completedApps.Contains(appName))
+        {
+            newApp.GetComponentInChildren<TextMeshProUGUI>().text += " [✔]";
+        }
+        newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + appName);
+        newApp.AddComponent<AppScript>();
+    }
+
+    public List<string> GenAppList()
+    {
+        List<string> randomAppList = new();
+
+        System.Random rand = new();
+
+        while (randomAppList.Count != gsm.maxApps)
+        {
+            int rng = rand.Next(0,9);
+            if (!randomAppList.Contains(gsm.apps[rng]))
+            {
+                randomAppList.Add(gsm.apps[rng]);
+            }
+        }
+
+        return randomAppList;
     }
 
 }

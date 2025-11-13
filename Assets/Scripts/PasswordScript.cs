@@ -46,15 +46,18 @@ public class PasswordScript : MonoBehaviour
         int completed = GameSettingsManager.Instance.completedApps.Count;
         int total = GameSettingsManager.Instance.maxApps - 1;
 
-        int charsPerPiece = password.Length / total;
-
-        int revealedChars = completed * charsPerPiece;
+        float progress = total > 0 ? (float)completed / total : 0f;
+        int revealedChars = Mathf.RoundToInt(progress * password.Length);
         revealedChars = Mathf.Clamp(revealedChars, 0, password.Length);
 
         string visiblePart = password.Substring(0, revealedChars);
         string hiddenPart = new string('*', password.Length - revealedChars);
 
-        passwordText.GetComponent<TextMeshProUGUI>().text = visiblePart + hiddenPart;
+        var tmp = passwordText.GetComponent<TextMeshProUGUI>();
+        if (tmp != null)
+        {
+            tmp.text = visiblePart + hiddenPart;
+        }
     }
 
     private void OnNumPadButtonClick(GameObject button)

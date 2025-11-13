@@ -485,7 +485,7 @@ MonoBehaviour:
   - DualFrequency
   completedApps: []
   maxApps: 0
-  passLength: 0
+  passLength: 9
   password: 
 --- !u!1 &397823035
 GameObject:
