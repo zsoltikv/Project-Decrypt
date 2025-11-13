@@ -43,7 +43,6 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
     void Start()
     {
-        // PlayArea mérete
         Rect r = playArea.rect;
         playSize = new Vector2(r.width, r.height);
 
@@ -133,13 +132,13 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
         switch (movementPattern)
         {
-            case 0: // Zigzag
+            case 0: 
                 zigzagTime += Time.deltaTime * zigzagFrequency;
                 Vector2 perpendicular = new Vector2(-baseVelocity.y, baseVelocity.x).normalized;
                 targetVelocity += perpendicular * Mathf.Sin(zigzagTime) * jitterAmount * 3f;
                 break;
 
-            case 1: // Spiral
+            case 1:
                 spiralAngle += Time.deltaTime * spiralSpeed;
                 targetVelocity = new Vector2(
                     Mathf.Cos(spiralAngle) * targetMoveSpeed,
@@ -147,20 +146,19 @@ public class SignalStabilizeMiniGame : MonoBehaviour
                 );
                 break;
 
-            case 2: // Random jitter
+            case 2: 
                 targetVelocity += new Vector2(
                     Random.Range(-jitterAmount, jitterAmount),
                     Random.Range(-jitterAmount, jitterAmount)
                 ) * 5f;
                 break;
 
-            case 3: // Pulse
+            case 3:
                 float pulseSpeed = (Mathf.Sin(Time.time * 10f) + 1f) * 0.5f;
                 targetVelocity *= (0.5f + pulseSpeed * 1.5f);
                 break;
         }
 
-        // Extra jitter
         targetVelocity += new Vector2(
             Random.Range(-jitterAmount, jitterAmount),
             Random.Range(-jitterAmount, jitterAmount)
@@ -168,7 +166,6 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
         targetPos += targetVelocity * Time.deltaTime;
 
-        // Bounds
         float halfW = playSize.x / 2f;
         float halfH = playSize.y / 2f;
 
@@ -202,12 +199,61 @@ public class SignalStabilizeMiniGame : MonoBehaviour
     {
         finished = true;
         if (winPanel != null)
-            winPanel.SetActive(true);
+        {
+            StartCoroutine(ShowWinPanel());
+        }
+        else
+        {
+            if (GameSettingsManager.Instance != null)
+                GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
+
+            StartCoroutine(ReturnToGameScene());
+        }
+    }
+
+    IEnumerator ShowWinPanel()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (winPanel == null)
+            yield break;
+
+        winPanel.SetActive(true);
+
+        CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = winPanel.AddComponent<CanvasGroup>();
+
+        cg.alpha = 0f;
+        winPanel.transform.localScale = Vector3.one * 0.4f;
+
+        float duration = 0.4f;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            cg.alpha = Mathf.Lerp(0f, 1f, t);
+            winPanel.transform.localScale = Vector3.Lerp(
+                Vector3.one * 0.4f,
+                Vector3.one,
+                Mathf.Sin(t * Mathf.PI * 0.5f)
+            );
+
+            yield return null;
+        }
+
+        winPanel.transform.localScale = Vector3.one;
+        cg.alpha = 1f;
 
         if (GameSettingsManager.Instance != null)
             GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
 
-        StartCoroutine(ReturnToGameScene());
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene("GameScene");
     }
 
     IEnumerator ReturnToGameScene()
