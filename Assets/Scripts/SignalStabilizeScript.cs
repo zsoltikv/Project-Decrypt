@@ -204,7 +204,7 @@ public class SignalStabilizeMiniGame : MonoBehaviour
         }
         else
         {
-            if (GameSettingsManager.Instance != null)
+            if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("SignalStabilize"))
                 GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
 
             StartCoroutine(ReturnToGameScene());
@@ -255,7 +255,7 @@ public class SignalStabilizeMiniGame : MonoBehaviour
         winPanel.transform.localScale = Vector3.one;
         cg.alpha = 1f;
 
-        if (GameSettingsManager.Instance != null)
+        if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("SignalStabilize"))
             GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
 
         yield return new WaitForSeconds(2f);

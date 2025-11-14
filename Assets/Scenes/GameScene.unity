@@ -477,13 +477,14 @@ MonoBehaviour:
   - HexPuzzle
   - SequenceHack
   - SignalStabilize
-  - BiteSorter
+  - ByteSorter
   - CableConnecting
   - LightsOn
   - MalwareDefender
-  - RythymDecode
+  - RythmDecode
   - DualFrequency
   completedApps: []
+  appList: []
   maxApps: 0
   passLength: 9
   password: 

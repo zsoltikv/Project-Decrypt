@@ -142,7 +142,7 @@ public class CodeLinkerGame : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (GameSettingsManager.Instance != null)
+        if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("HexPuzzle"))
             GameSettingsManager.Instance.completedApps.Add("HexPuzzle");
 
         SceneManager.LoadScene("GameScene");

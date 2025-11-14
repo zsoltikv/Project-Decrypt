@@ -42,7 +42,7 @@ public class RhythmGame : MonoBehaviour
         }
         else
         {
-            Debug.LogError("RhythmGame: Buttons array is null or empty in inspector.");
+            Debug.LogError("RythmGame: Buttons array is null or empty in inspector.");
         }
 
         if (buttonAnimations != null && buttonAnimations.Length != buttons.Length)
@@ -183,8 +183,8 @@ public class RhythmGame : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (GameSettingsManager.Instance != null)
-            GameSettingsManager.Instance.completedApps.Add("RythymDecode");
+        if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("RythmDecode"))
+            GameSettingsManager.Instance.completedApps.Add("RythmDecode");
 
         SceneManager.LoadScene("GameScene");
     }

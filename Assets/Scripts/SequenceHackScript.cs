@@ -239,7 +239,9 @@ public class SequenceHack : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        GameSettingsManager.Instance.completedApps.Add("SequenceHack");
+        if(GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("SequenceHack"))
+            GameSettingsManager.Instance.completedApps.Add("SequenceHack");
+
         SceneManager.LoadScene("GameScene");
     }
 

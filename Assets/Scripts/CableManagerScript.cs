@@ -230,6 +230,9 @@ public class CableManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         WinPanel.SetActive(true);
 
+        if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("CableConnecting"))
+            GameSettingsManager.Instance.completedApps.Add("CableConnecting");
+
         GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
         foreach (GameObject btn in backButtons)
         {

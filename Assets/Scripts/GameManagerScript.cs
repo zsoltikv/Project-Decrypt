@@ -13,10 +13,12 @@ public class GameSettingsManager : MonoBehaviour
     [SerializeField]
     public bool RandomPass;
     public bool isSet = false;
+    public bool shouldGenAppList = true;
 
     [Header("Apps")]
     public List<String> apps = new();
     public List<String> completedApps = new();
+    public List<String> appList = new();
     public int maxApps;
     public int passLength = 12;
     public string password;
@@ -56,5 +58,14 @@ public class GameSettingsManager : MonoBehaviour
                 password += rand.Next(0, 10).ToString();
             }
         }
+    }
+
+    public void _Reset()
+    {
+        isSet = false;
+        shouldGenAppList = true;
+        apps.Clear();
+        completedApps.Clear();
+        appList.Clear();
     }
 }

@@ -39,10 +39,10 @@ EditorBuildSettings:
     path: Assets/Scenes/DualFrequencyScene.unity
     guid: a170d43fe80f733448a45b02d31936bf
   - enabled: 1
-    path: Assets/Scenes/RythymDecodeScene.unity
+    path: Assets/Scenes/RythmDecodeScene.unity
     guid: f615001faabc41d4eb939e2b69721140
   - enabled: 1
-    path: Assets/Scenes/BiteSorterScene.unity
+    path: Assets/Scenes/ByteSorterScene.unity
     guid: 717e4e6a81a788049ae203369990b8e6
   - enabled: 1
     path: Assets/Scenes/LeaderBoardScene.unity

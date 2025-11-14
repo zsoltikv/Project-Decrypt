@@ -43,13 +43,13 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
             switch (gsm.currentDifficulty)
             {
                 case GameSettingsManager.Difficulty.Easy:
-                    gsm.maxApps = 3;
+                    gsm.maxApps = 4;
                     break;
                 case GameSettingsManager.Difficulty.Normal:
-                    gsm.maxApps = 6;
+                    gsm.maxApps = 7;
                     break;
                 case GameSettingsManager.Difficulty.Hard:
-                    gsm.maxApps = 9;
+                    gsm.maxApps = 10;
                     break;
                 default:
                     break;

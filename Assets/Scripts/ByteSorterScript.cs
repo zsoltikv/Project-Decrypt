@@ -98,7 +98,7 @@ public class BiteSorterScript : MonoBehaviour
 
             yield return new WaitForSeconds(2f);
 
-            if (GameSettingsManager.Instance != null)
+            if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("ByteSorter"))
                 GameSettingsManager.Instance.completedApps.Add("ByteSorter");
 
             SceneManager.LoadScene("GameScene");

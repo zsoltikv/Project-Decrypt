@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,11 +19,13 @@ public class GameCanvasScript : MonoBehaviour
 
     public void OnEnable()
     {
-        GenAppIcon("SecretFile");
+        if (gsm.shouldGenAppList)
+        {
+            gsm.appList = GenAppList();
+            gsm.shouldGenAppList = false;
+        }
 
-        List<string> appList = GenAppList();
-
-        foreach (string app in appList)
+        foreach (string app in gsm.appList)
         {
             GenAppIcon(app);
         }
@@ -49,10 +52,12 @@ public class GameCanvasScript : MonoBehaviour
 
         System.Random rand = new();
 
+        randomAppList.Add("SecretFile");
+
         while (randomAppList.Count != gsm.maxApps)
         {
-            int rng = rand.Next(0,9);
-            if (!randomAppList.Contains(gsm.apps[rng]))
+            int rng = rand.Next(0, 10);
+            if (!randomAppList.Contains(gsm.apps[rng]) && gsm.apps[rng] != "SecretFile")
             {
                 randomAppList.Add(gsm.apps[rng]);
             }

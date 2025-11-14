@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveScript : MonoBehaviour
 {
@@ -52,6 +53,9 @@ public class SaveScript : MonoBehaviour
         // Write back the updated list
         string newJson = JsonUtility.ToJson(allData, true);
         File.WriteAllText(filePath, newJson);
+
+        GameSettingsManager.Instance._Reset();
+        SceneManager.LoadScene("MenuScene");
 
         Debug.Log($"Saved at: {filePath}");
     }

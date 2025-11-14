@@ -131,6 +131,7 @@ public class PasswordScript : MonoBehaviour
 
     public void OnMenuClicked()
     {
+        GameSettingsManager.Instance._Reset();
         SceneManager.LoadScene("MenuScene");
     }
 
