@@ -34,6 +34,6 @@ public class TimeDisplay : MonoBehaviour
             timeText.text = DateTime.Now.ToString("HH:mm:ss");
 
         if (dateText != null)
-            dateText.text = DateTime.Now.ToString("yyyy.MM.dd");
+            dateText.text = DateTime.Now.ToString("2013.MM.dd");
     }
 }
