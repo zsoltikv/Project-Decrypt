@@ -7,7 +7,7 @@ public class CanvasScript : MonoBehaviour
     [Header("Fade Settings")]
     public float fadeDuration = 0.4f;       
     public float scaleStart = 0.4f;         
-    public float holdTime = 2f;            
+    public float holdTime = 2f;
 
     public void OnBack()
     {
