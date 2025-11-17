@@ -475,7 +475,6 @@ MonoBehaviour:
   isSet: 0
   shouldGenAppList: 1
   apps:
-  - SecretFile
   - HexPuzzle
   - SequenceHack
   - SignalStabilize

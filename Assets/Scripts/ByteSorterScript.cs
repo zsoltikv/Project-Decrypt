@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +11,9 @@ public class BiteSorterScript : MonoBehaviour
 {
     public GameObject card;
     public GameObject winPanel;
+    public GameObject timerText;
+    public GameObject infoText;
+    
 
     private int gridWith;
     private int gridHeight;
@@ -17,20 +22,47 @@ public class BiteSorterScript : MonoBehaviour
     private List<GameObject> selectedCards = new List<GameObject>();
     public int matchesFound = 0;
 
+    private float timer;
+    private float maxtimer;
+    private bool isRunning = false;
+    List<string> bytePairs = new List<string>();
     void Start()
     {
-        gridWith = Display.main.systemWidth / 6;
+        gridWith = Display.main.systemWidth / 8;
         gridHeight = Display.main.systemHeight / 4;
         GridObject = gameObject.transform.GetChild(1).gameObject;
         GridObject.GetComponent<GridLayoutGroup>().cellSize = new Vector2(gridWith, gridHeight);
 
+        switch (GameSettingsManager.Difficulty.Hard)
+        {
+            case GameSettingsManager.Difficulty.Easy:
+                maxtimer = 60f;
+                break;
+            case GameSettingsManager.Difficulty.Normal:
+                maxtimer = 30f;
+                break;
+            case GameSettingsManager.Difficulty.Hard:
+                maxtimer = 20f;
+                break;
+        }
+        
+        timer = maxtimer;
+        RandBytes();
+        GenCards();
+
+        if (winPanel != null)
+            winPanel.SetActive(false); 
+
+    }
+
+    private void RandBytes()
+    {
+        bytePairs.Clear();
         for (int i = 0; i < 6; i++)
         {
-            bytes[i] = System.Convert.ToString(Random.Range(0, 255), 2).PadLeft(8, '0');
+            bytes[i] = System.Convert.ToString(UnityEngine.Random.Range(0, 255), 2).PadLeft(8, '0');
         }
-        ;
 
-        List<string> bytePairs = new List<string>();
         foreach (string b in bytes)
         {
             bytePairs.Add(b);
@@ -38,17 +70,56 @@ public class BiteSorterScript : MonoBehaviour
         }
 
         Shuffle(bytePairs);
+    }
 
+    private void GenCards()
+    {
         for (int i = 0; i < bytePairs.Count; i++)
         {
             var newCard = Instantiate(card, GridObject.transform);
             newCard.GetComponentInChildren<TextMeshProUGUI>().text = bytePairs[i];
-            newCard.transform.GetChild(0).gameObject.SetActive(false);
-            newCard.GetComponent<Button>().onClick.AddListener(() => OnCardClicked(newCard));
+            StartCoroutine(HideCards(newCard));
         }
+    }
 
-        if (winPanel != null)
-            winPanel.SetActive(false); 
+    IEnumerator HideCards(GameObject newCard)
+    {
+        yield return new WaitForSeconds(2);
+        newCard.transform.GetChild(0).gameObject.SetActive(false);
+        newCard.GetComponent<Button>().onClick.AddListener(() => OnCardClicked(newCard));
+        timer = maxtimer;
+        isRunning = true;
+    }
+
+    private void Update()
+    {
+        if (isRunning)
+        {
+            timer -= Time.deltaTime;
+        }
+        if(timer < 0)
+        {
+            Debug.Log("Restart triggered!");
+            isRunning = false;
+            timer = 0; 
+            StartCoroutine(Restart());
+
+        }
+        timerText.GetComponent<TextMeshProUGUI>().text = TimeSpan.FromSeconds(timer).ToString(@"s\.ff");
+    }
+
+    IEnumerator Restart()
+    {
+            infoText.GetComponent<TextMeshProUGUI>().text = "Out of time. Resetting.";
+            yield return new WaitForSeconds(2f);
+            foreach (Transform child in GridObject.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            infoText.GetComponent<TextMeshProUGUI>().text = "Find the pairs!";
+            matchesFound = 0;
+            RandBytes();
+            GenCards();
     }
 
     private void OnCardClicked(GameObject newCard)
@@ -152,7 +223,7 @@ public class BiteSorterScript : MonoBehaviour
     {
         for (int i = list.Count - 1; i > 0; i--)
         {
-            int rand = Random.Range(0, i + 1);
+            int rand = UnityEngine.Random.Range(0, i + 1);
             (list[i], list[rand]) = (list[rand], list[i]);
         }
     }

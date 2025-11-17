@@ -48,7 +48,7 @@ public class GameSettingsManager : MonoBehaviour
         password = "";
         if (!RandomPass)
         {
-            password = "246135246135";
+            password = "246135246";
             return;
         }
         else
