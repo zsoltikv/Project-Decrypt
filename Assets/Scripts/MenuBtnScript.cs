@@ -31,15 +31,16 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
         }
 
     }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (gameObject.name == "GameBtn")
         {
-            SceneManager.LoadScene("GameScene");
+            SceneManager.LoadScene("FirstCutsceneScene");
         }
+
         if (gameObject.name == "ProceedBtn")
         {
-
             switch (gsm.currentDifficulty)
             {
                 case GameSettingsManager.Difficulty.Easy:

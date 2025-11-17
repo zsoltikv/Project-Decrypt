@@ -742,8 +742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43c22b51be3154d438e3a1180b88bbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeText: {fileID: 307042588}
-  DateText: {fileID: 1660967456}
 --- !u!1 &499065642 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
