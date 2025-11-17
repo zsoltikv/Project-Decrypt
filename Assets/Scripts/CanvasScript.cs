@@ -14,6 +14,11 @@ public class CanvasScript : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
+    public void OnBackToMainMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+
     public void FadeInPanel(GameObject panel)
     {
         if (panel == null)
