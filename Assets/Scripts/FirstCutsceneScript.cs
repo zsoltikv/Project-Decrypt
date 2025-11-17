@@ -10,16 +10,13 @@ public class FirstCutscene : MonoBehaviour
     {
         videoPlayer.playOnAwake = false;
 
-        // Feliratkozunk a videó végére
         videoPlayer.loopPointReached += OnVideoFinished;
 
-        // Videó lejátszása
         videoPlayer.Play();
     }
 
     void OnVideoFinished(VideoPlayer vp)
     {
-        Debug.Log("Video ended! Loading GameScene...");
         SceneManager.LoadScene("GameScene");
     }
 }

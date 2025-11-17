@@ -37,53 +37,44 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Ha épp a FirstCutsceneScene-ben vagyunk, ne indítsunk zenét
+        if (scene.name == "FirstCutsceneScene")
+            return;
+
         if (scene.name == "MenuScene")
         {
-            // MenuScene: intro megy
             if (!audioSource.isPlaying)
                 PlayIntro();
         }
         else if (scene.name == "GameScene")
         {
-            // Ha épp az intro megy, állítsuk meg
             if (audioSource.isPlaying && audioSource.clip == introSong)
-            {
                 audioSource.Stop();
-            }
 
-            // Ha nincs semmi lejátszva, indítsuk a shuffle-t
             if (!audioSource.isPlaying)
-            {
                 PlayNextShuffle();
-            }
         }
-        // Más minigame Scene-ekhez ugyanígy: ha semmi nem megy, indítsd a shuffle-t
         else
         {
             if (!audioSource.isPlaying)
-            {
                 PlayNextShuffle();
-            }
         }
     }
 
-
     private void Update()
     {
-        // Ha nincs semmi lejátszva, indítsuk a következõ shuffle zenét
+        Scene scene = SceneManager.GetActiveScene();
+
+        // Ha FirstCutsceneScene-en vagyunk, ne csináljon semmit
+        if (scene.name == "FirstCutsceneScene")
+            return;
+
         if (!audioSource.isPlaying)
         {
-            Scene scene = SceneManager.GetActiveScene();
-
-            // Ha MenuScene-ben nincs semmi, indítsa az intro-t
             if (scene.name == "MenuScene")
-            {
                 PlayIntro();
-            }
             else
-            {
                 PlayNextShuffle();
-            }
         }
     }
 
@@ -113,4 +104,13 @@ public class AudioManager : MonoBehaviour
         audioSource.loop = false; // egy klip mindig végigmegy, nem loop
         audioSource.Play();
     }
+
+    public void StopMusic()
+    {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+    }
+
 }
