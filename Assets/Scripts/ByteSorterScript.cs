@@ -36,13 +36,13 @@ public class BiteSorterScript : MonoBehaviour
         switch (GameSettingsManager.Difficulty.Hard)
         {
             case GameSettingsManager.Difficulty.Easy:
-                maxtimer = 60f;
+                maxtimer = 100f;
                 break;
             case GameSettingsManager.Difficulty.Normal:
-                maxtimer = 30f;
+                maxtimer = 80f;
                 break;
             case GameSettingsManager.Difficulty.Hard:
-                maxtimer = 20f;
+                maxtimer = 60f;
                 break;
         }
         
