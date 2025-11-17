@@ -377,8 +377,8 @@ Camera:
   m_GameObject: {fileID: 465653397}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -581,6 +581,8 @@ GameObject:
   - component: {fileID: 923298235}
   - component: {fileID: 923298234}
   - component: {fileID: 923298238}
+  - component: {fileID: 923298239}
+  - component: {fileID: 923298240}
   m_Layer: 5
   m_Name: LeaderboardCanvas
   m_TagString: Untagged
@@ -689,6 +691,31 @@ MonoBehaviour:
   fadeDuration: 0.4
   scaleStart: 0.4
   holdTime: 2
+--- !u!225 &923298239
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923298233}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &923298240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923298233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f57e4600286d84384b276cbc8e6ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 1
 --- !u!1 &978968388
 GameObject:
   m_ObjectHideFlags: 0

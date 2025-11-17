@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentDifficulty: 1
-  volumeMonochrome: {fileID: 0}
   RandomPass: 0
   isSet: 0
   shouldGenAppList: 1
@@ -503,7 +502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43c22b51be3154d438e3a1180b88bbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clockText: {fileID: 465044974}
 --- !u!1 &397823035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,7 +1382,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159767413}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
