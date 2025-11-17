@@ -341,7 +341,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242818671}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -857,7 +857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 350
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -915,6 +915,7 @@ GameObject:
   - component: {fileID: 1845272457}
   - component: {fileID: 1845272456}
   - component: {fileID: 1845272458}
+  - component: {fileID: 1845272459}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -942,7 +943,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 1.19
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -979,7 +980,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1046,6 +1047,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a4eca0d587e1049b7a8d91ff3663f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicClips: []
+  volume: 0.5
+--- !u!114 &1845272459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845272455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a4eca0d587e1049b7a8d91ff3663f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClips:
+  - {fileID: 8300000, guid: 7f96783f7412c4946a52631690802385, type: 3}
+  - {fileID: 8300000, guid: c8c6caf9f9f4c53498123f260e17fae7, type: 3}
+  - {fileID: 8300000, guid: b709a45b6ed6aa94d99dd4b4d6bb3ceb, type: 3}
+  - {fileID: 8300000, guid: 5e8cd80c929e95c4a926430f9f41dcc3, type: 3}
+  volume: 0.5
 --- !u!1001 &1999527994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1128,7 +1149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -350
+      value: -400
       objectReference: {fileID: 0}
     - target: {fileID: 5504670716900793073, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
       propertyPath: m_AnchoredPosition.y
