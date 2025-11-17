@@ -472,11 +472,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentDifficulty: 1
+  volumeMonochrome: {fileID: 0}
   RandomPass: 0
   isSet: 0
   shouldGenAppList: 1
   apps:
-  - SecretFile
   - HexPuzzle
   - SequenceHack
   - SignalStabilize

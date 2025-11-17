@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameSettingsManager : MonoBehaviour
@@ -46,7 +48,7 @@ public class GameSettingsManager : MonoBehaviour
         password = "";
         if (!RandomPass)
         {
-            password = "246135246135";
+            password = "246135246";
             return;
         }
         else
@@ -64,8 +66,8 @@ public class GameSettingsManager : MonoBehaviour
     {
         isSet = false;
         shouldGenAppList = true;
-        apps.Clear();
         completedApps.Clear();
         appList.Clear();
+        currentDifficulty = Difficulty.Normal;
     }
 }

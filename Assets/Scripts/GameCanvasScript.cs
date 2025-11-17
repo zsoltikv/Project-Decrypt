@@ -56,7 +56,7 @@ public class GameCanvasScript : MonoBehaviour
 
         while (randomAppList.Count != gsm.maxApps)
         {
-            int rng = rand.Next(0, 10);
+            int rng = rand.Next(0, 9);
             if (!randomAppList.Contains(gsm.apps[rng]) && gsm.apps[rng] != "SecretFile")
             {
                 randomAppList.Add(gsm.apps[rng]);

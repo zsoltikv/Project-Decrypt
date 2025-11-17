@@ -2017,8 +2017,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 790, y: -220}
-  m_SizeDelta: {x: 1084.124, y: 159.60217}
+  m_AnchoredPosition: {x: 627.54, y: -220}
+  m_SizeDelta: {x: 759.21, y: 159.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1415116029 stripped
 RectTransform:
@@ -2168,7 +2168,7 @@ MonoBehaviour:
   - {fileID: 1212837511}
   - {fileID: 563153992}
   - {fileID: 244886071}
-  infoText: {fileID: 0}
+  infoText: {fileID: 1384594655}
   glowIntensity: 2
   pulseCurve:
     serializedVersion: 2
