@@ -472,8 +472,8 @@ MonoBehaviour:
   currentDifficulty: 1
   RandomPass: 0
   isSet: 0
+  shouldGenAppList: 1
   apps:
-  - SecretFile
   - HexPuzzle
   - SequenceHack
   - SignalStabilize
