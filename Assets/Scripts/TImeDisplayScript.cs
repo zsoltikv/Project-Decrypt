@@ -1,23 +1,39 @@
-using UnityEngine;
-using TMPro;
+using System;
 using System.Collections;
+using TMPro;
+using UnityEngine;
 
 public class TimeDisplay : MonoBehaviour
 {
-    private TMP_Text clockText;
+    private static TimeDisplay instance;
 
-    void Start()
+    private TMP_Text timeText;
+    private TMP_Text dateText;
+
+    private void Awake()
     {
-        clockText = GetComponent<TMP_Text>();
-        StartCoroutine(UpdateClock());
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    IEnumerator UpdateClock()
+    private void Update()
     {
-        while (true)
-        {
-            clockText.text = System.DateTime.Now.ToString("HH:mm:ss") + "<br>" + System.DateTime.Now.ToString("yyyy.MM.dd");
-            yield return new WaitForSeconds(0.5f);
-        }
+        if (timeText == null)
+            timeText = GameObject.Find("TimeText")?.GetComponent<TMP_Text>();
+        if (dateText == null)
+            dateText = GameObject.Find("DateText")?.GetComponent<TMP_Text>();
+
+        if (timeText != null)
+            timeText.text = DateTime.Now.ToString("HH:mm:ss");
+
+        if (dateText != null)
+            dateText.text = DateTime.Now.ToString("yyyy.MM.dd");
     }
 }
