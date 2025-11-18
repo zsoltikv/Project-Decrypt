@@ -7,7 +7,6 @@ public class OutroCutsceneScript : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
     public GameObject introPanel;
-
     private bool cutsceneEnded = false;
 
     void Start()
@@ -59,9 +58,11 @@ public class OutroCutsceneScript : MonoBehaviour
 
     private System.Collections.IEnumerator FadeOutAndLoad()
     {
+        GameSettingsManager.Instance.videoWatched = true;
+
         if (introPanel == null)
         {
-            SceneManager.LoadScene("GameScene");
+            SceneManager.LoadScene("SecretFileScene");
             yield break;
         }
 
@@ -78,21 +79,18 @@ public class OutroCutsceneScript : MonoBehaviour
         {
             time += Time.deltaTime;
             float t = time / duration;
-
             cg.alpha = Mathf.Lerp(1f, 0f, t);
-
             introPanel.transform.localScale = Vector3.Lerp(
                 Vector3.one,
                 Vector3.one * 0.4f,
                 Mathf.Sin(t * Mathf.PI * 0.5f)
             );
-
             yield return null;
         }
 
         cg.alpha = 0f;
         introPanel.transform.localScale = Vector3.one * 0.4f;
 
-        SceneManager.LoadScene("MenuScene");
+        SceneManager.LoadScene("SecretFileScene");
     }
 }

@@ -25,6 +25,9 @@ public class GameSettingsManager : MonoBehaviour
     public int passLength = 12;
     public string password;
 
+    public bool passwordSuccess = false;
+    public bool videoWatched = false;
+
     void Awake()
     {
         if (Instance == null)

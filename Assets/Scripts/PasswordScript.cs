@@ -15,7 +15,7 @@ public class PasswordScript : MonoBehaviour
     public GameObject infoText;
     public GameObject passwordText;
     public GameObject winPanel;
-
+    public GameObject passwordPanel;
 
     [Header("Fonts")]
     public TMP_FontAsset monoFont;
@@ -23,12 +23,32 @@ public class PasswordScript : MonoBehaviour
 
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "\u2714" };
     private string input = String.Empty;
-
     public CanvasGroup mainCanvasGroup;
 
     public void Start()
     {
-        numPad.GetComponent<GridLayoutGroup>().cellSize = new Vector2(numPad.GetComponent<RectTransform>().rect.width / 3 - 10, numPad.GetComponent<RectTransform>().rect.height / 4 - 10);
+        if (GameSettingsManager.Instance.videoWatched)
+        {
+            if (passwordPanel != null)
+                passwordPanel.SetActive(false);
+
+            if (winPanel != null)
+            {
+                winPanel.SetActive(true);
+                TextMeshProUGUI winText = winPanel.GetComponentInChildren<TextMeshProUGUI>();
+                if (winText != null)
+                {
+                    winText.text = "Access Granted!\nTime Taken: " +
+                        TimeSpan.FromSeconds(TimerScript.Instance.time).ToString(@"mm\:ss\.ff");
+                }
+            }
+            return;
+        }
+
+        numPad.GetComponent<GridLayoutGroup>().cellSize = new Vector2(
+            numPad.GetComponent<RectTransform>().rect.width / 3 - 10,
+            numPad.GetComponent<RectTransform>().rect.height / 4 - 10
+        );
 
         foreach (string value in values)
         {
@@ -41,15 +61,12 @@ public class PasswordScript : MonoBehaviour
             newButton.GetComponentInChildren<Button>().onClick.AddListener(() => OnNumPadButtonClick(newButton));
         }
 
-
         string password = GameSettingsManager.Instance.password;
         int completed = GameSettingsManager.Instance.completedApps.Count;
         int total = GameSettingsManager.Instance.maxApps - 1;
-
         float progress = total > 0 ? (float)completed / total : 0f;
         int revealedChars = Mathf.RoundToInt(progress * password.Length);
         revealedChars = Mathf.Clamp(revealedChars, 0, password.Length);
-
         string visiblePart = password.Substring(0, revealedChars);
         string hiddenPart = new string('*', password.Length - revealedChars);
 
@@ -65,25 +82,26 @@ public class PasswordScript : MonoBehaviour
         infoText.GetComponent<TextMeshProUGUI>().font = monoFont;
         infoText.GetComponent<TextMeshProUGUI>().text = "Enter Password!";
         StartCoroutine(HighLightButton(button));
+
         if (button.GetComponentInChildren<TextMeshProUGUI>().text == "✔")
-        { 
+        {
             if (input == GameSettingsManager.Instance.password.ToString() || input == "9876")
             {
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Granted!";
                 TimerScript.Instance.StopTimer();
-                gameObject.GetComponent<Canvas>().enabled = false;
-                winPanel.SetActive(true);
-                winPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Access Granted!\nTime Taken: " + TimeSpan.FromSeconds(TimerScript.Instance.time).ToString(@"mm\:ss\.ff");
+
+                GameSettingsManager.Instance.passwordSuccess = true;
+
+                StartCoroutine(FadeOutAndLoadScene(0.5f, "OutroCutsceneScene"));
             }
             else
             {
                 infoText.GetComponent<TextMeshProUGUI>().font = redFont;
-
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Denied!";
             }
         }
-        else if(button.GetComponentInChildren<TextMeshProUGUI>().text == "X") 
-        { 
+        else if (button.GetComponentInChildren<TextMeshProUGUI>().text == "X")
+        {
             input = input.Substring(0, Math.Max(0, input.Length - 1));
         }
         else
@@ -95,7 +113,7 @@ public class PasswordScript : MonoBehaviour
 
     IEnumerator HighLightButton(GameObject button)
     {
-        button.GetComponent<Image>().color = new Color(00, 255,0);
+        button.GetComponent<Image>().color = new Color(0, 255, 0);
         yield return new WaitForSeconds(0.1f);
         button.GetComponent<Image>().color = new Color(0, 0, 0);
     }
@@ -123,7 +141,6 @@ public class PasswordScript : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-
     public void OnBack()
     {
         StartCoroutine(FadeOutAndLoadScene(0.5f, "GameScene"));
@@ -134,5 +151,4 @@ public class PasswordScript : MonoBehaviour
         GameSettingsManager.Instance._Reset();
         SceneManager.LoadScene("MenuScene");
     }
-
 }
