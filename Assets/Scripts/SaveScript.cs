@@ -19,6 +19,7 @@ public class SaveScript : MonoBehaviour
     {
         public string playerName;
         public float playTime;
+        public int errorCount;
     }
 
     [System.Serializable]
@@ -44,7 +45,8 @@ public class SaveScript : MonoBehaviour
         SaveData data = new SaveData
         {
             playerName = inputField.GetComponent<TextMeshProUGUI>().text,
-            playTime = TimerScript.Instance.time
+            playTime = TimerScript.Instance.time,
+            errorCount = GameSettingsManager.Instance.errorCount
         };
 
         // Add to list

@@ -15,6 +15,7 @@ public class LeaderboardScript : MonoBehaviour
     {
         public string playerName;
         public float playTime;
+        public int errorCount;
     }
 
     [System.Serializable]
@@ -41,6 +42,7 @@ public class LeaderboardScript : MonoBehaviour
             var newObj = Instantiate(lbObject, list.transform, false);
             newObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = save.playerName;
             newObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = save.playTime.ToString("F2") + "s";
+            newObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = save.errorCount.ToString();
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(list.transform as RectTransform);
     }

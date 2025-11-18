@@ -116,6 +116,7 @@ public class CodeLinkerGame : MonoBehaviour
         if (!targetHash.StartsWith(currentInput))
         {
             resultText.text = "<color=#ff4444>Access Denied.</color>";
+            GameSettingsManager.Instance.errorCount += 1;
             Invoke(nameof(ResetRound), 1f);
         }
         else if (currentInput == targetHash && currentRound >= maxRound)

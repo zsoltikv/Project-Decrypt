@@ -94,6 +94,7 @@ public class BiteSorterScript : MonoBehaviour
         }
         if(GameTimerScript.Timer.timer < 0)
         {
+            GameSettingsManager.Instance.errorCount += 1;
             Debug.Log("Restart triggered!");
             GameTimerScript.Stop();
             GameTimerScript.Timer.timer = 0; 

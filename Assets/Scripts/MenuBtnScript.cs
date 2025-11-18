@@ -37,6 +37,7 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
         if (gameObject.name == "GameBtn")
         {
             AudioManager.instance.StopMusic();
+            GameSettingsManager.Instance.errorCount = 0;
 
             SceneManager.LoadScene("FirstCutsceneScene");
         }

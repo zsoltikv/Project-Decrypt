@@ -25,6 +25,9 @@ public class GameSettingsManager : MonoBehaviour
     public int passLength = 12;
     public string password;
 
+
+    public int errorCount;
+
     void Awake()
     {
         if (Instance == null)

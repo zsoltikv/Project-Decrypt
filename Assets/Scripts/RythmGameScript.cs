@@ -128,6 +128,7 @@ public class RhythmGame : MonoBehaviour
         }
         else
         {
+            GameSettingsManager.Instance.errorCount += 1;
             progressBar.value = Mathf.Clamp01(progressBar.value - progressDecrement);
 
             if (buttonAnimations != null && index < buttonAnimations.Length && buttonAnimations[index] != null)
