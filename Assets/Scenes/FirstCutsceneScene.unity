@@ -280,6 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 325958011}
+  introPanel: {fileID: 325958010}
 --- !u!1 &1545774428
 GameObject:
   m_ObjectHideFlags: 0
