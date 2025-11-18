@@ -183,6 +183,7 @@ public class SequenceHack : MonoBehaviour
             StartCoroutine(FlashButtonWrong(btn));
             isPlayerTurn = false;
             infoText.text = "<color=#FF0000>ACCESS DENIED - SEQUENCE ERROR!</color>";
+            GameSettingsManager.Instance.errorCount += 1;
             StartCoroutine(RestartAfterDelay());
         }
     }

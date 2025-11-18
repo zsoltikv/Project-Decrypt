@@ -28,6 +28,8 @@ public class GameSettingsManager : MonoBehaviour
     public bool passwordSuccess = false;
     public bool videoWatched = false;
 
+    public int errorCount;
+
     void Awake()
     {
         if (Instance == null)
