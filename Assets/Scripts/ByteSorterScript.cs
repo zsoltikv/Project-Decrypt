@@ -79,7 +79,7 @@ public class BiteSorterScript : MonoBehaviour
 
     IEnumerator HideCards(GameObject newCard)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         newCard.transform.GetChild(0).gameObject.SetActive(false);
         newCard.GetComponent<Button>().onClick.AddListener(() => OnCardClicked(newCard));
         GameTimerScript.SetTimerToMax();
@@ -137,7 +137,7 @@ public class BiteSorterScript : MonoBehaviour
             }
             else
             {
-                StartCoroutine(HideCardsAfterDelay(1.5f));
+                StartCoroutine(HideCardsAfterDelay(.5f));
             }
         }
     }

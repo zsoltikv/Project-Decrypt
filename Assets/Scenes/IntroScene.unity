@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1788288464}
+  introPanel: {fileID: 0}
 --- !u!1 &1788288459
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,6 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1788288464}
+  introPanel: {fileID: 1788288459}
 --- !u!1 &1930933371
 GameObject:
   m_ObjectHideFlags: 0
