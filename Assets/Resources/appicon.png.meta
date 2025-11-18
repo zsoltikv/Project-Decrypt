@@ -129,10 +129,10 @@ TextureImporter:
       name: appicon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 3
-        width: 493
-        height: 490
+        x: 139
+        y: 139
+        width: 682
+        height: 684
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      appicon_0: -8494282737241094760
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
