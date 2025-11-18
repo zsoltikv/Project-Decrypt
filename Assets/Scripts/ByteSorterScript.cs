@@ -11,10 +11,7 @@ public class BiteSorterScript : MonoBehaviour
 {
     public GameObject card;
     public GameObject winPanel;
-    public GameObject timerText;
-    public GameObject infoText;
     
-
     private int gridWith;
     private int gridHeight;
     private GameObject GridObject;
@@ -22,9 +19,7 @@ public class BiteSorterScript : MonoBehaviour
     private List<GameObject> selectedCards = new List<GameObject>();
     public int matchesFound = 0;
 
-    private float timer;
-    private float maxtimer;
-    private bool isRunning = false;
+
     List<string> bytePairs = new List<string>();
     void Start()
     {
@@ -36,17 +31,17 @@ public class BiteSorterScript : MonoBehaviour
         switch (GameSettingsManager.Difficulty.Hard)
         {
             case GameSettingsManager.Difficulty.Easy:
-                maxtimer = 60f;
+                GameTimerScript.Timer.maxtimer = 100f;
                 break;
             case GameSettingsManager.Difficulty.Normal:
-                maxtimer = 30f;
+                GameTimerScript.Timer.maxtimer = 80f;
                 break;
             case GameSettingsManager.Difficulty.Hard:
-                maxtimer = 20f;
+                GameTimerScript.Timer.maxtimer = 60f;
                 break;
         }
-        
-        timer = maxtimer;
+
+        GameTimerScript.SetTimerToMax();
         RandBytes();
         GenCards();
 
@@ -84,42 +79,42 @@ public class BiteSorterScript : MonoBehaviour
 
     IEnumerator HideCards(GameObject newCard)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         newCard.transform.GetChild(0).gameObject.SetActive(false);
         newCard.GetComponent<Button>().onClick.AddListener(() => OnCardClicked(newCard));
-        timer = maxtimer;
-        isRunning = true;
+        GameTimerScript.SetTimerToMax();
+        GameTimerScript.Run();
     }
 
     private void Update()
     {
-        if (isRunning)
+        if (GameTimerScript.Timer.isRunning)
         {
-            timer -= Time.deltaTime;
+            GameTimerScript.Timer.timer -= Time.deltaTime;
         }
-        if(timer < 0)
+        if(GameTimerScript.Timer.timer < 0)
         {
             Debug.Log("Restart triggered!");
-            isRunning = false;
-            timer = 0; 
+            GameTimerScript.Stop();
+            GameTimerScript.Timer.timer = 0; 
             StartCoroutine(Restart());
 
         }
-        timerText.GetComponent<TextMeshProUGUI>().text = TimeSpan.FromSeconds(timer).ToString(@"s\.ff");
+        GameTimerScript.SetTimerText(TimeSpan.FromSeconds(GameTimerScript.Timer.timer).ToString(@"s\.ff"));
     }
 
     IEnumerator Restart()
     {
-            infoText.GetComponent<TextMeshProUGUI>().text = "Out of time. Resetting.";
-            yield return new WaitForSeconds(2f);
-            foreach (Transform child in GridObject.transform)
-            {
-                Destroy(child.gameObject);
-            }
-            infoText.GetComponent<TextMeshProUGUI>().text = "Find the pairs!";
-            matchesFound = 0;
-            RandBytes();
-            GenCards();
+        GameTimerScript.SetInfoText("Out of time. Resetting.");
+        yield return new WaitForSeconds(2f);
+        foreach (Transform child in GridObject.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        GameTimerScript.SetInfoText("Find the pairs!");
+        matchesFound = 0;
+        RandBytes();
+        GenCards();
     }
 
     private void OnCardClicked(GameObject newCard)
@@ -142,7 +137,7 @@ public class BiteSorterScript : MonoBehaviour
             }
             else
             {
-                StartCoroutine(HideCardsAfterDelay(1.5f));
+                StartCoroutine(HideCardsAfterDelay(.5f));
             }
         }
     }

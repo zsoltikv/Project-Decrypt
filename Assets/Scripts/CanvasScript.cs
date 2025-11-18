@@ -7,11 +7,16 @@ public class CanvasScript : MonoBehaviour
     [Header("Fade Settings")]
     public float fadeDuration = 0.4f;       
     public float scaleStart = 0.4f;         
-    public float holdTime = 2f;            
+    public float holdTime = 2f;
 
     public void OnBack()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void OnBackToMainMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
     }
 
     public void FadeInPanel(GameObject panel)
