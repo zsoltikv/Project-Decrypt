@@ -16,6 +16,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource audioSource;
     private AudioClip lastShuffleClip;
 
+    public bool musicDisabled = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -31,13 +33,26 @@ public class AudioManager : MonoBehaviour
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.volume = volume;
-        audioSource.loop = false; // alapból ne loopoljon
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        audioSource.loop = false;
+
+        if (!musicDisabled)
+            SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Ha épp a FirstCutsceneScene-ben vagyunk, ne indítsunk zenét
+
+        if (scene.name == "MenuScene")
+        {
+            musicDisabled = false;
+        }
+
+        if (musicDisabled)
+        {
+            audioSource.Stop();
+            return;
+        }
+
         if (scene.name == "FirstCutsceneScene")
             return;
 
@@ -45,14 +60,6 @@ public class AudioManager : MonoBehaviour
         {
             if (!audioSource.isPlaying)
                 PlayIntro();
-        }
-        else if (scene.name == "GameScene")
-        {
-            if (audioSource.isPlaying && audioSource.clip == introSong)
-                audioSource.Stop();
-
-            if (!audioSource.isPlaying)
-                PlayNextShuffle();
         }
         else
         {
@@ -63,9 +70,15 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
+        if (musicDisabled)
+        {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+            return;
+        }
+
         Scene scene = SceneManager.GetActiveScene();
 
-        // Ha FirstCutsceneScene-en vagyunk, ne csináljon semmit
         if (scene.name == "FirstCutsceneScene")
             return;
 
@@ -83,7 +96,7 @@ public class AudioManager : MonoBehaviour
         if (audioSource.clip != introSong)
         {
             audioSource.clip = introSong;
-            audioSource.loop = true; // intro mindig loop
+            audioSource.loop = true; 
             audioSource.Play();
         }
     }
@@ -101,7 +114,7 @@ public class AudioManager : MonoBehaviour
 
         lastShuffleClip = nextClip;
         audioSource.clip = nextClip;
-        audioSource.loop = false; // egy klip mindig végigmegy, nem loop
+        audioSource.loop = false; 
         audioSource.Play();
     }
 

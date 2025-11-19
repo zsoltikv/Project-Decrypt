@@ -92,6 +92,9 @@ public class PasswordScript : MonoBehaviour
 
                 GameSettingsManager.Instance.passwordSuccess = true;
 
+                AudioManager.instance.musicDisabled = true;
+                AudioManager.instance.StopMusic();
+
                 StartCoroutine(FadeOutAndLoadScene(0.5f, "OutroCutsceneScene"));
             }
             else
