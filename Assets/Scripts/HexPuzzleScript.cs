@@ -8,6 +8,11 @@ using System.Collections;
 
 public class CodeLinkerGame : MonoBehaviour
 {
+
+    [Header("Fonts")]
+    public TMP_FontAsset monoFont;
+    public TMP_FontAsset redFont;
+
     [Header("UI References")]
     public GameObject cellPrefab;
     public Transform gridParent;
@@ -115,7 +120,9 @@ public class CodeLinkerGame : MonoBehaviour
 
         if (!targetHash.StartsWith(currentInput))
         {
-            resultText.text = "<color=#ff4444>Access Denied.</color>";
+            resultText.font = redFont;
+            resultText.text = "Access Denied.";
+
             GameSettingsManager.Instance.errorCount += 1;
             Invoke(nameof(ResetRound), 1f);
         }
@@ -194,6 +201,7 @@ public class CodeLinkerGame : MonoBehaviour
     {
         currentInput = "";
         resultText.text = "";
+        resultText.font = monoFont;
         foreach (var c in cells) c.ResetColor();
     }
 

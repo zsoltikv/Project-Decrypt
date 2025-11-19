@@ -791,6 +791,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c2c5a16aa86ba408bfe6c9ed90ccce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monoFont: {fileID: 11400000, guid: 200cf713274c4f84a8877bd6c8c831de, type: 2}
+  redFont: {fileID: 11400000, guid: 82750e2f6d0022843ba012568d30b4a7, type: 2}
   cellPrefab: {fileID: 9174773161925748263, guid: 8e5b3b23a4f140348b18fbb9c2ae7c7f, type: 3}
   gridParent: {fileID: 1885252400}
   targetText: {fileID: 949132467}
