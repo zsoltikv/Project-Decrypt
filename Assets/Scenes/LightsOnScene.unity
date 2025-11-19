@@ -304,8 +304,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Turned On Switches: 0/5'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 29d23a8f7d171244f83bcffd50127fd1, type: 2}
-  m_sharedMaterial: {fileID: 8526990350301372031, guid: 29d23a8f7d171244f83bcffd50127fd1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 200cf713274c4f84a8877bd6c8c831de, type: 2}
+  m_sharedMaterial: {fileID: 3664094582928319482, guid: 200cf713274c4f84a8877bd6c8c831de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1447,7 +1447,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Lights Turned On.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 29d23a8f7d171244f83bcffd50127fd1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 200cf713274c4f84a8877bd6c8c831de, type: 2}
   m_sharedMaterial: {fileID: 8526990350301372031, guid: 29d23a8f7d171244f83bcffd50127fd1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1513,7 +1513,7 @@ MonoBehaviour:
   m_margin: {x: -492.28217, y: 0, z: 1823.3813, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1854445510
