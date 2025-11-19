@@ -57,7 +57,6 @@ public class SaveScript : MonoBehaviour
         File.WriteAllText(filePath, newJson);
 
         GameSettingsManager.Instance._Reset();
-        SceneManager.LoadScene("MenuScene");
 
         Debug.Log($"Saved at: {filePath}");
     }
