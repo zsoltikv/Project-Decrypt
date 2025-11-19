@@ -680,11 +680,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7838718572656044980, guid: d4f520e5f1c94d746b40549fa544e401, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 182.79999
+      value: 225
       objectReference: {fileID: 0}
     - target: {fileID: 7838718572656044980, guid: d4f520e5f1c94d746b40549fa544e401, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -126.600006
+      value: -126.599976
       objectReference: {fileID: 0}
     - target: {fileID: 7838718572656044980, guid: d4f520e5f1c94d746b40549fa544e401, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -874,6 +874,18 @@ PrefabInstance:
     - target: {fileID: 4195614940425990189, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_Name
       value: TimerObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979146030588470759, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 666
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946604502159470954, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -533
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946604502159470954, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 361
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
