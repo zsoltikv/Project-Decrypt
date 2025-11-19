@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class LeaderboardScript : MonoBehaviour
         public string playerName;
         public float playTime;
         public int errorCount;
+        public string difficulty;
     }
 
     [System.Serializable]
@@ -26,7 +28,21 @@ public class LeaderboardScript : MonoBehaviour
 
     void Start()
     {
-        SaveDataList allSave = new SaveDataList();
+        ClearList();
+        LoadListFromFile();
+    }
+
+    public void ClearList()
+    {
+        foreach (Transform child in list.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void LoadListFromFile()
+    {
+                SaveDataList allSave = new SaveDataList();
         string filePath = Path.Combine(Application.persistentDataPath, "savefile.json");
 
         if (File.Exists(filePath))
@@ -43,8 +59,21 @@ public class LeaderboardScript : MonoBehaviour
             newObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = save.playerName;
             newObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = save.playTime.ToString("F2") + "s";
             newObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = save.errorCount.ToString();
+            newObj.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = save.difficulty;
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(list.transform as RectTransform);
+    }
+
+    public void Reset()
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, "savefile.json");
+
+        if (File.Exists(filePath))
+        {
+            File.WriteAllText(filePath, "");
+        }
+
+        ClearList();
     }
 
 

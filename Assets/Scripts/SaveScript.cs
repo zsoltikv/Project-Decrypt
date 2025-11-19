@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 public class SaveScript : MonoBehaviour
 {
     [Header("Button")]
-    public GameObject saveButton;
-
     public GameObject inputField;
 
     [Header("Data")]
@@ -20,6 +18,7 @@ public class SaveScript : MonoBehaviour
         public string playerName;
         public float playTime;
         public int errorCount;
+        public string difficulty;
     }
 
     [System.Serializable]
@@ -46,7 +45,8 @@ public class SaveScript : MonoBehaviour
         {
             playerName = inputField.GetComponent<TextMeshProUGUI>().text,
             playTime = TimerScript.Instance.time,
-            errorCount = GameSettingsManager.Instance.errorCount
+            errorCount = GameSettingsManager.Instance.errorCount,
+            difficulty = GameSettingsManager.Instance.currentDifficulty.ToString()
         };
 
         // Add to list
@@ -61,4 +61,5 @@ public class SaveScript : MonoBehaviour
 
         Debug.Log($"Saved at: {filePath}");
     }
+
 }
