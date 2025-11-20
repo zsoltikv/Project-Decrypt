@@ -77,5 +77,6 @@ public class GameSettingsManager : MonoBehaviour
         appList.Clear();
         currentDifficulty = Difficulty.Normal;
         saveUsedThisRun = false;
+        videoWatched = false;
     }
 }
