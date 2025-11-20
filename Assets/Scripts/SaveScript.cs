@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -30,9 +30,14 @@ public class SaveScript : MonoBehaviour
 
     public void OnSave()
     {
+        if (GameSettingsManager.Instance.saveUsedThisRun)
+        {
+            Debug.Log("Egy végigjátszás alatt csak egyszer lehet menteni!");
+            return;
+        }
+
         string filePath = Path.Combine(Application.persistentDataPath, "savefile.json");
 
-        // Load existing saves (if any)
         SaveDataList allData = new SaveDataList();
         if (File.Exists(filePath))
         {
@@ -40,7 +45,6 @@ public class SaveScript : MonoBehaviour
             allData = JsonUtility.FromJson<SaveDataList>(existingJson) ?? new SaveDataList();
         }
 
-        // Create new save entry
         SaveData data = new SaveData
         {
             playerName = inputField.GetComponent<TextMeshProUGUI>().text,
@@ -49,16 +53,13 @@ public class SaveScript : MonoBehaviour
             difficulty = GameSettingsManager.Instance.currentDifficulty.ToString()
         };
 
-        // Add to list
         allData.saves.Add(data);
 
-        // Write back the updated list
         string newJson = JsonUtility.ToJson(allData, true);
         File.WriteAllText(filePath, newJson);
 
-        GameSettingsManager.Instance._Reset();
+        GameSettingsManager.Instance.saveUsedThisRun = true;
 
         Debug.Log($"Saved at: {filePath}");
     }
-
 }
