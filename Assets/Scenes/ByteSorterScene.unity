@@ -338,7 +338,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 418763780}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -371,6 +371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card: {fileID: 6319276538106833876, guid: 87c3b51f3c976314a90e07e0d82597d2, type: 3}
   winPanel: {fileID: 585065803}
+  GridObject: {fileID: 2108720701}
   matchesFound: 0
 --- !u!224 &439101078 stripped
 RectTransform:
@@ -1059,10 +1060,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 418763784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.025, y: 0.08}
-  m_AnchorMax: {x: 0.97, y: 0.78}
-  m_AnchoredPosition: {x: -2.5649414, y: -32}
-  m_SizeDelta: {x: -5.13, y: 6.5599976}
+  m_AnchorMin: {x: 0.08, y: 0.15}
+  m_AnchorMax: {x: 0.92, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0.6375122}
+  m_SizeDelta: {x: 0, y: 1.275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2108720703
 MonoBehaviour:

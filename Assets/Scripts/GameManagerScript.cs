@@ -29,6 +29,8 @@ public class GameSettingsManager : MonoBehaviour
 
     public int errorCount;
 
+    public bool saveUsedThisRun = false;
+
     void Awake()
     {
         if (Instance == null)
@@ -74,5 +76,7 @@ public class GameSettingsManager : MonoBehaviour
         completedApps.Clear();
         appList.Clear();
         currentDifficulty = Difficulty.Normal;
+        saveUsedThisRun = false;
+        videoWatched = false;
     }
 }

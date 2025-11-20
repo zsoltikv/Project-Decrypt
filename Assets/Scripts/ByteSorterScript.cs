@@ -14,7 +14,7 @@ public class BiteSorterScript : MonoBehaviour
     
     private int gridWith;
     private int gridHeight;
-    private GameObject GridObject;
+    public GameObject GridObject;
     private string[] bytes = new string[6];
     private List<GameObject> selectedCards = new List<GameObject>();
     public int matchesFound = 0;
@@ -23,10 +23,21 @@ public class BiteSorterScript : MonoBehaviour
     List<string> bytePairs = new List<string>();
     void Start()
     {
-        gridWith = Display.main.systemWidth / 8;
-        gridHeight = Display.main.systemHeight / 4;
-        GridObject = gameObject.transform.GetChild(1).gameObject;
-        GridObject.GetComponent<GridLayoutGroup>().cellSize = new Vector2(gridWith, gridHeight);
+        RectTransform gridRect = GridObject.GetComponent<RectTransform>();
+
+        float gridWidth = gridRect.rect.width;
+        float gridHeight = gridRect.rect.height;
+
+        int cols = 4;
+        int rows = 3;
+
+        float spacing = GridObject.GetComponent<GridLayoutGroup>().spacing.x;
+
+        float cellWidth = (gridWidth - spacing * (cols-1)) / cols;
+        float cellHeight = (gridHeight - spacing * (rows-1)) / rows;
+
+        GridObject.GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, cellHeight);
+
 
         switch (GameSettingsManager.Difficulty.Hard)
         {
