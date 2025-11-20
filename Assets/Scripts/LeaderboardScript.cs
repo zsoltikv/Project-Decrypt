@@ -41,7 +41,13 @@ public class LeaderboardScript : MonoBehaviour
 
     public void LoadListFromFile()
     {
-                SaveDataList allSave = new SaveDataList();
+        var headerObj = Instantiate(lbObject, list.transform, false);
+        headerObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Name";
+        headerObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time";
+        headerObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Error";
+        headerObj.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Difficulty";
+
+        SaveDataList allSave = new SaveDataList();
         string filePath = Path.Combine(Application.persistentDataPath, "savefile.json");
 
         if (File.Exists(filePath))
