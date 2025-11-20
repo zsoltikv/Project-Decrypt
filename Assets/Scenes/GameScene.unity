@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 50615689}
   - component: {fileID: 50615688}
   - component: {fileID: 50615692}
+  - component: {fileID: 50615693}
+  - component: {fileID: 50615694}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -239,6 +241,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appButton: {fileID: 6777397412375097739, guid: af409ac6acccc65488290a584232ccf8, type: 3}
   appGrid: {fileID: 1765719593}
+--- !u!225 &50615693
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50615687}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &50615694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50615687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f57e4600286d84384b276cbc8e6ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 1
 --- !u!1 &159100344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8530880313806153368, guid: dded0cebc0b0c2f498f37341b88a1ab3, type: 3}
@@ -626,9 +653,9 @@ MonoBehaviour:
   maxApps: 0
   passLength: 9
   password: 
-  passwordSuccess: 0
   videoWatched: 0
   errorCount: 0
+  saveUsedThisRun: 0
 --- !u!1 &397823035
 GameObject:
   m_ObjectHideFlags: 0
