@@ -90,8 +90,6 @@ public class PasswordScript : MonoBehaviour
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Granted!";
                 TimerScript.Instance.StopTimer();
 
-                GameSettingsManager.Instance.passwordSuccess = true;
-
                 AudioManager.instance.musicDisabled = true;
                 AudioManager.instance.StopMusic();
 

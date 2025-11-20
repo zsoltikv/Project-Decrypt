@@ -25,7 +25,6 @@ public class GameSettingsManager : MonoBehaviour
     public int passLength = 12;
     public string password;
 
-    public bool passwordSuccess = false;
     public bool videoWatched = false;
 
     public int errorCount;
@@ -73,9 +72,11 @@ public class GameSettingsManager : MonoBehaviour
     {
         isSet = false;
         shouldGenAppList = true;
+        videoWatched = false;
         completedApps.Clear();
         appList.Clear();
         currentDifficulty = Difficulty.Normal;
         saveUsedThisRun = false;
+        videoWatched = false;
     }
 }

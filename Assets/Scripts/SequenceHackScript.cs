@@ -116,7 +116,7 @@ public class SequenceHack : MonoBehaviour
             if (outline != null)
             {
                 outline.effectColor = new Color(0f, 1f, 0.8f, pulse);
-                outline.effectDistance = new Vector2(3, 3) * (1 + pulse);
+                outline.effectDistance = new Vector2(5, 5) * (1 + pulse);
             }
 
             elapsed += Time.deltaTime;
@@ -201,8 +201,6 @@ public class SequenceHack : MonoBehaviour
         {
             float t = elapsed / duration;
             img.color = Color.Lerp(defaultColor, highlightColor, 1 - t);
-            if (outline != null)
-                outline.effectDistance = Vector2.Lerp(new Vector2(5, 5), new Vector2(2, 2), t);
 
             elapsed += Time.deltaTime;
             yield return null;
