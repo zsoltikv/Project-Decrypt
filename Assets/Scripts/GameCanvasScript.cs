@@ -25,6 +25,11 @@ public class GameCanvasScript : MonoBehaviour
             gsm.shouldGenAppList = false;
         }
 
+        foreach (Transform child in appGrid.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         foreach (string app in gsm.appList)
         {
             GenAppIcon(app);
@@ -37,13 +42,24 @@ public class GameCanvasScript : MonoBehaviour
         newApp.transform.SetParent(appGrid.transform, false);
         newApp.transform.localScale = new Vector3(1, 1, 1);
         newApp.name = appName;
-        newApp.GetComponentInChildren<TextMeshProUGUI>().text = appName;
+
+        var text = newApp.GetComponentInChildren<TextMeshProUGUI>();
+        var rawImage = newApp.GetComponentInChildren<RawImage>(); 
+
+        text.text = appName;
+
         if (gsm.completedApps.Contains(appName))
         {
-            newApp.GetComponentInChildren<TextMeshProUGUI>().text += " [✔]";
+            text.text += " [Done]";
+            rawImage.color = new Color(0.22f, 0.22f, 0.22f, 1f);  
         }
-        newApp.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>("AppIcons/" + appName);
-        newApp.AddComponent<AppScript>();
+        else
+        {
+            rawImage.color = Color.white;
+            newApp.AddComponent<AppScript>();
+        }
+
+        rawImage.texture = Resources.Load<Texture>("AppIcons/" + appName);
     }
 
     public List<string> GenAppList()
