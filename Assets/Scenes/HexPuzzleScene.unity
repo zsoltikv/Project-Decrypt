@@ -456,8 +456,12 @@ PrefabInstance:
       value: TimerObject
       objectReference: {fileID: 0}
     - target: {fileID: 5176527986676820534, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
+      propertyPath: m_text
+      value: 'Time remaining: 29,14'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5176527986676820534, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_fontSize
-      value: 72
+      value: 60.65
       objectReference: {fileID: 0}
     - target: {fileID: 5176527986676820534, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_margin.w
@@ -473,7 +477,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5176527986676820534, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_margin.z
-      value: 0
+      value: -613.2722
+      objectReference: {fileID: 0}
+    - target: {fileID: 5176527986676820534, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 60.65
       objectReference: {fileID: 0}
     - target: {fileID: 5176527986676820534, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_enableAutoSizing
@@ -505,11 +513,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8946604502159470954, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -297
+      value: -378
       objectReference: {fileID: 0}
     - target: {fileID: 8946604502159470954, guid: 3ab6192583432b443af06f06b1f2c4a6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -147
+      value: -359
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -642,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f57e4600286d84384b276cbc8e6ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeDuration: 5
+  fadeDuration: 1
 --- !u!225 &560235247
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -651,7 +659,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 560235241}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1478,7 +1486,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 416, y: -792}
+  m_AnchoredPosition: {x: 416, y: -663}
   m_SizeDelta: {x: 403.6968, y: 140.2085}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2140650016

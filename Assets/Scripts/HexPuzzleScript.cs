@@ -76,16 +76,13 @@ public class CodeLinkerGame : MonoBehaviour
             GameTimerScript.Timer.timer -= Time.deltaTime;
         }
 
-        if (GameTimerScript.Timer.timer < 0 && GameTimerScript.Timer.isRunning)
+        if (GameTimerScript.Timer.timer <= 0 && GameTimerScript.Timer.isRunning)
         {
-            //GameSettingsManager.Instance.errorCount += 1;
-            Debug.Log("timer 0");
             GameTimerScript.Stop();
-            GameTimerScript.Timer.timer = 0;;
-            Invoke(nameof(rounderror), 0f);
+            RestartGame();
         }
 
-        GameTimerScript.SetTimerText(TimeSpan.FromSeconds(GameTimerScript.Timer.timer).ToString(@"s\.ff"));
+        GameTimerScript.SetTimerText("Time remaining: " + TimeSpan.FromSeconds(GameTimerScript.Timer.timer).ToString(@"s\.ff"));
     }
 
     void GenerateGrid()
@@ -107,9 +104,15 @@ public class CodeLinkerGame : MonoBehaviour
 
     public void GenerateNewHash()
     {
+        // Gyűjtsük az elérhető karaktereket közvetlenül a cells listából
         List<string> availableChars = new List<string>();
-        foreach (Transform cell in gridParent)
-            availableChars.Add(cell.GetComponentInChildren<TextMeshProUGUI>().text);
+        foreach (var cb in cells)
+        {
+            if (cb == null) continue;
+            // Feltételezem, hogy a CellButton-ban van egy 'value' string mező
+            if (!string.IsNullOrEmpty(cb.value))
+                availableChars.Add(cb.value.ToUpper()); // normalizáljuk nagybetűre
+        }
 
         if (availableChars.Count == 0)
         {
@@ -156,9 +159,18 @@ public class CodeLinkerGame : MonoBehaviour
         else if (currentInput == targetHash)
         {
             resultText.text = "<color=#00ff88>Access Granted. </color>";
-            currentRound++;
-            Invoke(nameof(NextRound), 1f);
 
+            GameTimerScript.Stop(); // 🔴 TIMER MEGÁLL
+
+            if (currentRound >= maxRound)
+            {
+                StartCoroutine(WinAndReturn());
+            }
+            else
+            {
+                currentRound++;
+                Invoke(nameof(NextRound), 1f);
+            }
         }
     }
 
@@ -232,6 +244,7 @@ public class CodeLinkerGame : MonoBehaviour
 
     void ResetRound()
     {
+        GameTimerScript.Stop();
         currentInput = "";
         resultText.text = "";
         resultText.font = monoFont;
@@ -249,4 +262,19 @@ public class CodeLinkerGame : MonoBehaviour
         }
         GenerateNewHash();
     }
+
+    void RestartGame()
+    {
+        currentRound = 1;
+        currentInput = "";
+        resultText.text = "";
+        resultText.font = monoFont;
+
+        GenerateGrid();
+        GenerateNewHash();
+
+        GameTimerScript.SetTimerToMax();
+        GameTimerScript.Run();
+    }
+
 }
