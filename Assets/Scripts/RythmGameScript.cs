@@ -21,7 +21,7 @@ public class RhythmGame : MonoBehaviour
     public GameObject winPanel;
 
     [Header("Gameplay Settings")]
-    public float reactionTime = 1.5f;
+    public float reactionTime = 1f;
     public float progressIncrement;
     public float progressDecrement;
 
