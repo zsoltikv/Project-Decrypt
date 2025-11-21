@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
 
 public class CodeLinkerGame : MonoBehaviour
 {
@@ -33,12 +34,14 @@ public class CodeLinkerGame : MonoBehaviour
     void Start()
     {
 
+        GameTimerScript.Stop();
         if (winPanel != null)
             winPanel.SetActive(false);
 
         if (GameSettingsManager.Instance == null)
         {
             maxRound = 5;
+            GameTimerScript.Timer.maxtimer = 30f;
         }
         else
         {
@@ -46,21 +49,43 @@ public class CodeLinkerGame : MonoBehaviour
             {
                 case GameSettingsManager.Difficulty.Easy:
                     maxRound = 5;
+                    GameTimerScript.Timer.maxtimer = 30f;
                     break;
                 case GameSettingsManager.Difficulty.Normal:
+                    GameTimerScript.Timer.maxtimer = 25f;
                     maxRound = 7;
                     break;
                 case GameSettingsManager.Difficulty.Hard:
+                    GameTimerScript.Timer.maxtimer = 20f;
                     maxRound = 9;
                     break;
                 default:
                     break;
             }
         }
-
+        GameTimerScript.SetTimerToMax();
         GenerateGrid();
         GenerateNewHash();
         resultText.text = "";
+    }
+
+    void Update()
+    {
+        if (GameTimerScript.Timer.isRunning)
+        {
+            GameTimerScript.Timer.timer -= Time.deltaTime;
+        }
+
+        if (GameTimerScript.Timer.timer < 0 && GameTimerScript.Timer.isRunning)
+        {
+            //GameSettingsManager.Instance.errorCount += 1;
+            Debug.Log("timer 0");
+            GameTimerScript.Stop();
+            GameTimerScript.Timer.timer = 0;;
+            Invoke(nameof(rounderror), 0f);
+        }
+
+        GameTimerScript.SetTimerText(TimeSpan.FromSeconds(GameTimerScript.Timer.timer).ToString(@"s\.ff"));
     }
 
     void GenerateGrid()
@@ -74,7 +99,7 @@ public class CodeLinkerGame : MonoBehaviour
         {
             GameObject cellObj = Instantiate(cellPrefab, gridParent);
             CellButton cb = cellObj.GetComponent<CellButton>();
-            string value = hexChars[Random.Range(0, hexChars.Length)].ToString();
+            string value = hexChars[UnityEngine.Random.Range(0, hexChars.Length)].ToString();
             cb.Setup(value, this);
             cells.Add(cb);
         }
@@ -101,7 +126,7 @@ public class CodeLinkerGame : MonoBehaviour
 
         for (int i = 0; i < hashLength; i++)
         {
-            int index = Random.Range(0, pool.Count);
+            int index = UnityEngine.Random.Range(0, pool.Count);
             target.Append(pool[index]);
             pool.RemoveAt(index);
         }
@@ -109,6 +134,8 @@ public class CodeLinkerGame : MonoBehaviour
         currentInput = "";
         targetHash = target.ToString();
         targetText.text = $"Target ({currentRound}/{maxRound}): {targetHash}";
+        GameTimerScript.SetTimerToMax();
+        GameTimerScript.Run();
     }
 
     public void OnCellSelected(CellButton cell)
@@ -120,11 +147,7 @@ public class CodeLinkerGame : MonoBehaviour
 
         if (!targetHash.StartsWith(currentInput))
         {
-            resultText.font = redFont;
-            resultText.text = "Access Denied.";
-
-            GameSettingsManager.Instance.errorCount += 1;
-            Invoke(nameof(ResetRound), 1f);
+                Invoke(nameof(rounderror), 0f);
         }
         else if (currentInput == targetHash && currentRound >= maxRound)
         {
@@ -135,7 +158,17 @@ public class CodeLinkerGame : MonoBehaviour
             resultText.text = "<color=#00ff88>Access Granted. </color>";
             currentRound++;
             Invoke(nameof(NextRound), 1f);
+
         }
+    }
+
+    private void rounderror()
+    {
+            resultText.font = redFont;
+            resultText.text = "Access Denied.";
+
+            GameSettingsManager.Instance.errorCount += 1;
+            Invoke(nameof(ResetRound), 1f);
     }
 
     IEnumerator WinAndReturn()
@@ -210,7 +243,7 @@ public class CodeLinkerGame : MonoBehaviour
         resultText.text = "";
         foreach (var c in cells)
         {
-            c.value = hexChars[Random.Range(0, hexChars.Length)].ToString();
+            c.value = hexChars[UnityEngine.Random.Range(0, hexChars.Length)].ToString();
             c.UpdateText();
             c.ResetColor();
         }
