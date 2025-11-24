@@ -192,7 +192,6 @@ public class SequenceHack : MonoBehaviour
     IEnumerator FlashButtonCorrect(Button btn)
     {
         Image img = btn.GetComponent<Image>();
-        Outline outline = btn.GetComponent<Outline>();
 
         float duration = 0.3f;
         float elapsed = 0;

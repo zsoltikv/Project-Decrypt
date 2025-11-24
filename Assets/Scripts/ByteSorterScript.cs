@@ -39,7 +39,7 @@ public class BiteSorterScript : MonoBehaviour
         GridObject.GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, cellHeight);
 
 
-        switch (GameSettingsManager.Difficulty.Hard)
+        switch (GameSettingsManager.Instance.currentDifficulty)
         {
             case GameSettingsManager.Difficulty.Easy:
                 GameTimerScript.Timer.maxtimer = 80f;

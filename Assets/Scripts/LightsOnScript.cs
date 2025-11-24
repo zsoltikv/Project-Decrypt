@@ -51,13 +51,6 @@ public class LightsOnPuzzle : MonoBehaviour
 
             if (i - 1 >= 0) influenceMap[i].Add(i - 1);
             if (i + 1 < switches.Length) influenceMap[i].Add(i + 1);
-
-            /*
-            if (Random.value < 0.75f && i - 2 >= 0)
-                influenceMap[i].Add(i - 2);
-            if (Random.value < 0.5f && i + 2 < switches.Length)
-                influenceMap[i].Add(i + 2);
-            */
         }
     }
 
@@ -164,7 +157,6 @@ public class LightsOnPuzzle : MonoBehaviour
         {
             btn.SetActive(false);
         }
-
 
         CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
         if (cg == null) cg = winPanel.AddComponent<CanvasGroup>();

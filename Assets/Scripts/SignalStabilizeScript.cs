@@ -77,17 +77,14 @@ public class SignalStabilizeMiniGame : MonoBehaviour
     void HandleInput()
     {
         Vector2 screenPos;
-        bool hasInput = false;
 
         if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
         {
             screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
-            hasInput = true;
         }
         else if (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
             screenPos = Mouse.current.position.ReadValue();
-            hasInput = true;
         }
         else
         {
