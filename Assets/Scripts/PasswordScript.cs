@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using AndroidJavaObject vibrator;
 
 public class PasswordScript : MonoBehaviour
 {
@@ -79,6 +80,16 @@ public class PasswordScript : MonoBehaviour
 
     private void OnNumPadButtonClick(GameObject button)
     {
+
+        string buttonValue = button.GetComponentInChildren<TextMeshProUGUI>().text;
+
+        Vibrate(40);
+
+        if (buttonValue == "OK")
+        {
+            Vibrate(120);
+        }
+
         infoText.GetComponent<TextMeshProUGUI>().font = monoFont;
         infoText.GetComponent<TextMeshProUGUI>().text = "Enter Password!";
         StartCoroutine(HighLightButton(button));
@@ -152,4 +163,28 @@ public class PasswordScript : MonoBehaviour
         GameSettingsManager.Instance._Reset();
         SceneManager.LoadScene("MenuScene");
     }
+
+    void Vibrate(long milliseconds)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+    try
+    {
+        using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            vibrator = activity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+
+            if (vibrator != null)
+            {
+                vibrator.Call("vibrate", milliseconds);
+            }
+        }
+    }
+    catch (Exception e)
+    {
+        Debug.Log("Vibration error: " + e.Message);
+    }
+#endif
+    }
+
 }
