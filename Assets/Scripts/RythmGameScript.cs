@@ -181,11 +181,18 @@ public class RhythmGame : MonoBehaviour
             btn.SetActive(false);
         }
 
-
         yield return new WaitForSeconds(2f);
 
         if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("RythmDecode"))
+        {
             GameSettingsManager.Instance.completedApps.Add("RythmDecode");
+
+            // ÚJ: Achievement integráció
+            if (AchievementManager.Instance != null)
+            {
+                AchievementManager.Instance.CheckMiniGameCompletion("RythmDecode");
+            }
+        }
 
         SceneManager.LoadScene("GameScene");
     }

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
 
 public class FirstCutscene : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
-    public GameObject introPanel;  
+    public GameObject introPanel;
 
     private bool cutsceneEnded = false;
 
@@ -53,6 +53,12 @@ public class FirstCutscene : MonoBehaviour
 
         if (videoPlayer.isPlaying)
             videoPlayer.Stop();
+
+        if (AchievementManager.Instance != null && GameSettingsManager.Instance != null)
+        {
+            GameSettingsManager.Instance.videoWatched = true;
+            AchievementManager.Instance.UnlockAchievement("movie_buff");
+        }
 
         StartCoroutine(FadeOutAndLoad());
     }

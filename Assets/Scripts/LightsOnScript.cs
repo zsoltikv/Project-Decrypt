@@ -190,7 +190,15 @@ public class LightsOnPuzzle : MonoBehaviour
         if (GameSettingsManager.Instance != null)
         {
             if (GameSettingsManager.Instance.completedApps != null && !GameSettingsManager.Instance.completedApps.Contains("LightsOn"))
+            {
                 GameSettingsManager.Instance.completedApps.Add("LightsOn");
+
+                // ÚJ: Achievement integráció
+                if (AchievementManager.Instance != null)
+                {
+                    AchievementManager.Instance.CheckMiniGameCompletion("LightsOn");
+                }
+            }
         }
 
         SceneManager.LoadScene(gameSceneName);

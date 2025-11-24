@@ -26,21 +26,17 @@ public class AchievementManager : MonoBehaviour
     {
         achievements.Clear();
 
-        // Alap játék achievement-ek
         achievements.Add(new Achievement("first_app", "First Steps", "Complete your first mini-game"));
         achievements.Add(new Achievement("complete_5_apps", "Getting Started", "Complete 5 mini-games"));
         achievements.Add(new Achievement("complete_all_apps", "Completionist", "Complete all mini-games in a single run"));
 
-        // Nehézségi szintek
         achievements.Add(new Achievement("win_easy", "Casual Hacker", "Win a game on Easy difficulty"));
         achievements.Add(new Achievement("win_normal", "Skilled Operator", "Win a game on Normal difficulty"));
         achievements.Add(new Achievement("win_hard", "Elite Hacker", "Win a game on Hard difficulty"));
 
-        // Hiba nélküli
         achievements.Add(new Achievement("no_errors", "Flawless", "Complete a game without any errors"));
         achievements.Add(new Achievement("no_errors_hard", "Perfectionist", "Complete a game on Hard difficulty without errors"));
 
-        // Specifikus mini-game achievement-ek
         achievements.Add(new Achievement("byte_master", "Byte Master", "Complete ByteSorter mini-game"));
         achievements.Add(new Achievement("cable_expert", "Cable Expert", "Complete CableConnecting mini-game"));
         achievements.Add(new Achievement("hex_wizard", "Hex Wizard", "Complete HexPuzzle mini-game"));
@@ -51,19 +47,15 @@ public class AchievementManager : MonoBehaviour
         achievements.Add(new Achievement("lights_solver", "Lights Solver", "Complete LightsOn mini-game"));
         achievements.Add(new Achievement("malware_defender", "Malware Defender", "Complete MalwareDefender mini-game"));
 
-        // Sebesség achievement-ek
         achievements.Add(new Achievement("speed_runner", "Speed Runner", "Complete a game in under 5 minutes"));
         achievements.Add(new Achievement("lightning_fast", "Lightning Fast", "Complete a game in under 3 minutes"));
 
-        // Kitartás
         achievements.Add(new Achievement("persistent", "Persistent", "Play 10 games total"));
         achievements.Add(new Achievement("dedicated", "Dedicated", "Play 25 games total"));
         achievements.Add(new Achievement("addicted", "Addicted", "Play 50 games total"));
 
-        // Save rendszer
         achievements.Add(new Achievement("save_master", "Save Master", "Use the save feature for the first time"));
 
-        // Videó
         achievements.Add(new Achievement("movie_buff", "Movie Buff", "Watch the intro video"));
     }
 
@@ -163,16 +155,13 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
-    // Helper metódusok achievement feloldáshoz
     public void CheckMiniGameCompletion(string appName)
     {
-        // Elsõ mini-game achievement
         if (GetUnlockedCount() == 0)
         {
             UnlockAchievement("first_app");
         }
 
-        // Specifikus mini-game achievement-ek
         switch (appName)
         {
             case "ByteSorter":
@@ -204,14 +193,12 @@ public class AchievementManager : MonoBehaviour
                 break;
         }
 
-        // 5 app elérése
         if (GameSettingsManager.Instance != null &&
             GameSettingsManager.Instance.completedApps.Count >= 5)
         {
             UnlockAchievement("complete_5_apps");
         }
 
-        // Összes app elérése
         if (GameSettingsManager.Instance != null &&
             GameSettingsManager.Instance.completedApps.Count >= GameSettingsManager.Instance.maxApps)
         {

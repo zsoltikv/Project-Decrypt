@@ -237,8 +237,17 @@ public class SequenceHack : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        if(GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("SequenceHack"))
+
+        if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("SequenceHack"))
+        {
             GameSettingsManager.Instance.completedApps.Add("SequenceHack");
+
+            // ÚJ: Achievement integráció
+            if (AchievementManager.Instance != null)
+            {
+                AchievementManager.Instance.CheckMiniGameCompletion("SequenceHack");
+            }
+        }
 
         SceneManager.LoadScene("GameScene");
     }

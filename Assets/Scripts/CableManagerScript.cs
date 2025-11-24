@@ -231,7 +231,14 @@ public class CableManager : MonoBehaviour
         WinPanel.SetActive(true);
 
         if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("CableConnecting"))
+        {
             GameSettingsManager.Instance.completedApps.Add("CableConnecting");
+
+            if (AchievementManager.Instance != null)
+            {
+                AchievementManager.Instance.CheckMiniGameCompletion("CableConnecting");
+            }
+        }
 
         GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
         foreach (GameObject btn in backButtons)
@@ -247,7 +254,6 @@ public class CableManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
 
         SceneManager.LoadScene("GameScene");
-
     }
 
     private IEnumerator FadeOutAndDestroy(RectTransform cable)

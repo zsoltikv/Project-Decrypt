@@ -223,7 +223,6 @@ public class SignalStabilizeMiniGame : MonoBehaviour
             btn.SetActive(false);
         }
 
-
         CanvasGroup cg = winPanel.GetComponent<CanvasGroup>();
         if (cg == null)
             cg = winPanel.AddComponent<CanvasGroup>();
@@ -253,7 +252,15 @@ public class SignalStabilizeMiniGame : MonoBehaviour
         cg.alpha = 1f;
 
         if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("SignalStabilize"))
+        {
             GameSettingsManager.Instance.completedApps.Add("SignalStabilize");
+
+            // ÚJ: Achievement integráció
+            if (AchievementManager.Instance != null)
+            {
+                AchievementManager.Instance.CheckMiniGameCompletion("SignalStabilize");
+            }
+        }
 
         yield return new WaitForSeconds(2f);
 

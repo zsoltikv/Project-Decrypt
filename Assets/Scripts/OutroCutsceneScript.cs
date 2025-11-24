@@ -60,6 +60,29 @@ public class OutroCutsceneScript : MonoBehaviour
     {
         GameSettingsManager.Instance.videoWatched = true;
 
+        if (AchievementManager.Instance != null && GameSettingsManager.Instance != null)
+        {
+            AchievementManager.Instance.CheckDifficultyWin(GameSettingsManager.Instance.currentDifficulty);
+
+            AchievementManager.Instance.CheckErrorCount(
+                GameSettingsManager.Instance.errorCount,
+                GameSettingsManager.Instance.currentDifficulty
+            );
+
+            if (TimerScript.Instance != null)
+            {
+                float totalTime = TimerScript.Instance.time;
+
+                if (totalTime < 300) 
+                    AchievementManager.Instance.UnlockAchievement("speed_runner");
+
+                if (totalTime < 180) 
+                    AchievementManager.Instance.UnlockAchievement("lightning_fast");
+            }
+
+            IncrementGamesPlayed();
+        }
+
         if (introPanel == null)
         {
             SceneManager.LoadScene("SecretFileScene");
@@ -92,5 +115,20 @@ public class OutroCutsceneScript : MonoBehaviour
         introPanel.transform.localScale = Vector3.one * 0.4f;
 
         SceneManager.LoadScene("SecretFileScene");
+    }
+
+    void IncrementGamesPlayed()
+    {
+        int gamesPlayed = PlayerPrefs.GetInt("GamesPlayed", 0);
+        gamesPlayed++;
+        PlayerPrefs.SetInt("GamesPlayed", gamesPlayed);
+        PlayerPrefs.Save();
+
+        if (gamesPlayed >= 10)
+            AchievementManager.Instance.UnlockAchievement("persistent");
+        if (gamesPlayed >= 25)
+            AchievementManager.Instance.UnlockAchievement("dedicated");
+        if (gamesPlayed >= 50)
+            AchievementManager.Instance.UnlockAchievement("addicted");
     }
 }

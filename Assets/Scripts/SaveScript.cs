@@ -59,6 +59,11 @@ public class SaveScript : MonoBehaviour
 
         GameSettingsManager.Instance.saveUsedThisRun = true;
 
+        if (AchievementManager.Instance != null)
+        {
+            AchievementManager.Instance.UnlockAchievement("save_master");
+        }
+
         Debug.Log($"Saved at: {filePath}");
     }
 }

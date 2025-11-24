@@ -29,7 +29,6 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
                 return;
             }
         }
-
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -70,5 +69,10 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
     public void OnLeaderboard()
     {
         SceneManager.LoadScene("LeaderboardScene");
+    }
+
+    public void OnAchievements()
+    {
+        SceneManager.LoadScene("AchievementScene");
     }
 }

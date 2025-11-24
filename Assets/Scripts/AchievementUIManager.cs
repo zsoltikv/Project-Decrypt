@@ -30,7 +30,6 @@ public class AchievementUIManager : MonoBehaviour
             return;
         }
 
-        // Töröljük a korábbi elemeket
         foreach (Transform child in achievementContainer)
         {
             Destroy(child.gameObject);
@@ -42,7 +41,6 @@ public class AchievementUIManager : MonoBehaviour
         {
             GameObject item = Instantiate(achievementItemPrefab, achievementContainer);
 
-            // Title
             Transform titleTransform = item.transform.Find("TitleText");
             if (titleTransform != null)
             {
@@ -54,7 +52,6 @@ public class AchievementUIManager : MonoBehaviour
                 }
             }
 
-            // Description
             Transform descTransform = item.transform.Find("DescriptionText");
             if (descTransform != null)
             {
@@ -66,7 +63,6 @@ public class AchievementUIManager : MonoBehaviour
                 }
             }
 
-            // Status
             Transform statusTransform = item.transform.Find("StatusText");
             if (statusTransform != null)
             {
@@ -78,7 +74,6 @@ public class AchievementUIManager : MonoBehaviour
                 }
             }
 
-            // Background color
             Image background = item.GetComponent<Image>();
             if (background != null)
             {
@@ -90,7 +85,6 @@ public class AchievementUIManager : MonoBehaviour
 
         }
 
-        // Progress text
         if (progressText != null)
         {
             int unlocked = AchievementManager.Instance.GetUnlockedCount();

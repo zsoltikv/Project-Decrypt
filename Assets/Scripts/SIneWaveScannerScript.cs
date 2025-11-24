@@ -88,7 +88,14 @@ public class SineWaveScanner : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
 
         if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("DualFrequency"))
+        {
             GameSettingsManager.Instance.completedApps.Add("DualFrequency");
+
+            if (AchievementManager.Instance != null)
+            {
+                AchievementManager.Instance.CheckMiniGameCompletion("DualFrequency");
+            }
+        }
 
         SceneManager.LoadScene("GameScene");
     }
