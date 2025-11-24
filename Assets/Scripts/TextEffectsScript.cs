@@ -25,7 +25,6 @@ public class TextEffects : MonoBehaviour
     public void Shake()
     {
         StopAllCoroutines();
-        StartCoroutine(ShakeAnimation());
     }
 
     IEnumerator PulseAnimation()
@@ -40,18 +39,5 @@ public class TextEffects : MonoBehaviour
             yield return null;
         }
         transform.localScale = startScale;
-    }
-
-    IEnumerator ShakeAnimation()
-    {
-        float shakeTime = 0.28f;
-        float elapsed = 0f;
-        while (elapsed < shakeTime)
-        {
-            transform.localPosition = startPos + (Vector3)(Random.insideUnitCircle * 6f);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        transform.localPosition = startPos;
     }
 }

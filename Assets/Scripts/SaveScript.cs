@@ -32,7 +32,6 @@ public class SaveScript : MonoBehaviour
     {
         if (GameSettingsManager.Instance.saveUsedThisRun)
         {
-            Debug.Log("Egy végigjátszás alatt csak egyszer lehet menteni!");
             return;
         }
 
