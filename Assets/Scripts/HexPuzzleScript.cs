@@ -160,7 +160,7 @@ public class CodeLinkerGame : MonoBehaviour
         {
             resultText.text = "<color=#00ff88>Access Granted. </color>";
 
-            GameTimerScript.Stop(); // 🔴 TIMER MEGÁLL
+            GameTimerScript.Stop();
 
             if (currentRound >= maxRound)
             {
@@ -176,11 +176,11 @@ public class CodeLinkerGame : MonoBehaviour
 
     private void rounderror()
     {
-            resultText.font = redFont;
-            resultText.text = "Access Denied.";
-
-            GameSettingsManager.Instance.errorCount += 1;
-            Invoke(nameof(ResetRound), 1f);
+        resultText.font = redFont;
+        resultText.text = "Access Denied.";
+        GameTimerScript.Stop();
+        GameSettingsManager.Instance.errorCount += 1;
+        Invoke(nameof(ResetRound), 1f);
     }
 
     IEnumerator WinAndReturn()
@@ -198,7 +198,6 @@ public class CodeLinkerGame : MonoBehaviour
         {
             GameSettingsManager.Instance.completedApps.Add("HexPuzzle");
 
-            // ÚJ: Achievement integráció
             if (AchievementManager.Instance != null)
             {
                 AchievementManager.Instance.CheckMiniGameCompletion("HexPuzzle");
@@ -246,16 +245,21 @@ public class CodeLinkerGame : MonoBehaviour
             btn.SetActive(false);
         }
 
-
     }
 
     void ResetRound()
     {
         GameTimerScript.Stop();
+
         currentInput = "";
         resultText.text = "";
         resultText.font = monoFont;
-        foreach (var c in cells) c.ResetColor();
+
+        foreach (var c in cells)
+            c.ResetColor();
+
+        GameTimerScript.SetTimerToMax();
+        GameTimerScript.Run();
     }
 
     void NextRound()
