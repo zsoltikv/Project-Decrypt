@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,8 +22,6 @@ public class PasswordScript : MonoBehaviour
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "OK" };
     private string input = String.Empty;
     public CanvasGroup mainCanvasGroup;
-
-    private AndroidJavaObject vibrator;
 
     public void Start()
     {
@@ -69,6 +65,7 @@ public class PasswordScript : MonoBehaviour
         float progress = total > 0 ? (float)completed / total : 0f;
         int revealedChars = Mathf.RoundToInt(progress * password.Length);
         revealedChars = Mathf.Clamp(revealedChars, 0, password.Length);
+
         string visiblePart = password.Substring(0, revealedChars);
         string hiddenPart = new string('*', password.Length - revealedChars);
 
@@ -81,21 +78,12 @@ public class PasswordScript : MonoBehaviour
 
     private void OnNumPadButtonClick(GameObject button)
     {
-
         string buttonValue = button.GetComponentInChildren<TextMeshProUGUI>().text;
-
-        Vibrate(40);
-
-        if (buttonValue == "OK")
-        {
-            Vibrate(120);
-        }
 
         infoText.GetComponent<TextMeshProUGUI>().font = monoFont;
         infoText.GetComponent<TextMeshProUGUI>().text = "Enter Password!";
-        StartCoroutine(HighLightButton(button));
 
-        if (button.GetComponentInChildren<TextMeshProUGUI>().text == "OK")
+        if (buttonValue == "OK")
         {
             if (input == GameSettingsManager.Instance.password.ToString() || input == "9876")
             {
@@ -113,22 +101,16 @@ public class PasswordScript : MonoBehaviour
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Denied!";
             }
         }
-        else if (button.GetComponentInChildren<TextMeshProUGUI>().text == "X")
+        else if (buttonValue == "X")
         {
             input = input.Substring(0, Math.Max(0, input.Length - 1));
         }
         else
         {
-            input += button.GetComponentInChildren<TextMeshProUGUI>().text;
+            input += buttonValue;
         }
-        pwdDisplay.GetComponentInChildren<TextMeshProUGUI>().text = input;
-    }
 
-    IEnumerator HighLightButton(GameObject button)
-    {
-        button.GetComponent<Image>().color = new Color(0, 255, 0);
-        yield return new WaitForSeconds(0.1f);
-        button.GetComponent<Image>().color = new Color(0, 0, 0);
+        pwdDisplay.GetComponentInChildren<TextMeshProUGUI>().text = input;
     }
 
     IEnumerator FadeOutAndLoadScene(float duration, string sceneName)
@@ -164,28 +146,4 @@ public class PasswordScript : MonoBehaviour
         GameSettingsManager.Instance._Reset();
         SceneManager.LoadScene("MenuScene");
     }
-
-    void Vibrate(long milliseconds)
-    {
-#if UNITY_ANDROID && !UNITY_EDITOR
-    try
-    {
-        using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            vibrator = activity.Call<AndroidJavaObject>("getSystemService", "vibrator");
-
-            if (vibrator != null)
-            {
-                vibrator.Call("vibrate", milliseconds);
-            }
-        }
-    }
-    catch (Exception e)
-    {
-        Debug.Log("Vibration error: " + e.Message);
-    }
-#endif
-    }
-
 }
