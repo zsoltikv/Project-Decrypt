@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using AndroidJavaObject vibrator;
 
 public class PasswordScript : MonoBehaviour
 {
@@ -25,6 +24,8 @@ public class PasswordScript : MonoBehaviour
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "OK" };
     private string input = String.Empty;
     public CanvasGroup mainCanvasGroup;
+
+    private AndroidJavaObject vibrator;
 
     public void Start()
     {
