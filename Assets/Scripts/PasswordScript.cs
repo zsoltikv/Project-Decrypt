@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PasswordScript : MonoBehaviour
 {
@@ -20,16 +21,14 @@ public class PasswordScript : MonoBehaviour
     public TMP_FontAsset redFont;
 
     private string[] values = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "OK" };
-    private string input = String.Empty;
+    private string input = string.Empty;
     public CanvasGroup mainCanvasGroup;
 
     public void Start()
     {
         if (GameSettingsManager.Instance.videoWatched)
         {
-            if (passwordPanel != null)
-                passwordPanel.SetActive(false);
-
+            if (passwordPanel != null) passwordPanel.SetActive(false);
             if (winPanel != null)
             {
                 winPanel.SetActive(true);
@@ -52,7 +51,7 @@ public class PasswordScript : MonoBehaviour
         {
             var newButton = Instantiate(numPadButton);
             newButton.transform.SetParent(numPad.transform, false);
-            newButton.transform.localScale = new Vector3(1, 1, 1);
+            newButton.transform.localScale = Vector3.one;
             newButton.name = "NumPadButton" + value;
             newButton.GetComponentInChildren<TextMeshProUGUI>().text = value;
             newButton.GetComponentInChildren<TextMeshProUGUI>().enableAutoSizing = true;
@@ -65,15 +64,12 @@ public class PasswordScript : MonoBehaviour
         float progress = total > 0 ? (float)completed / total : 0f;
         int revealedChars = Mathf.RoundToInt(progress * password.Length);
         revealedChars = Mathf.Clamp(revealedChars, 0, password.Length);
-
         string visiblePart = password.Substring(0, revealedChars);
         string hiddenPart = new string('*', password.Length - revealedChars);
 
         var tmp = passwordText.GetComponent<TextMeshProUGUI>();
         if (tmp != null)
-        {
             tmp.text = visiblePart + hiddenPart;
-        }
     }
 
     private void OnNumPadButtonClick(GameObject button)
@@ -85,25 +81,30 @@ public class PasswordScript : MonoBehaviour
 
         if (buttonValue == "OK")
         {
-            if (input == GameSettingsManager.Instance.password.ToString() || input == "9876")
+            if (input == GameSettingsManager.Instance.password || input == "9876")
             {
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Granted!";
-                TimerScript.Instance.StopTimer();
+                VibrateSuccess();
 
+                TimerScript.Instance.StopTimer();
                 AudioManager.instance.musicDisabled = true;
                 AudioManager.instance.StopMusic();
-
                 StartCoroutine(FadeOutAndLoadScene(0.5f, "OutroCutsceneScene"));
             }
             else
             {
                 infoText.GetComponent<TextMeshProUGUI>().font = redFont;
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Denied!";
+                VibrateError();
+
+                input = string.Empty;
+                pwdDisplay.GetComponentInChildren<TextMeshProUGUI>().text = input;
             }
         }
         else if (buttonValue == "X")
         {
-            input = input.Substring(0, Math.Max(0, input.Length - 1));
+            if (input.Length > 0)
+                input = input.Substring(0, input.Length - 1);
         }
         else
         {
@@ -113,7 +114,64 @@ public class PasswordScript : MonoBehaviour
         pwdDisplay.GetComponentInChildren<TextMeshProUGUI>().text = input;
     }
 
-    IEnumerator FadeOutAndLoadScene(float duration, string sceneName)
+    private void VibrateError() 
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        try
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject vibrator = activity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+
+            if (vibrator != null)
+            {
+                AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
+                long[] timings = { 0, 100, 150, 100 };
+                int[] amplitudes = { 0, 200, 0, 200 };
+
+                AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
+                    "createWaveform", timings, amplitudes, -1);
+
+                vibrator.Call("vibrate", effect);
+            }
+        }
+        catch { }
+#else
+        Handheld.Vibrate();
+        Invoke("EditorVibrateSecond", 0.25f);
+#endif
+    }
+
+    private void VibrateSuccess() 
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        try
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject vibrator = activity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+
+            if (vibrator != null)
+            {
+                AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
+                AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
+                    "createOneShot", 500, 200);
+
+                vibrator.Call("vibrate", effect);
+            }
+        }
+        catch { }
+#else
+        Handheld.Vibrate();
+#endif
+    }
+
+    private void EditorVibrateSecond()
+    {
+        Handheld.Vibrate();
+    }
+
+    private IEnumerator FadeOutAndLoadScene(float duration, string sceneName)
     {
         if (mainCanvasGroup == null)
         {
@@ -123,7 +181,6 @@ public class PasswordScript : MonoBehaviour
 
         float startAlpha = mainCanvasGroup.alpha;
         float time = 0f;
-
         while (time < duration)
         {
             time += Time.deltaTime;
@@ -131,7 +188,6 @@ public class PasswordScript : MonoBehaviour
             mainCanvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, t);
             yield return null;
         }
-
         mainCanvasGroup.alpha = 0f;
         SceneManager.LoadScene(sceneName);
     }
