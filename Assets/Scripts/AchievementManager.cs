@@ -27,7 +27,6 @@ public class AchievementManager : MonoBehaviour
         achievements.Clear();
 
         achievements.Add(new Achievement("first_app", "First Steps", "Complete your first mini-game"));
-        achievements.Add(new Achievement("complete_5_apps", "Getting Started", "Complete 5 mini-games"));
         achievements.Add(new Achievement("complete_all_apps", "Completionist", "Complete all mini-games in a single run"));
 
         achievements.Add(new Achievement("win_easy", "Casual Hacker", "Win a game on Easy difficulty"));
@@ -49,10 +48,6 @@ public class AchievementManager : MonoBehaviour
 
         achievements.Add(new Achievement("speed_runner", "Speed Runner", "Complete a game in under 5 minutes"));
         achievements.Add(new Achievement("lightning_fast", "Lightning Fast", "Complete a game in under 3 minutes"));
-
-        achievements.Add(new Achievement("persistent", "Persistent", "Play 10 games total"));
-        achievements.Add(new Achievement("dedicated", "Dedicated", "Play 25 games total"));
-        achievements.Add(new Achievement("addicted", "Addicted", "Play 50 games total"));
 
         achievements.Add(new Achievement("save_master", "Save Master", "Use the save feature for the first time"));
 
@@ -194,13 +189,7 @@ public class AchievementManager : MonoBehaviour
         }
 
         if (GameSettingsManager.Instance != null &&
-            GameSettingsManager.Instance.completedApps.Count >= 5)
-        {
-            UnlockAchievement("complete_5_apps");
-        }
-
-        if (GameSettingsManager.Instance != null &&
-            GameSettingsManager.Instance.completedApps.Count >= GameSettingsManager.Instance.maxApps)
+            GameSettingsManager.Instance.completedApps.Count >= GameSettingsManager.Instance.maxApps - 1)
         {
             UnlockAchievement("complete_all_apps");
         }

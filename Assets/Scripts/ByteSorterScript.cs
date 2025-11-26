@@ -180,7 +180,6 @@ public class BiteSorterScript : MonoBehaviour
             {
                 GameSettingsManager.Instance.completedApps.Add("ByteSorter");
 
-                // ÚJ: Achievement feloldása
                 if (AchievementManager.Instance != null)
                 {
                     AchievementManager.Instance.CheckMiniGameCompletion("ByteSorter");

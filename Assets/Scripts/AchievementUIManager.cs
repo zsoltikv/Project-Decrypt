@@ -12,6 +12,10 @@ public class AchievementUIManager : MonoBehaviour
     public TextMeshProUGUI progressText;
     public Button backButton;
 
+    [Header("Font References")]
+    public TMP_FontAsset lockedFont;
+    public TMP_FontAsset unlockedFont;
+
     void Start()
     {
         if (backButton != null)
@@ -70,16 +74,15 @@ public class AchievementUIManager : MonoBehaviour
                 if (statusText != null)
                 {
                     statusText.text = achievement.isUnlocked ? "UNLOCKED" : "LOCKED";
-                    statusText.color = achievement.isUnlocked ? new Color(0f, 1f, 0.5f) : new Color(1f, 0.3f, 0.3f);
+                    statusText.color = achievement.isUnlocked ? new Color32(0, 255, 0, 255) : new Color32(255, 0, 0, 255);
+                    statusText.font = achievement.isUnlocked ? unlockedFont : lockedFont;
                 }
             }
 
             Image background = item.GetComponent<Image>();
             if (background != null)
             {
-                background.color = achievement.isUnlocked ?
-                    new Color(0.1f, 0.3f, 0.2f, 0.8f) :
-                    new Color(0.15f, 0.15f, 0.15f, 0.8f);
+                background.color = achievement.isUnlocked ? new Color(0.09f, 0.18f, 0.09f, 0.8f) : new Color(0.05f, 0.05f, 0.05f, 0.8f);
             }
 
 

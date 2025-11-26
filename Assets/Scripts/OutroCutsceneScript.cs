@@ -63,7 +63,6 @@ public class OutroCutsceneScript : MonoBehaviour
         if (AchievementManager.Instance != null && GameSettingsManager.Instance != null)
         {
             AchievementManager.Instance.CheckDifficultyWin(GameSettingsManager.Instance.currentDifficulty);
-
             AchievementManager.Instance.CheckErrorCount(
                 GameSettingsManager.Instance.errorCount,
                 GameSettingsManager.Instance.currentDifficulty
@@ -79,8 +78,6 @@ public class OutroCutsceneScript : MonoBehaviour
                 if (totalTime < 180) 
                     AchievementManager.Instance.UnlockAchievement("lightning_fast");
             }
-
-            IncrementGamesPlayed();
         }
 
         if (introPanel == null)
@@ -115,20 +112,5 @@ public class OutroCutsceneScript : MonoBehaviour
         introPanel.transform.localScale = Vector3.one * 0.4f;
 
         SceneManager.LoadScene("SecretFileScene");
-    }
-
-    void IncrementGamesPlayed()
-    {
-        int gamesPlayed = PlayerPrefs.GetInt("GamesPlayed", 0);
-        gamesPlayed++;
-        PlayerPrefs.SetInt("GamesPlayed", gamesPlayed);
-        PlayerPrefs.Save();
-
-        if (gamesPlayed >= 10)
-            AchievementManager.Instance.UnlockAchievement("persistent");
-        if (gamesPlayed >= 25)
-            AchievementManager.Instance.UnlockAchievement("dedicated");
-        if (gamesPlayed >= 50)
-            AchievementManager.Instance.UnlockAchievement("addicted");
     }
 }
