@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class SignalStabilizeMiniGame : MonoBehaviour
 {
@@ -43,6 +44,29 @@ public class SignalStabilizeMiniGame : MonoBehaviour
 
     void Start()
     {
+#if UNITY_EDITOR
+                radiusMin = 80f;
+                radiusMax = 100f;
+#else
+        switch (GameSettingsManager.Instance.currentDifficulty)
+        {
+            case GameSettingsManager.Difficulty.Easy:
+                radiusMin = 120f;
+                radiusMax = 150f;
+                break;
+            case GameSettingsManager.Difficulty.Normal:
+                radiusMin = 100f;
+                radiusMax = 120f;
+                break;
+            case GameSettingsManager.Difficulty.Hard:
+                radiusMin = 80f;
+                radiusMax = 100f;
+                break;
+            default:
+                break;
+        }
+#endif
+
         Rect r = playArea.rect;
         playSize = new Vector2(r.width, r.height);
 
