@@ -82,7 +82,7 @@ public class AchievementUIManager : MonoBehaviour
             Image background = item.GetComponent<Image>();
             if (background != null)
             {
-                background.color = achievement.isUnlocked ? new Color(0.09f, 0.18f, 0.09f, 0.8f) : new Color(0.05f, 0.05f, 0.05f, 0.8f);
+                background.color = achievement.isUnlocked ? new Color(0.09f, 0.18f, 0.09f, 0.8f) : new Color(0.027f, 0.027f, 0.027f, 0.8f);
             }
 
 

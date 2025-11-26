@@ -128,6 +128,11 @@ public class AchievementManager : MonoBehaviour
 
     public void LoadAchievements()
     {
+        foreach (Achievement a in achievements)
+        {
+            a.isUnlocked = false;
+        }
+
         if (PlayerPrefs.HasKey("AchievementData"))
         {
             string json = PlayerPrefs.GetString("AchievementData");
