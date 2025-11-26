@@ -58,6 +58,8 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
                 default:
                     break;
             }
+
+            gsm.videoWatched = false;
             gsm.isSet = true;
             gsm.CreatePassword();
             TimerScript.Instance.StartTimer();
