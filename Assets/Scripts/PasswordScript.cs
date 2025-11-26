@@ -79,23 +79,27 @@ public class PasswordScript : MonoBehaviour
         infoText.GetComponent<TextMeshProUGUI>().font = monoFont;
         infoText.GetComponent<TextMeshProUGUI>().text = "Enter Password!";
 
+        if (buttonValue != "OK")
+        {
+            VibrateShort();
+        }
+
         if (buttonValue == "OK")
         {
             if (input == GameSettingsManager.Instance.password || input == "9876")
             {
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Granted!";
-                VibrateSuccess();
 
-                TimerScript.Instance.StopTimer();
-                AudioManager.instance.musicDisabled = true;
-                AudioManager.instance.StopMusic();
-                StartCoroutine(FadeOutAndLoadScene(0.5f, "OutroCutsceneScene"));
+                VibrateDouble();
+
+                StartCoroutine(DelayedSuccess());
             }
             else
             {
                 infoText.GetComponent<TextMeshProUGUI>().font = redFont;
                 infoText.GetComponent<TextMeshProUGUI>().text = "Access Denied!";
-                VibrateError();
+
+                VibrateLong();
 
                 input = string.Empty;
                 pwdDisplay.GetComponentInChildren<TextMeshProUGUI>().text = input;
@@ -114,7 +118,40 @@ public class PasswordScript : MonoBehaviour
         pwdDisplay.GetComponentInChildren<TextMeshProUGUI>().text = input;
     }
 
-    private void VibrateError() 
+    private void VibrateShort()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        try
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject vibrator = activity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+
+            if (vibrator != null)
+            {
+                AndroidJavaClass buildVersion = new AndroidJavaClass("android.os.Build$VERSION");
+                int sdkInt = buildVersion.GetStatic<int>("SDK_INT");
+
+                if (sdkInt >= 26)
+                {
+                    AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
+                    AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
+                        "createOneShot", 50L, 255);
+                    vibrator.Call("vibrate", effect);
+                }
+                else
+                {
+                    vibrator.Call("vibrate", 50L);
+                }
+            }
+        }
+        catch { }
+#else
+        Handheld.Vibrate();
+#endif
+    }
+
+    private void VibrateDouble()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         try
@@ -126,8 +163,8 @@ public class PasswordScript : MonoBehaviour
             if (vibrator != null)
             {
                 AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
-                long[] timings = { 0, 100, 150, 100 };
-                int[] amplitudes = { 0, 200, 0, 200 };
+                long[] timings = { 0, 100, 120, 100 };
+                int[] amplitudes = { 0, -1, 0, -1 };
 
                 AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
                     "createWaveform", timings, amplitudes, -1);
@@ -138,11 +175,11 @@ public class PasswordScript : MonoBehaviour
         catch { }
 #else
         Handheld.Vibrate();
-        Invoke("EditorVibrateSecond", 0.25f);
+        Invoke("EditorVibrateSecond", 0.2f);
 #endif
     }
 
-    private void VibrateSuccess() 
+    private void VibrateLong()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         try
@@ -153,11 +190,20 @@ public class PasswordScript : MonoBehaviour
 
             if (vibrator != null)
             {
-                AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
-                AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
-                    "createOneShot", 500, 200);
+                AndroidJavaClass buildVersion = new AndroidJavaClass("android.os.Build$VERSION");
+                int sdkInt = buildVersion.GetStatic<int>("SDK_INT");
 
-                vibrator.Call("vibrate", effect);
+                if (sdkInt >= 26)
+                {
+                    AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
+                    AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
+                        "createOneShot", 400L, 255);
+                    vibrator.Call("vibrate", effect);
+                }
+                else
+                {
+                    vibrator.Call("vibrate", 400L);
+                }
             }
         }
         catch { }
@@ -169,6 +215,16 @@ public class PasswordScript : MonoBehaviour
     private void EditorVibrateSecond()
     {
         Handheld.Vibrate();
+    }
+
+    private IEnumerator DelayedSuccess()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        TimerScript.Instance.StopTimer();
+        AudioManager.instance.musicDisabled = true;
+        AudioManager.instance.StopMusic();
+        StartCoroutine(FadeOutAndLoadScene(0.5f, "OutroCutsceneScene"));
     }
 
     private IEnumerator FadeOutAndLoadScene(float duration, string sceneName)
@@ -184,8 +240,7 @@ public class PasswordScript : MonoBehaviour
         while (time < duration)
         {
             time += Time.deltaTime;
-            float t = time / duration;
-            mainCanvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, t);
+            mainCanvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, time / duration);
             yield return null;
         }
         mainCanvasGroup.alpha = 0f;
