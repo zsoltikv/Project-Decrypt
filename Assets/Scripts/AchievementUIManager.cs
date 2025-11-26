@@ -102,4 +102,11 @@ public class AchievementUIManager : MonoBehaviour
     {
         SceneManager.LoadScene("MenuScene");
     }
+
+    public void WipeAchievements()
+    {
+        PlayerPrefs.DeleteKey("AchievementData");
+        AchievementManager.Instance.LoadAchievements();
+        DisplayAchievements();
+    }
 }

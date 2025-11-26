@@ -126,7 +126,7 @@ public class AchievementManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    void LoadAchievements()
+    public void LoadAchievements()
     {
         if (PlayerPrefs.HasKey("AchievementData"))
         {
