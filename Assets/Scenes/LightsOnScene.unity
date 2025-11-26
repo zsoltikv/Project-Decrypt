@@ -1445,7 +1445,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lights Turned On.
+  m_text: Lights turned on.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 200cf713274c4f84a8877bd6c8c831de, type: 2}
   m_sharedMaterial: {fileID: 3664094582928319482, guid: 200cf713274c4f84a8877bd6c8c831de, type: 2}
