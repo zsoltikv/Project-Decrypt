@@ -366,6 +366,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Proceed
       objectReference: {fileID: 0}
+    - target: {fileID: 6237746098242862747, guid: 6c97de860a812eb488685e7883a79a97, type: 3}
+      propertyPath: m_fontSize
+      value: 55.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237746098242862747, guid: 6c97de860a812eb488685e7883a79a97, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 55.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8027726556718117721, guid: 6c97de860a812eb488685e7883a79a97, type: 3}
       propertyPath: m_Name
       value: ProceedHold
