@@ -157,11 +157,7 @@ public class AchievementManager : MonoBehaviour
 
     public void CheckMiniGameCompletion(string appName)
     {
-        if (GetUnlockedCount() == 0)
-        {
-            UnlockAchievement("first_app");
-        }
-
+        UnlockAchievement("first_app");
         switch (appName)
         {
             case "ByteSorter":
