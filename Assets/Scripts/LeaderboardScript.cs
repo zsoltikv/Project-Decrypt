@@ -61,7 +61,11 @@ public class LeaderboardScript : MonoBehaviour
         {
             var newObj = Instantiate(lbObject, list.transform, false);
             newObj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = save.playerName;
-            newObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = save.playTime.ToString("F2") + "s";
+            int minutes = Mathf.FloorToInt(save.playTime / 60f);
+            int seconds = Mathf.FloorToInt(save.playTime % 60f);
+
+            newObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
+                string.Format("{0:00}:{1:00}", minutes, seconds);
             newObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = save.errorCount.ToString();
             newObj.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = save.difficulty;
         }
