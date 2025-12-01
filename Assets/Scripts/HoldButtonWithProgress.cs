@@ -33,6 +33,7 @@ public class HoldButtonWithProgress : MonoBehaviour, IPointerDownHandler, IPoint
         {
             isHolding = false;
             onHoldComplete?.Invoke();
+            VibrateLong();
             ResetHold();
         }
     }
@@ -63,5 +64,38 @@ public class HoldButtonWithProgress : MonoBehaviour, IPointerDownHandler, IPoint
 
         if (fillImage != null)
             fillImage.fillAmount = 0f;
+    }
+
+        private void VibrateLong()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        try
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject vibrator = activity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+
+            if (vibrator != null)
+            {
+                AndroidJavaClass buildVersion = new AndroidJavaClass("android.os.Build$VERSION");
+                int sdkInt = buildVersion.GetStatic<int>("SDK_INT");
+
+                if (sdkInt >= 26)
+                {
+                    AndroidJavaClass vibrationEffect = new AndroidJavaClass("android.os.VibrationEffect");
+                    AndroidJavaObject effect = vibrationEffect.CallStatic<AndroidJavaObject>(
+                        "createOneShot", 400L, 255);
+                    vibrator.Call("vibrate", effect);
+                }
+                else
+                {
+                    vibrator.Call("vibrate", 400L);
+                }
+            }
+        }
+        catch { }
+#else
+        Handheld.Vibrate();
+#endif
     }
 }
