@@ -9,11 +9,9 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
     public GameObject settingsPlane;
     [SerializeField]
     public GameObject gamePlane;
-    GameSettingsManager gsm;
 
     public void Start()
     {
-        gsm = GameSettingsManager.Instance;
         if (SceneManager.GetActiveScene().name == "GameScene")
         {
             if (!GameSettingsManager.Instance.isSet)
@@ -42,30 +40,6 @@ public class MGButtonScript : MonoBehaviour, IPointerClickHandler
             SceneManager.LoadScene("FirstCutsceneScene");
         }
 
-        if (gameObject.name == "ProceedBtn")
-        {
-            switch (gsm.currentDifficulty)
-            {
-                case GameSettingsManager.Difficulty.Easy:
-                    gsm.maxApps = 4;
-                    break;
-                case GameSettingsManager.Difficulty.Normal:
-                    gsm.maxApps = 7;
-                    break;
-                case GameSettingsManager.Difficulty.Hard:
-                    gsm.maxApps = 10;
-                    break;
-                default:
-                    break;
-            }
-
-            gsm.videoWatched = false;
-            gsm.isSet = true;
-            gsm.CreatePassword();
-            TimerScript.Instance.StartTimer();
-            settingsPlane.SetActive(false);
-            gamePlane.SetActive(true);
-        }
     }
 
     public void OnLeaderboard()
