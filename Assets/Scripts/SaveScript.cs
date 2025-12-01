@@ -62,6 +62,17 @@ public class SaveScript : MonoBehaviour
         if (AchievementManager.Instance != null)
         {
             AchievementManager.Instance.UnlockAchievement("save_master");
+
+            int saveCount = PlayerPrefs.GetInt("TotalSaveCount", 0);
+            saveCount++;
+            PlayerPrefs.SetInt("TotalSaveCount", saveCount);
+            PlayerPrefs.Save();
+
+            if (saveCount >= 10 && AchievementManager.Instance != null)
+            {
+                AchievementManager.Instance.UnlockAchievement("archivist");
+            }
+
         }
 
         Debug.Log($"Saved at: {filePath}");

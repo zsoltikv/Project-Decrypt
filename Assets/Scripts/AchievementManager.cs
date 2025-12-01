@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AchievementManager : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class AchievementManager : MonoBehaviour
     private const float ONE_HOUR = 3600f;
     private const float THREE_HOURS = 10800f;
 
+    private float afkTimer = 0f;
+    private const float AFK_TIME = 300f;
+
     private bool[] daysPlayed = new bool[7];
     private const string WEEKLY_STREAK_KEY = "WeeklyStreak";
 
@@ -16,14 +20,36 @@ public class AchievementManager : MonoBehaviour
 
     void Update()
     {
-        if (IsAchievementUnlocked("play_3h"))
-            return;
-
-        uninterruptedPlayTime += Time.deltaTime;
-
-        if (uninterruptedPlayTime >= THREE_HOURS)
+        // 3 órás achievement
+        if (!IsAchievementUnlocked("play_3h"))
         {
-            UnlockAchievement("play_3h");
+            uninterruptedPlayTime += Time.deltaTime;
+
+            if (uninterruptedPlayTime >= THREE_HOURS)
+                UnlockAchievement("play_3h");
+        }
+
+        bool userActive = false;
+
+        if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
+            userActive = true;
+
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            userActive = true;
+
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+            userActive = true;
+
+        if (userActive)
+        {
+            afkTimer = 0f;
+        }
+        else
+        {
+            afkTimer += Time.deltaTime;
+
+            if (afkTimer >= AFK_TIME && !IsAchievementUnlocked("afk_king"))
+                UnlockAchievement("afk_king");
         }
     }
 
@@ -77,8 +103,11 @@ public class AchievementManager : MonoBehaviour
         achievements.Add(new Achievement("save_master", "Save Master", "Use the save feature for the first time"));
         achievements.Add(new Achievement("movie_buff", "Movie Buff", "Watch the intro video"));
 
+        achievements.Add(new Achievement("archivist", "The Archivist", "Create 10 save files"));
+        achievements.Add(new Achievement("afk_king", "AFK King", "Stay inactive for 5 minutes"));
+
         achievements.Add(new Achievement("collector", "Collector", "Unlock 50% of achievements"));
-        achievements.Add(new Achievement("all_achievements", "Master Collector", "Unlock all other achievements"));
+        achievements.Add(new Achievement("all_achievements", "Master Collector", "Unlock all achievements"));
     }
 
     public void UnlockAchievement(string achievementId)
