@@ -19,4 +19,9 @@ public class Connector : MonoBehaviour, IPointerDownHandler, IDropHandler
             CableManager.Instance.EndDrag(this);
         }
     }
+
+    public void SetId(int id)
+    {
+        connectorID = id;
+    }
 }

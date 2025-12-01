@@ -13,6 +13,10 @@ public class CableManager : MonoBehaviour
     public GameObject cableLineTemplate;
     public RectTransform canvasRect;
 
+    [Header("Connectors")]
+    public List<GameObject> leftConnectors;
+    public List<GameObject> rightConnectors;
+
     private Connector startConnector;
     private RectTransform currentCableLine;
     private List<RectTransform> permanentCables = new List<RectTransform>();
@@ -31,6 +35,10 @@ public class CableManager : MonoBehaviour
     {
         Instance = this;
         if (cableLineTemplate != null) cableLineTemplate.SetActive(false);
+
+
+        AssignRandomIDs(leftConnectors);
+        AssignRandomIDs(rightConnectors);
     }
 
     void Update()
@@ -291,5 +299,37 @@ public class CableManager : MonoBehaviour
         }
 
         img.color = original;
+    }
+
+    void AssignRandomIDs(List<GameObject>connectors)
+    {
+        // A lehetséges ID-k listája
+        List<int> availableIDs = new List<int> { 1, 2, 3 };
+        
+        // Véletlenszerű keverés (Fisher-Yates)
+        ShuffleList(availableIDs);
+
+        // Hozzárendeljük a megkevert ID-kat a csatlakozókhoz
+        for (int i = 0; i < connectors.Count; i++)
+        {
+            if (i < availableIDs.Count)
+            {
+                connectors[i].GetComponent<Connector>().SetId(availableIDs[i]);
+            }
+        }
+    }
+
+    // Fisher-Yates shuffle algoritmus List<T>-hez
+    void ShuffleList<T>(List<T> list)
+    {
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = Random.Range(0, n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
     }
 }
