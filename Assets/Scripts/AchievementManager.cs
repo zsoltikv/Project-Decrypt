@@ -1,11 +1,31 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AchievementManager : MonoBehaviour
 {
     public static AchievementManager Instance;
 
+    private float uninterruptedPlayTime = 0f;
+    private const float ONE_HOUR = 3600f;
+    private const float THREE_HOURS = 10800f;
+
+    private bool[] daysPlayed = new bool[7];
+    private const string WEEKLY_STREAK_KEY = "WeeklyStreak";
+
     private List<Achievement> achievements = new List<Achievement>();
+
+    void Update()
+    {
+        if (IsAchievementUnlocked("play_3h"))
+            return;
+
+        uninterruptedPlayTime += Time.deltaTime;
+
+        if (uninterruptedPlayTime >= THREE_HOURS)
+        {
+            UnlockAchievement("play_3h");
+        }
+    }
 
     void Awake()
     {
@@ -15,6 +35,8 @@ public class AchievementManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             InitializeAchievements();
             LoadAchievements();
+            LoadWeeklyStreak(); 
+            CheckWeeklyStreak(); 
         }
         else
         {
@@ -29,13 +51,6 @@ public class AchievementManager : MonoBehaviour
         achievements.Add(new Achievement("first_app", "First Steps", "Complete your first mini-game"));
         achievements.Add(new Achievement("complete_all_apps", "Completionist", "Complete all mini-games in a single run"));
 
-        achievements.Add(new Achievement("win_easy", "Casual Hacker", "Win a game on Easy difficulty"));
-        achievements.Add(new Achievement("win_normal", "Skilled Operator", "Win a game on Normal difficulty"));
-        achievements.Add(new Achievement("win_hard", "Elite Hacker", "Win a game on Hard difficulty"));
-
-        achievements.Add(new Achievement("no_errors", "Flawless", "Complete a game without any errors"));
-        achievements.Add(new Achievement("no_errors_hard", "Perfectionist", "Complete a game on Hard difficulty without errors"));
-
         achievements.Add(new Achievement("byte_master", "Byte Master", "Complete ByteSorter mini-game"));
         achievements.Add(new Achievement("cable_expert", "Cable Expert", "Complete CableConnecting mini-game"));
         achievements.Add(new Achievement("hex_wizard", "Hex Wizard", "Complete HexPuzzle mini-game"));
@@ -46,12 +61,24 @@ public class AchievementManager : MonoBehaviour
         achievements.Add(new Achievement("lights_solver", "Lights Solver", "Complete LightsOn mini-game"));
         achievements.Add(new Achievement("malware_defender", "Malware Defender", "Complete MalwareDefender mini-game"));
 
+        achievements.Add(new Achievement("win_easy", "Casual Hacker", "Win a game on Easy difficulty"));
+        achievements.Add(new Achievement("win_normal", "Skilled Operator", "Win a game on Normal difficulty"));
+        achievements.Add(new Achievement("win_hard", "Elite Hacker", "Win a game on Hard difficulty"));
+        achievements.Add(new Achievement("no_errors", "Flawless", "Complete a game without any errors"));
+        achievements.Add(new Achievement("no_errors_hard", "Perfectionist", "Complete a game on Hard difficulty without errors"));
+
         achievements.Add(new Achievement("speed_runner", "Speed Runner", "Complete a game in under 5 minutes"));
         achievements.Add(new Achievement("lightning_fast", "Lightning Fast", "Complete a game in under 3 minutes"));
 
-        achievements.Add(new Achievement("save_master", "Save Master", "Use the save feature for the first time"));
+        achievements.Add(new Achievement("play_1h", "One-Hour Marathon", "Play for 1 hour without interruption"));
+        achievements.Add(new Achievement("play_3h", "Maratonista", "Play for 3 hours without interruption"));
+        achievements.Add(new Achievement("weekly_streak", "7-Day Streak", "Play the game on all 7 days of the week"));
 
+        achievements.Add(new Achievement("save_master", "Save Master", "Use the save feature for the first time"));
         achievements.Add(new Achievement("movie_buff", "Movie Buff", "Watch the intro video"));
+
+        achievements.Add(new Achievement("collector", "Collector", "Unlock 50% of achievements"));
+        achievements.Add(new Achievement("all_achievements", "Master Collector", "Unlock all other achievements"));
     }
 
     public void UnlockAchievement(string achievementId)
@@ -71,6 +98,9 @@ public class AchievementManager : MonoBehaviour
             achievement.isUnlocked = true;
             SaveAchievements();
             Debug.Log($"Achievement Unlocked: {achievement.title}");
+
+            CheckCollectorAchievement();
+            CheckAllAchievements();
         }
     }
 
@@ -224,4 +254,81 @@ public class AchievementManager : MonoBehaviour
             }
         }
     }
+
+    public void CheckWeeklyStreak()
+    {
+        int dayIndex = (int)System.DateTime.Today.DayOfWeek;
+        if (!daysPlayed[dayIndex])
+        {
+            daysPlayed[dayIndex] = true;
+            SaveWeeklyStreak();
+        }
+
+        bool allDaysPlayed = true;
+        foreach (bool played in daysPlayed)
+        {
+            if (!played)
+            {
+                allDaysPlayed = false;
+                break;
+            }
+        }
+
+        if (allDaysPlayed)
+        {
+            UnlockAchievement("weekly_streak");
+        }
+    }
+
+    private void LoadWeeklyStreak()
+    {
+        if (PlayerPrefs.HasKey(WEEKLY_STREAK_KEY))
+        {
+            string data = PlayerPrefs.GetString(WEEKLY_STREAK_KEY);
+            string[] parts = data.Split(',');
+            for (int i = 0; i < 7; i++)
+            {
+                daysPlayed[i] = parts[i] == "1";
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 7; i++)
+                daysPlayed[i] = false;
+        }
+    }
+
+    private void SaveWeeklyStreak()
+    {
+        string data = "";
+        for (int i = 0; i < 7; i++)
+        {
+            data += daysPlayed[i] ? "1" : "0";
+            if (i < 6) data += ",";
+        }
+        PlayerPrefs.SetString(WEEKLY_STREAK_KEY, data);
+        PlayerPrefs.Save();
+    }
+
+    public void CheckCollectorAchievement()
+    {
+        int unlockedCount = GetUnlockedCount();
+        int totalCount = GetTotalCount();
+
+        if (unlockedCount >= totalCount / 2)
+        {
+            UnlockAchievement("collector");
+        }
+    }
+
+    public void CheckAllAchievements()
+    {
+        foreach (Achievement a in achievements)
+        {
+            if (!a.isUnlocked && a.id != "all_achievements")
+                return; 
+        }
+        UnlockAchievement("all_achievements");
+    }
+
 }

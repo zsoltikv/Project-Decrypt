@@ -12,6 +12,8 @@ public class IntroSceneScript : MonoBehaviour
 
     void Start()
     {
+        AchievementManager.Instance.CheckWeeklyStreak();
+
         videoPlayer.playOnAwake = false;
         videoPlayer.waitForFirstFrame = true;
 
