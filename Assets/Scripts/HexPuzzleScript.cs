@@ -35,29 +35,24 @@ public class CodeLinkerGame : MonoBehaviour
     {
 
         GameTimerScript.Stop();
+
         if (winPanel != null)
             winPanel.SetActive(false);
-
-        if (GameSettingsManager.Instance == null)
-        {
-            maxRound = 5;
-            GameTimerScript.Timer.maxtimer = 30f;
-        }
         else
         {
             switch (GameSettingsManager.Instance.currentDifficulty)
             {
                 case GameSettingsManager.Difficulty.Easy:
-                    maxRound = 5;
+                    maxRound = 6;
                     GameTimerScript.Timer.maxtimer = 25f;
                     break;
                 case GameSettingsManager.Difficulty.Normal:
                     GameTimerScript.Timer.maxtimer = 20f;
-                    maxRound = 7;
+                    maxRound = 8;
                     break;
                 case GameSettingsManager.Difficulty.Hard:
-                    GameTimerScript.Timer.maxtimer = 15f;
-                    maxRound = 9;
+                    GameTimerScript.Timer.maxtimer = 13.5f;
+                    maxRound = 10;
                     break;
                 default:
                     break;

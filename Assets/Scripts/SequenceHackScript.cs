@@ -37,9 +37,9 @@ public class SequenceHack : MonoBehaviour
         {
             switch (GameSettingsManager.Instance.currentDifficulty)
             {
-                case GameSettingsManager.Difficulty.Easy: maxRound = 3; break;
-                case GameSettingsManager.Difficulty.Normal: maxRound = 5; break;
-                case GameSettingsManager.Difficulty.Hard: maxRound = 7; break;
+                case GameSettingsManager.Difficulty.Easy: maxRound = 4; break;
+                case GameSettingsManager.Difficulty.Normal: maxRound = 6; break;
+                case GameSettingsManager.Difficulty.Hard: maxRound = 8; break;
             }
         }
 

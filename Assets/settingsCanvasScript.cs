@@ -11,10 +11,10 @@ public class settingsCanvasScript : MonoBehaviour
         switch (GameSettingsManager.Instance.currentDifficulty)
             {
                 case GameSettingsManager.Difficulty.Easy:
-                    GameSettingsManager.Instance.maxApps = 4;
+                    GameSettingsManager.Instance.maxApps = 10;
                     break;
                 case GameSettingsManager.Difficulty.Normal:
-                    GameSettingsManager.Instance.maxApps = 7;
+                    GameSettingsManager.Instance.maxApps = 10;
                     break;
                 case GameSettingsManager.Difficulty.Hard:
                     GameSettingsManager.Instance.maxApps = 10;
