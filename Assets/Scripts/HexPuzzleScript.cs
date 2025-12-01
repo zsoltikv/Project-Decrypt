@@ -49,14 +49,14 @@ public class CodeLinkerGame : MonoBehaviour
             {
                 case GameSettingsManager.Difficulty.Easy:
                     maxRound = 5;
-                    GameTimerScript.Timer.maxtimer = 30f;
+                    GameTimerScript.Timer.maxtimer = 25f;
                     break;
                 case GameSettingsManager.Difficulty.Normal:
-                    GameTimerScript.Timer.maxtimer = 25f;
+                    GameTimerScript.Timer.maxtimer = 20f;
                     maxRound = 7;
                     break;
                 case GameSettingsManager.Difficulty.Hard:
-                    GameTimerScript.Timer.maxtimer = 20f;
+                    GameTimerScript.Timer.maxtimer = 15f;
                     maxRound = 9;
                     break;
                 default:
@@ -79,7 +79,7 @@ public class CodeLinkerGame : MonoBehaviour
         if (GameTimerScript.Timer.timer <= 0 && GameTimerScript.Timer.isRunning)
         {
             GameTimerScript.Stop();
-            RestartGame();
+            rounderror();
         }
 
         GameTimerScript.SetTimerText("Time remaining: " + TimeSpan.FromSeconds(GameTimerScript.Timer.timer).ToString(@"s\.ff"));
@@ -104,14 +104,12 @@ public class CodeLinkerGame : MonoBehaviour
 
     public void GenerateNewHash()
     {
-        // Gyűjtsük az elérhető karaktereket közvetlenül a cells listából
         List<string> availableChars = new List<string>();
         foreach (var cb in cells)
         {
             if (cb == null) continue;
-            // Feltételezem, hogy a CellButton-ban van egy 'value' string mező
             if (!string.IsNullOrEmpty(cb.value))
-                availableChars.Add(cb.value.ToUpper()); // normalizáljuk nagybetűre
+                availableChars.Add(cb.value.ToUpper());
         }
 
         if (availableChars.Count == 0)
@@ -258,6 +256,7 @@ public class CodeLinkerGame : MonoBehaviour
         foreach (var c in cells)
             c.ResetColor();
 
+        GenerateNewHash();
         GameTimerScript.SetTimerToMax();
         GameTimerScript.Run();
     }
@@ -272,20 +271,6 @@ public class CodeLinkerGame : MonoBehaviour
             c.ResetColor();
         }
         GenerateNewHash();
-    }
-
-    void RestartGame()
-    {
-        currentRound = 1;
-        currentInput = "";
-        resultText.text = "";
-        resultText.font = monoFont;
-
-        GenerateGrid();
-        GenerateNewHash();
-
-        GameTimerScript.SetTimerToMax();
-        GameTimerScript.Run();
     }
 
 }
