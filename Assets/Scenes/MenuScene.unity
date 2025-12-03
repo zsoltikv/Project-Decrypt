@@ -1035,12 +1035,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a4eca0d587e1049b7a8d91ff3663f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  introSong: {fileID: 8300000, guid: 62dd2b5862a64b645912eb1d7d3e118e, type: 3}
+  introSong: {fileID: 8300000, guid: 4df8b47ff748803489d0a60a24b8fdc9, type: 3}
   shuffleSongs:
-  - {fileID: 8300000, guid: 7f96783f7412c4946a52631690802385, type: 3}
-  - {fileID: 8300000, guid: c8c6caf9f9f4c53498123f260e17fae7, type: 3}
-  - {fileID: 8300000, guid: b709a45b6ed6aa94d99dd4b4d6bb3ceb, type: 3}
-  - {fileID: 8300000, guid: 5e8cd80c929e95c4a926430f9f41dcc3, type: 3}
+  - {fileID: 8300000, guid: ec814e236ebe00e4fba37b29e6c2a2a8, type: 3}
+  - {fileID: 8300000, guid: 731d901021f9ec54196a9b3ab3f9692b, type: 3}
+  - {fileID: 8300000, guid: 31bc5627df386a54ba795c36409ae229, type: 3}
+  - {fileID: 8300000, guid: da9b49f0c7e12344396f46be0d94df2d, type: 3}
   volume: 0.5
   musicDisabled: 0
 --- !u!1001 &1999527994
