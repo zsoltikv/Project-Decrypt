@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class SineWaveScanner : MonoBehaviour
 {
+
     [Header("References")]
     public LineRenderer referenceLine;
     public LineRenderer playerLine;
     public Slider amplitudeSlider;
     public Slider frequencySlider;
     public GameObject WinPanel;
-
 
     [Header("Wave Settings")]
     public int resolution = 200;
@@ -21,20 +21,29 @@ public class SineWaveScanner : MonoBehaviour
     [Header("Correct Values")]
     public float targetAmplitude = 1.2f;
     public float targetFrequency = 2.0f;
-    public float allowedError = 0.1f;
+    public float allowedError = 0.01f;
 
     private bool triggerOnce = false;
+    private float currentTargetAmplitude;
+    private float currentTargetFrequency;
 
     void Start()
     {
+        targetAmplitude = Random.Range(0.2f, 2.0f);
+        targetFrequency = Random.Range(0.5f, 3.0f);
+
         DrawReferenceWave();
+
         if (WinPanel != null)
             WinPanel.SetActive(false);
     }
 
     void Update()
     {
+        UpdateTargetJitter();
+
         DrawPlayerWave();
+        DrawReferenceWave();
 
         if (!triggerOnce && IsCloseEnough())
         {
@@ -51,7 +60,10 @@ public class SineWaveScanner : MonoBehaviour
         for (int i = 0; i < resolution; i++)
         {
             float x = i * step - graphWidth / 2f;
-            float y = Mathf.Sin(i * targetFrequency * 2 * Mathf.PI / resolution) * targetAmplitude * (graphHeight / 2f);
+
+            float y = Mathf.Sin(i * currentTargetFrequency * 2 * Mathf.PI / resolution)
+                      * currentTargetAmplitude * (graphHeight / 2f);
+
             referenceLine.SetPosition(i, new Vector3(x, y, 0));
         }
     }
@@ -68,6 +80,7 @@ public class SineWaveScanner : MonoBehaviour
         {
             float x = i * step - graphWidth / 2f;
             float y = Mathf.Sin(i * F * 2 * Mathf.PI / resolution) * A * (graphHeight / 2f);
+
             playerLine.SetPosition(i, new Vector3(x, y, 0));
         }
     }
@@ -76,6 +89,15 @@ public class SineWaveScanner : MonoBehaviour
     {
         return Mathf.Abs(amplitudeSlider.value - targetAmplitude) < allowedError &&
                Mathf.Abs(frequencySlider.value - targetFrequency) < allowedError;
+    }
+
+    void UpdateTargetJitter()
+    {
+        float jitterA = Mathf.Sin(Time.time * 2f) * 0.05f;
+        float jitterF = Mathf.Cos(Time.time * 1.5f) * 0.05f;
+
+        currentTargetAmplitude = targetAmplitude + jitterA;
+        currentTargetFrequency = targetFrequency + jitterF;
     }
 
     private IEnumerator WinSequence()
@@ -87,14 +109,13 @@ public class SineWaveScanner : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(2f);
 
-        if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("DualFrequency"))
+        if (GameSettingsManager.Instance != null &&
+            !GameSettingsManager.Instance.completedApps.Contains("DualFrequency"))
         {
             GameSettingsManager.Instance.completedApps.Add("DualFrequency");
 
             if (AchievementManager.Instance != null)
-            {
                 AchievementManager.Instance.CheckMiniGameCompletion("DualFrequency");
-            }
         }
 
         SceneManager.LoadScene("GameScene");
@@ -106,13 +127,11 @@ public class SineWaveScanner : MonoBehaviour
 
         GameObject[] backButtons = GameObject.FindGameObjectsWithTag("BackButton");
         foreach (GameObject btn in backButtons)
-        {
             btn.SetActive(false);
-        }
-
 
         CanvasGroup cg = WinPanel.GetComponent<CanvasGroup>();
-        if (cg == null) cg = WinPanel.AddComponent<CanvasGroup>();
+        if (cg == null)
+            cg = WinPanel.AddComponent<CanvasGroup>();
 
         cg.alpha = 0f;
         WinPanel.transform.localScale = Vector3.one * 0.4f;
@@ -126,6 +145,7 @@ public class SineWaveScanner : MonoBehaviour
             float t = time / duration;
 
             cg.alpha = Mathf.Lerp(0f, 1f, t);
+
             WinPanel.transform.localScale = Vector3.Lerp(
                 Vector3.one * 0.4f,
                 Vector3.one,
