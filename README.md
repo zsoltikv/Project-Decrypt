@@ -2,9 +2,11 @@
 
 <div align="center">
 
-![Unity](https://img.shields.io/badge/Unity-2021+-blue?style=flat-square&logo=unity)
-![C#](https://img.shields.io/badge/C%23-239120?style=flat-square&logo=c-sharp)
+!(https://skillicons.dev/icons?i=unity,visualstudio,github,cs)](https://skillicons.dev)
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20PC-green?style=flat-square)
+![Repo Size](https://img.shields.io/github/repo-size/zsoltikv/Project-Decrypt?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/zsoltikv/Project-Decrypt?style=flat-square)
+![Commits](https://img.shields.io/github/commit-activity/m/zsoltikv/Project-Decrypt?style=flat-square)
 
 **A hacking simulator with 10+ mini-games, achievements, and speedrun mechanics**
 
