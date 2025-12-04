@@ -18,9 +18,8 @@ public class SineWaveScanner : MonoBehaviour
     public float graphWidth;
     public float graphHeight;
 
-    [Header("Correct Values")]
-    public float targetAmplitude = 1.2f;
-    public float targetFrequency = 2.0f;
+    private float targetAmplitude = 1.2f;
+    private float targetFrequency = 2.0f;
     public float allowedError = 0.01f;
 
     [Header("Scrolling")]
@@ -33,10 +32,7 @@ public class SineWaveScanner : MonoBehaviour
     {
 
         transform.localScale = new Vector3(0.01f, 0.01f, 1f);
-
-        graphWidth = graphContainer.rect.width;
-        graphHeight = 100;
-        targetAmplitude = Random.Range(0.2f, 2.0f);
+        targetAmplitude = Random.Range(0.2f, 1.5f);
         targetFrequency = Random.Range(0.5f, 3.0f);
 
         DrawReferenceWave();

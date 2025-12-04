@@ -841,13 +841,15 @@ MonoBehaviour:
   playerLine: {fileID: 1000178792}
   amplitudeSlider: {fileID: 1401603946}
   frequencySlider: {fileID: 2061814511}
+  graphContainer: {fileID: 552916582}
   WinPanel: {fileID: 156140217}
   resolution: 500
   graphWidth: 12
-  graphHeight: 5
+  graphHeight: 4
   targetAmplitude: 0.7
   targetFrequency: 2
   allowedError: 0.075
+  scrollSpeed: 5
 --- !u!1 &1084042536
 GameObject:
   m_ObjectHideFlags: 0
