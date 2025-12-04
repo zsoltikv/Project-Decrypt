@@ -2,7 +2,7 @@
 
 <div align="center">
 
-!(https://skillicons.dev/icons?i=unity,visualstudio,github,cs)](https://skillicons.dev)
+[![Tech Stack](https://skillicons.dev/icons?i=unity,visualstudio,github,cs)](https://skillicons.dev)
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20PC-green?style=flat-square)
 ![Repo Size](https://img.shields.io/github/repo-size/zsoltikv/Project-Decrypt?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/zsoltikv/Project-Decrypt?style=flat-square)
