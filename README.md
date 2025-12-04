@@ -1,6 +1,6 @@
-# 🔓 Decrypt - Hacking Puzzle Game
-
 <div align="center">
+
+# 🔓 Decrypt - Hacking Puzzle Game
 
 [![Tech Stack](https://skillicons.dev/icons?i=unity,visualstudio,github,cs)](https://skillicons.dev)
 
