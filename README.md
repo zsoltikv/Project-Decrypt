@@ -9,7 +9,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/zsoltikv/Project-Decrypt?style=flat-square)
 ![Commits](https://img.shields.io/github/commit-activity/m/zsoltikv/Project-Decrypt?style=flat-square)
 
-**A hacking simulator with 10+ mini-games, achievements, and speedrun mechanics**
+**A hacking simulator with 9 mini-games, achievements, and speedrun mechanics**
 
 </div>
 
