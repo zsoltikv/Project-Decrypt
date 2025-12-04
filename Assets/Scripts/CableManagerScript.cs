@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CableManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CableManager : MonoBehaviour
     [Header("References")]
     public GameObject cableLineTemplate;
     public RectTransform canvasRect;
+    public GameObject darknessLayer;
+    public GameObject lineHolder;
 
     [Header("Connectors")]
     public List<GameObject> leftConnectors;
@@ -20,6 +23,7 @@ public class CableManager : MonoBehaviour
     private Connector startConnector;
     private RectTransform currentCableLine;
     private List<RectTransform> permanentCables = new List<RectTransform>();
+    private Color[] colors = {Color.red, Color.blue, Color.green};
 
     [Header("UI")]
     public TMPro.TMP_Text cableText;
@@ -159,8 +163,10 @@ public class CableManager : MonoBehaviour
     {
         startConnector = connector;
         GameObject newCable = Instantiate(cableLineTemplate, canvasRect);
+        newCable.transform.SetParent(lineHolder.transform);
         currentCableLine = newCable.GetComponent<RectTransform>();
         currentCableLine.gameObject.SetActive(true);
+        newCable.GetComponent<Image>().color = colors[connector.connectorID - 1];
     }
 
     public void EndDrag(Connector connector)
@@ -191,7 +197,7 @@ public class CableManager : MonoBehaviour
 
     private void UpdateCableText()
     {
-        if (cableText != null) cableText.text = "Cables Connected: " + connectedCableCount;
+        if (cableText != null) cableText.text = "Cables connected: " + connectedCableCount;
         if (connectedCableCount >= requiredConnections) StartCoroutine(WinSequence());
     }
 
@@ -235,7 +241,8 @@ public class CableManager : MonoBehaviour
 
     private IEnumerator WinSequence()
     {
-        yield return new WaitForSeconds(1f);
+        darknessLayer.SetActive(false);
+        yield return new WaitForSeconds(3f);
         WinPanel.SetActive(true);
 
         if (GameSettingsManager.Instance != null && !GameSettingsManager.Instance.completedApps.Contains("CableConnecting"))
@@ -303,18 +310,16 @@ public class CableManager : MonoBehaviour
 
     void AssignRandomIDs(List<GameObject>connectors)
     {
-        // A lehetséges ID-k listája
         List<int> availableIDs = new List<int> { 1, 2, 3 };
         
-        // Véletlenszerű keverés (Fisher-Yates)
         ShuffleList(availableIDs);
 
-        // Hozzárendeljük a megkevert ID-kat a csatlakozókhoz
         for (int i = 0; i < connectors.Count; i++)
         {
             if (i < availableIDs.Count)
             {
                 connectors[i].GetComponent<Connector>().SetId(availableIDs[i]);
+                connectors[i].GetComponent<Image>().color = colors[availableIDs[i] - 1];
             }
         }
     }
