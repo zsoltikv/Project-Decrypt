@@ -5,30 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class SineWaveScanner : MonoBehaviour
 {
-
     [Header("References")]
     public LineRenderer referenceLine;
     public LineRenderer playerLine;
     public Slider amplitudeSlider;
     public Slider frequencySlider;
+    public RectTransform graphContainer;
     public GameObject WinPanel;
 
     [Header("Wave Settings")]
     public int resolution = 200;
-    public float graphWidth = 800f;
-    public float graphHeight = 300f;
+    public float graphWidth;
+    public float graphHeight;
 
     [Header("Correct Values")]
     public float targetAmplitude = 1.2f;
     public float targetFrequency = 2.0f;
     public float allowedError = 0.01f;
 
+    [Header("Scrolling")]
+    public float scrollSpeed = 1f; 
+    private float phaseOffset = 0f;
+
     private bool triggerOnce = false;
-    private float currentTargetAmplitude;
-    private float currentTargetFrequency;
 
     void Start()
     {
+
+        transform.localScale = new Vector3(0.01f, 0.01f, 1f);
+
+        graphWidth = graphContainer.rect.width;
+        graphHeight = 100;
         targetAmplitude = Random.Range(0.2f, 2.0f);
         targetFrequency = Random.Range(0.5f, 3.0f);
 
@@ -40,7 +47,7 @@ public class SineWaveScanner : MonoBehaviour
 
     void Update()
     {
-        UpdateTargetJitter();
+        phaseOffset += Time.deltaTime * scrollSpeed;
 
         DrawPlayerWave();
         DrawReferenceWave();
@@ -61,8 +68,9 @@ public class SineWaveScanner : MonoBehaviour
         {
             float x = i * step - graphWidth / 2f;
 
-            float y = Mathf.Sin(i * currentTargetFrequency * 2 * Mathf.PI / resolution)
-                      * currentTargetAmplitude * (graphHeight / 2f);
+            float y = Mathf.Sin(
+                (i * targetFrequency * 2 * Mathf.PI / resolution) + phaseOffset
+            ) * targetAmplitude * (graphHeight / 2f);
 
             referenceLine.SetPosition(i, new Vector3(x, y, 0));
         }
@@ -79,7 +87,9 @@ public class SineWaveScanner : MonoBehaviour
         for (int i = 0; i < resolution; i++)
         {
             float x = i * step - graphWidth / 2f;
-            float y = Mathf.Sin(i * F * 2 * Mathf.PI / resolution) * A * (graphHeight / 2f);
+            float y = Mathf.Sin(
+                i * F * 2 * Mathf.PI / resolution
+            ) * A * (graphHeight / 2f);
 
             playerLine.SetPosition(i, new Vector3(x, y, 0));
         }
@@ -89,15 +99,6 @@ public class SineWaveScanner : MonoBehaviour
     {
         return Mathf.Abs(amplitudeSlider.value - targetAmplitude) < allowedError &&
                Mathf.Abs(frequencySlider.value - targetFrequency) < allowedError;
-    }
-
-    void UpdateTargetJitter()
-    {
-        float jitterA = Mathf.Sin(Time.time * 2f) * 0.05f;
-        float jitterF = Mathf.Cos(Time.time * 1.5f) * 0.05f;
-
-        currentTargetAmplitude = targetAmplitude + jitterA;
-        currentTargetFrequency = targetFrequency + jitterF;
     }
 
     private IEnumerator WinSequence()
