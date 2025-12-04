@@ -93,7 +93,6 @@ git clone https://github.com/yourusername/decrypt-game.git
 **Data:**
 - Leaderboard: player name, time, errors, difficulty
 - Achievements: unlocked IDs array
-- Settings: difficulty, audio preferences
 
 ## 🔧 Key Scripts
 
@@ -108,13 +107,14 @@ git clone https://github.com/yourusername/decrypt-game.git
 ## 🎨 Asset Structure
 ```
 Assets/
-├── Scenes/          # All game scenes
-├── Scripts/         # C# logic
-│   ├── Managers/    # Singletons
-│   └── MiniGames/   # Game-specific
-├── Resources/
-│   └── AppIcons/    # Mini-game icons
-└── Prefabs/         # Reusable UI
+├── Animations/        # Animation files, clips, controllers
+├── Materials/         # Materials
+├── Prefabs/           # Pre-made GameObject prefabs
+├── Resources/         # Loadable resources (e.g., icons, configs)
+├── Scenes/            # Scenes (.unity files)
+├── Scripts/           # Game logic, C# scripts
+├── Settings/          # Project Settings / User Settings assets
+├── TextMesh Pro/      # TMP font assets and other TMP resources
 ```
 
 ## 🤝 Contributing
