@@ -6,6 +6,8 @@ public class Connector : MonoBehaviour, IPointerDownHandler, IDropHandler
     public int connectorID;
     public bool isLeftSide;
 
+    public bool isFilled = false;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (isLeftSide)

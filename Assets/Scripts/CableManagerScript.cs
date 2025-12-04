@@ -177,6 +177,13 @@ public class CableManager : MonoBehaviour
             return;
         }
 
+        // --- ÚJ: Ha már foglalt a slot, nem engedjük ---
+        if (connector.isFilled)
+        {
+            ResetCable();
+            return;
+        }
+
         bool validConnection =
             connector != startConnector &&
             startConnector.isLeftSide != connector.isLeftSide &&
@@ -184,6 +191,10 @@ public class CableManager : MonoBehaviour
 
         if (validConnection)
         {
+            // --- ÚJ: Mindkét oldal foglalt lesz ---
+            startConnector.isFilled = true;
+            connector.isFilled = true;
+
             SnapCableToConnector(connector);
             permanentCables.Add(currentCableLine);
             connectedCableCount++;
