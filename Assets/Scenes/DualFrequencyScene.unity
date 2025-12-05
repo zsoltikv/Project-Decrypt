@@ -846,8 +846,6 @@ MonoBehaviour:
   resolution: 500
   graphWidth: 12
   graphHeight: 4
-  targetAmplitude: 0.7
-  targetFrequency: 2
   allowedError: 0.075
   scrollSpeed: 5
 --- !u!1 &1084042536

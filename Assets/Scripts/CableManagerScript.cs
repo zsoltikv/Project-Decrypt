@@ -23,7 +23,7 @@ public class CableManager : MonoBehaviour
     private Connector startConnector;
     private RectTransform currentCableLine;
     private List<RectTransform> permanentCables = new List<RectTransform>();
-    private Color[] colors = {Color.red, Color.blue, Color.green};
+    private Color[] colors = { Color.red, Color.blue, Color.green };
 
     [Header("UI")]
     public TMPro.TMP_Text cableText;
@@ -34,6 +34,12 @@ public class CableManager : MonoBehaviour
 
     [Header("Raycast Settings")]
     public float maxConnectorDistance = 50f;
+
+    void Start()
+    {
+        darknessLayer.SetActive(false);
+        ActivateDarknessWithDelay(3f);
+    }
 
     void Awake()
     {
@@ -177,7 +183,6 @@ public class CableManager : MonoBehaviour
             return;
         }
 
-        // --- ÚJ: Ha már foglalt a slot, nem engedjük ---
         if (connector.isFilled)
         {
             ResetCable();
@@ -191,7 +196,6 @@ public class CableManager : MonoBehaviour
 
         if (validConnection)
         {
-            // --- ÚJ: Mindkét oldal foglalt lesz ---
             startConnector.isFilled = true;
             connector.isFilled = true;
 
@@ -319,10 +323,10 @@ public class CableManager : MonoBehaviour
         img.color = original;
     }
 
-    void AssignRandomIDs(List<GameObject>connectors)
+    void AssignRandomIDs(List<GameObject> connectors)
     {
         List<int> availableIDs = new List<int> { 1, 2, 3 };
-        
+
         ShuffleList(availableIDs);
 
         for (int i = 0; i < connectors.Count; i++)
@@ -335,7 +339,6 @@ public class CableManager : MonoBehaviour
         }
     }
 
-    // Fisher-Yates shuffle algoritmus List<T>-hez
     void ShuffleList<T>(List<T> list)
     {
         int n = list.Count;
@@ -348,4 +351,16 @@ public class CableManager : MonoBehaviour
             list[n] = value;
         }
     }
+
+    public void ActivateDarknessWithDelay(float delay = 1f)
+    {
+        StartCoroutine(DelayedDarkness(delay));
+    }
+
+    private IEnumerator DelayedDarkness(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        darknessLayer.SetActive(true);
+    }
+
 }
