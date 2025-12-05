@@ -10,9 +10,6 @@ public class AchievementManager : MonoBehaviour
     private const float ONE_HOUR = 3600f;
     private const float THREE_HOURS = 10800f;
 
-    private float afkTimer = 0f;
-    private const float AFK_TIME = 300f;
-
     private bool[] daysPlayed = new bool[7];
     private const string WEEKLY_STREAK_KEY = "WeeklyStreak";
 
@@ -20,36 +17,12 @@ public class AchievementManager : MonoBehaviour
 
     void Update()
     {
-        // 3 órás achievement
         if (!IsAchievementUnlocked("play_3h"))
         {
             uninterruptedPlayTime += Time.deltaTime;
 
             if (uninterruptedPlayTime >= THREE_HOURS)
                 UnlockAchievement("play_3h");
-        }
-
-        bool userActive = false;
-
-        if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
-            userActive = true;
-
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-            userActive = true;
-
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
-            userActive = true;
-
-        if (userActive)
-        {
-            afkTimer = 0f;
-        }
-        else
-        {
-            afkTimer += Time.deltaTime;
-
-            if (afkTimer >= AFK_TIME && !IsAchievementUnlocked("afk_king"))
-                UnlockAchievement("afk_king");
         }
     }
 
@@ -61,8 +34,8 @@ public class AchievementManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             InitializeAchievements();
             LoadAchievements();
-            LoadWeeklyStreak(); 
-            CheckWeeklyStreak(); 
+            LoadWeeklyStreak();
+            CheckWeeklyStreak();
         }
         else
         {
@@ -78,14 +51,14 @@ public class AchievementManager : MonoBehaviour
         achievements.Add(new Achievement("complete_all_apps", "Completionist", "Complete all mini-games in a single run"));
 
         achievements.Add(new Achievement("byte_master", "Byte Master", "Complete ByteSorter mini-game"));
-        achievements.Add(new Achievement("cable_expert", "Cable Expert", "Complete CableConnecting mini-game"));
+        achievements.Add(new Achievement("cable_expert", "Crewmate Certified Electrician", "Complete CableConnecting mini-game"));
         achievements.Add(new Achievement("hex_wizard", "Hex Wizard", "Complete HexPuzzle mini-game"));
         achievements.Add(new Achievement("sequence_pro", "Sequence Pro", "Complete SequenceHack mini-game"));
         achievements.Add(new Achievement("rhythm_master", "Rhythm Master", "Complete RythmDecode mini-game"));
         achievements.Add(new Achievement("signal_expert", "Signal Expert", "Complete SignalStabilize mini-game"));
         achievements.Add(new Achievement("frequency_tuner", "Frequency Tuner", "Complete DualFrequency mini-game"));
         achievements.Add(new Achievement("lights_solver", "Lights Solver", "Complete LightsOn mini-game"));
-        achievements.Add(new Achievement("malware_defender", "Malware Defender", "Complete MalwareDefender mini-game"));
+        achievements.Add(new Achievement("malware_defender", "Unauthorized Access Denied", "Complete MalwareDefender mini-game"));
 
         achievements.Add(new Achievement("win_easy", "Casual Hacker", "Win a game on Easy difficulty"));
         achievements.Add(new Achievement("win_normal", "Skilled Operator", "Win a game on Normal difficulty"));
@@ -104,10 +77,9 @@ public class AchievementManager : MonoBehaviour
         achievements.Add(new Achievement("movie_buff", "Movie Buff", "Watch the intro video"));
 
         achievements.Add(new Achievement("archivist", "The Archivist", "Create 10 save files"));
-        achievements.Add(new Achievement("afk_king", "AFK King", "Stay inactive for 5 minutes"));
 
         achievements.Add(new Achievement("collector", "Collector", "Unlock 50% of achievements"));
-        achievements.Add(new Achievement("all_achievements", "Master Collector", "Unlock all achievements"));
+        achievements.Add(new Achievement("all_achievements", "Please, No More", "Unlock all achievements"));
     }
 
     public void UnlockAchievement(string achievementId)
@@ -355,9 +327,8 @@ public class AchievementManager : MonoBehaviour
         foreach (Achievement a in achievements)
         {
             if (!a.isUnlocked && a.id != "all_achievements")
-                return; 
+                return;
         }
         UnlockAchievement("all_achievements");
     }
-
 }
