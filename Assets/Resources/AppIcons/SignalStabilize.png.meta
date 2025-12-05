@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: cc699e9d64cd20f43b932c143f883e5f
+guid: a98ddc44a3677b04198a124114cd1085
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1142664116253005023
-    second: SignalStabilize_0
+      213: -3494778438831341298
+    second: SignalStabilize 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SignalStabilize_0
+      name: SignalStabilize 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 12b67255a017420f0800000000000000
-      internalID: -1142664116253005023
+      spriteID: e0183c8a68d008fc0800000000000000
+      internalID: -3494778438831341298
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SignalStabilize_0: -1142664116253005023
+      SignalStabilize 1_0: -3494778438831341298
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
