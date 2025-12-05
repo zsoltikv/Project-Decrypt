@@ -26,6 +26,10 @@ Break into a secure system by completing puzzle mini-games. Each game reveals pa
 - 💾 **Save System** - JSON-based progress tracking
 - 🎵 **Dynamic Audio** - Scene-persistent music system
 
+## 🧪 Testing
+
+An external playtester contributed to the project by providing feedback on gameplay, difficulty balancing, and overall user experience.
+
 ## 🕹️ Mini-Games
 
 | Game | Type | Description |
