@@ -210,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectorID: 2
   isLeftSide: 0
+  isFilled: 0
 --- !u!225 &62536547
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -576,6 +577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectorID: 1
   isLeftSide: 0
+  isFilled: 0
 --- !u!225 &540394188
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -768,6 +770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectorID: 3
   isLeftSide: 0
+  isFilled: 0
 --- !u!225 &757772669
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -871,6 +874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectorID: 3
   isLeftSide: 1
+  isFilled: 0
 --- !u!225 &826418504
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1198,6 +1202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectorID: 2
   isLeftSide: 1
+  isFilled: 0
 --- !u!225 &1135768714
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1288,7 +1293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1370381835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1744,7 +1749,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2003253803}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
