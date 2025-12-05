@@ -15,6 +15,7 @@ public class PasswordScript : MonoBehaviour
     public GameObject passwordText;
     public GameObject winPanel;
     public GameObject passwordPanel;
+    public GameObject DataSaveFeedback;
 
     [Header("Fonts")]
     public TMP_FontAsset monoFont;

@@ -12,6 +12,9 @@ public class SaveScript : MonoBehaviour
     [Header("Data")]
     public string nameInput;
 
+    [Header("UI")]
+    public GameObject dataSaveFeedback;
+
     [System.Serializable]
     public class SaveData
     {
@@ -73,6 +76,15 @@ public class SaveScript : MonoBehaviour
                 AchievementManager.Instance.UnlockAchievement("archivist");
             }
 
+        }
+
+        if (dataSaveFeedback != null)
+        {
+            TextMeshProUGUI tmp = dataSaveFeedback.GetComponent<TextMeshProUGUI>();
+            if (tmp != null)
+            {
+                tmp.text = "Data saved.";
+            }
         }
 
         Debug.Log($"Saved at: {filePath}");
