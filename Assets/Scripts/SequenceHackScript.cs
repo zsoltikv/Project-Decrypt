@@ -1,3 +1,20 @@
+/* ----- EXTRA FUNKCIÓK: -----
+ * 
+ *  - egyedi Cutscene rendszer (Intro, bevezetõ és Outro)
+ *  - Achievement rendszer (26 db elõre definiált achievement)
+ *  - Leaderboard rendszer (lokális mentéssel, 4 adattaggal) 
+ *  - Difficulty rendszer (befolyásolja a minigame-k nehézségét)
+ *  - Véletlenszerû jelszó lehetõsége
+ *  - Több fajta minigame eltérõ típusokkal (idõkorlátos, logikai, memória, ügyességi)
+ *  - Mátrix ihletettségû dizájn
+ *  - Haptic feedback rendszer
+ *  - Hajszálvékony történet
+ *  - UI elemek animációja
+ *  - Laptop UI dátum és idõ kijelzése (szándékosan 2013 a történet végett)
+ *  
+ *  - GitHub repository linkje: https://github.com/zsoltikv/Project-Decrypt
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -242,7 +259,6 @@ public class SequenceHack : MonoBehaviour
         {
             GameSettingsManager.Instance.completedApps.Add("SequenceHack");
 
-            // ÚJ: Achievement integráció
             if (AchievementManager.Instance != null)
             {
                 AchievementManager.Instance.CheckMiniGameCompletion("SequenceHack");

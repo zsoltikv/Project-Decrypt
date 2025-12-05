@@ -1,3 +1,20 @@
+/* ----- EXTRA FUNKCIÓK: -----
+ * 
+ *  - egyedi Cutscene rendszer (Intro, bevezető és Outro)
+ *  - Achievement rendszer (26 db előre definiált achievement)
+ *  - Leaderboard rendszer (lokális mentéssel, 4 adattaggal) 
+ *  - Difficulty rendszer (befolyásolja a minigame-k nehézségét)
+ *  - Véletlenszerű jelszó lehetősége
+ *  - Több fajta minigame eltérő típusokkal (időkorlátos, logikai, memória, ügyességi)
+ *  - Mátrix ihletettségű dizájn
+ *  - Haptic feedback rendszer
+ *  - Hajszálvékony történet
+ *  - UI elemek animációja
+ *  - Laptop UI dátum és idő kijelzése (szándékosan 2013 a történet végett)
+ *  
+ *  - GitHub repository linkje: https://github.com/zsoltikv/Project-Decrypt
+ */
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -6,7 +23,7 @@ using UnityEngine.InputSystem;
 public class FlashlightShaderController : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float flashlightRadius = 0.15f; // 0-1 arány
+    [SerializeField] private float flashlightRadius = 0.15f; 
     [SerializeField] private float smoothness = 0.1f;
     [SerializeField] private float smoothSpeed = 10f;
     
@@ -30,10 +47,6 @@ public class FlashlightShaderController : MonoBehaviour
             materialInstance.SetFloat("_LightRadius", flashlightRadius);
             materialInstance.SetFloat("_LightSoftness", smoothness);
         }
-        else
-        {
-            Debug.LogError("Nincs material az Image-en! Rakd rá a FlashlightCutout shader-t!");
-        }
     }
 
     void Update()
@@ -43,13 +56,12 @@ public class FlashlightShaderController : MonoBehaviour
         Vector2 screenPosition = Vector2.zero;
         bool hasInput = false;
 
-        // Touch
         if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
         {
             screenPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             hasInput = true;
         }
-        // Mouse
+
         else if (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
             screenPosition = Mouse.current.position.ReadValue();
@@ -58,13 +70,11 @@ public class FlashlightShaderController : MonoBehaviour
 
         if (hasInput)
         {
-            // Normalizált 0-1 koordináta a képernyőre
             Vector2 normalizedPos = new Vector2(
                 screenPosition.x / Screen.width,
                 screenPosition.y / Screen.height
             );
 
-            // Smooth mozgás
             currentNormalizedPos = Vector2.Lerp(currentNormalizedPos, normalizedPos, Time.deltaTime * smoothSpeed);
 
             materialInstance.SetVector("_LightPos", currentNormalizedPos);
