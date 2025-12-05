@@ -23,13 +23,28 @@ public class SineWaveScanner : MonoBehaviour
     public float allowedError = 0.01f;
 
     [Header("Scrolling")]
-    public float scrollSpeed = 1f; 
+    public float scrollSpeed; 
     private float phaseOffset = 0f;
 
     private bool triggerOnce = false;
 
     void Start()
     {
+
+        switch (GameSettingsManager.Instance.currentDifficulty)
+        {
+            case GameSettingsManager.Difficulty.Easy:
+                scrollSpeed = 1f;
+                break;
+
+            case GameSettingsManager.Difficulty.Normal:
+                scrollSpeed = 2f;
+                break;
+
+            case GameSettingsManager.Difficulty.Hard:
+                scrollSpeed = 3f;
+                break;
+        }
 
         transform.localScale = new Vector3(0.01f, 0.01f, 1f);
         targetAmplitude = Random.Range(0.2f, 1.5f);
